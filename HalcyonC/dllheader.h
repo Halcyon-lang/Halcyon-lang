@@ -3,4 +3,6 @@
 #define Dll   __declspec( dllexport )
 
 int main() 
-{}
+{
+    return 0;
+}
