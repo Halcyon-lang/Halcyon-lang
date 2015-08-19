@@ -35,6 +35,7 @@ namespace Halcyon.Errors
             Add(6, "Unable to read file");
             Add(7, "Include file not found");
             Add(8, "Invalid directive syntax");
+            Add(9, "Unsupported header");
         }
     }
 }

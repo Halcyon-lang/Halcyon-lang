@@ -15,8 +15,7 @@ namespace Halcyon
             {
                 case 0:
                     //Utils.printHelp();
-                    Console.Write("SlashButter:");
-                    Console.Title = "SlashButter Compiler";
+                    Console.Write("Halcyon:");
                     HalcyonConsole.Command(Console.ReadLine());
                     break;
                 case 1:
@@ -35,7 +34,6 @@ namespace Halcyon
                         Utils.printHelp();
                     }
                     Console.Write("SlashButter:");
-                    Console.Title = "SlashButter Compiler";
                     HalcyonConsole.Command(Console.ReadLine());
                     break;
                 case 2:

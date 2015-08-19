@@ -13,6 +13,8 @@ namespace Halcyon
         {
             Console.Title = "Halcyon Compiler";
             Errors.Exceptions.initExceptions();
+            Preprocessor.initCommonPreprocessorEvents();
+            Preprocessor.initDirectives();
             if (args != null)
             {
                 consoleArgs = args;
