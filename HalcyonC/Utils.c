@@ -1,6 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#define Dll   __declspec( dllexport )
+#include "dllheader.h"
 
 Dll void printHelp() 
 {
