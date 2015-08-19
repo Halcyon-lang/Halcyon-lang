@@ -10,11 +10,33 @@ namespace Halcyon
 {
     class Utils
     {
-        [DllImport("Utils.dll")]
+        //Why it no work, jeez
+        /*[DllImport(@"Utils.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern void printHelp();
-        [DllImport("Utils.dll")]
-        public static extern void printInfoHelp();
+        [DllImport(@"Utils.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void printInfoHelp();*/
+        public static void printHelp()
+        {
+            Console.WriteLine("SlashButter compiler help:");
+            Console.WriteLine("   -compile [File] - Compiles file to executable");
+            Console.WriteLine("   -convert [File] - Converts file to IL. File's will be written down here");
+            Console.WriteLine("   -result [Text] - how does given line look in IL");
+            Console.WriteLine("   -preprocess [File] - preprocesses .halcyon file");
+        }
+        public static void printInfoHelp()
+        {
+            printf("-info\n");
+            printf("   classes - Prints all classes\n");
+            printf("   elements - Prints currently loaded elements\n");
+            printf("   version - Prints current version of SlashButter\n");
+            return;
+        }
 
+        //I am ashamed for this workaround of complete laziness, but I need it to start at least once
+        public static void printf(string str)
+        {
+            Console.Write(str);
+        }
         public static void giveInfo(string arg)
         {
             switch (arg)

@@ -25,7 +25,7 @@ namespace Halcyon
         public static StringBuilder PreprocessedFile = new StringBuilder();
         public static string FilePath;
         public static List<Directive> DirectiveList = new List<Directive>();
-
+        public static bool onlySaveAfterPreprocess = false;
         //Functions
         public static void LoadFile(string path) 
         {
@@ -83,6 +83,12 @@ namespace Halcyon
                 OnNextLine(null, new LineEventArgs(line));
             }
             OnPreprocessCompleted(null, EventArgs.Empty);
+            if (onlySaveAfterPreprocess)
+            {
+                System.IO.StreamWriter output = new System.IO.StreamWriter(Environment.CurrentDirectory + Path.GetFileNameWithoutExtension(FilePath) + ".halp");
+                output.Write(PreprocessedFile + "\n");
+                output.Close();
+            }
         }
 
         public static void initDirectives()

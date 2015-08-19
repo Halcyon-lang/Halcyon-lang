@@ -10,17 +10,37 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Halcyon|Any CPU = Halcyon|Any CPU
+		Halcyon|x86 = Halcyon|x86
 		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{BEC0FD1F-98C2-48F9-9FB4-80AD232CE7D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BEC0FD1F-98C2-48F9-9FB4-80AD232CE7D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEC0FD1F-98C2-48F9-9FB4-80AD232CE7D3}.Debug|x86.ActiveCfg = Debug|x86
+		{BEC0FD1F-98C2-48F9-9FB4-80AD232CE7D3}.Debug|x86.Build.0 = Debug|x86
+		{BEC0FD1F-98C2-48F9-9FB4-80AD232CE7D3}.Halcyon|Any CPU.ActiveCfg = Halcyon|Any CPU
+		{BEC0FD1F-98C2-48F9-9FB4-80AD232CE7D3}.Halcyon|Any CPU.Build.0 = Halcyon|Any CPU
+		{BEC0FD1F-98C2-48F9-9FB4-80AD232CE7D3}.Halcyon|x86.ActiveCfg = Halcyon|x86
+		{BEC0FD1F-98C2-48F9-9FB4-80AD232CE7D3}.Halcyon|x86.Build.0 = Halcyon|x86
 		{BEC0FD1F-98C2-48F9-9FB4-80AD232CE7D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BEC0FD1F-98C2-48F9-9FB4-80AD232CE7D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEC0FD1F-98C2-48F9-9FB4-80AD232CE7D3}.Release|x86.ActiveCfg = Release|x86
+		{BEC0FD1F-98C2-48F9-9FB4-80AD232CE7D3}.Release|x86.Build.0 = Release|x86
 		{6087BD98-3BF1-469E-AF03-AB2DE203507D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6087BD98-3BF1-469E-AF03-AB2DE203507D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6087BD98-3BF1-469E-AF03-AB2DE203507D}.Debug|x86.ActiveCfg = Debug|x86
+		{6087BD98-3BF1-469E-AF03-AB2DE203507D}.Debug|x86.Build.0 = Debug|x86
+		{6087BD98-3BF1-469E-AF03-AB2DE203507D}.Halcyon|Any CPU.ActiveCfg = Halcyon|Any CPU
+		{6087BD98-3BF1-469E-AF03-AB2DE203507D}.Halcyon|Any CPU.Build.0 = Halcyon|Any CPU
+		{6087BD98-3BF1-469E-AF03-AB2DE203507D}.Halcyon|x86.ActiveCfg = Halcyon|x86
+		{6087BD98-3BF1-469E-AF03-AB2DE203507D}.Halcyon|x86.Build.0 = Halcyon|x86
 		{6087BD98-3BF1-469E-AF03-AB2DE203507D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6087BD98-3BF1-469E-AF03-AB2DE203507D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6087BD98-3BF1-469E-AF03-AB2DE203507D}.Release|x86.ActiveCfg = Release|x86
+		{6087BD98-3BF1-469E-AF03-AB2DE203507D}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

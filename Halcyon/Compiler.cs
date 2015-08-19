@@ -25,6 +25,14 @@ namespace Halcyon
                     Console.Write("Halcyon:");
                     HalcyonConsole.Command(Console.ReadLine());
                     break;
+                case "-preprocess":
+                    Console.WriteLine("I only preprocess");
+                    Preprocessor.onlySaveAfterPreprocess = true;
+                    Preprocessor.LoadFile(args[1]);
+                    Console.Write("Halcyon:");
+                    Console.Title = "Halcyon Compiler";
+                    HalcyonConsole.Command(Console.ReadLine());
+                    break;
                 case "-convert":
                     Console.WriteLine("And here would I place conversion-only compiler, IF I HAD ONE");
                     Console.WriteLine("Wait, I atleast do have Preprocessor!");
