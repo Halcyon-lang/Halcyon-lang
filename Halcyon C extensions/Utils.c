@@ -20,6 +20,4 @@ Dll void printInfoHelp()
 	return;
 }
 
-int main() {}
-
 
