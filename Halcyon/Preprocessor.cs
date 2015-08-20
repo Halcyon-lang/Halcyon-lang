@@ -17,36 +17,52 @@ namespace Halcyon
         public static event EventHandler OnReadFile = delegate { };
         public static event EventHandler OnReadFileFailed = delegate { };
         public static event EventHandler OnStart = delegate { };
+        public static event EventHandler OnReset = delegate { };
         public static event EventHandler OnPreprocessCompleted = delegate { };
         public static event EventHandler OnInitDirectives = delegate { };
         public static event EventHandler<LineEventArgs> OnNextLine = delegate { };
         //fields
         public static string[] InputFile;
         public static StringBuilder PreprocessedFile = new StringBuilder();
-        public static string FilePath;
+        public static string FilePath = "";
         public static List<Directive> DirectiveList = new List<Directive>();
         public static bool onlySaveAfterPreprocess = false;
         //Functions
         public static void LoadFile(string path) 
         {
+            if(Program.Talkative) Console.WriteLine("Loadfile started");
             OnStart(null, EventArgs.Empty);
             string realPath;
             try
             {
-                if (path.StartsWith("-\\"))
+                if(Program.Talkative) 
+                Console.WriteLine("try catch started");
+                if (path.StartsWith(@"-\"))
                 {
-                    realPath = Path.Combine(Environment.CurrentDirectory, path.Substring(2));
+                    if(Program.Talkative) 
+                    Console.WriteLine("Combine path started");
+                    realPath = Path.Combine(Environment.CurrentDirectory, path.Replace(@"-\",""));
                 }
                 else
                 {
+                    if(Program.Talkative) 
+                    Console.WriteLine("Didn't need to combine path");
                     realPath = path;
                 }
+                if(Program.Talkative) 
+                Console.WriteLine("Setting path");
                 FilePath = realPath;
                 Console.WriteLine("Path set to " + realPath);
                 if (System.IO.File.Exists(realPath))
                 {
                     OnLoadFile(null, EventArgs.Empty);
+                    if(Program.Talkative) 
+                    Console.WriteLine("Readfile started");
                     ReadFile(realPath);
+                }
+                else
+                {
+                    Exceptions.Exception(2);
                 }
             }
             catch
@@ -56,39 +72,63 @@ namespace Halcyon
         }
         public static void ReadFile(string path)
         {
+            if(Program.Talkative) 
+            Console.WriteLine("If started");
             if (!path.Contains(".halcyon"))
             {
                 Exceptions.Exception(5);
             }
             else
             {
+                if (Program.Talkative)
+                Console.WriteLine(path);
                 try
                 {
+                    if(Program.Talkative) 
+                    Console.WriteLine("Assigning Input File...");
                     InputFile = System.IO.File.ReadAllLines(path);
-                    OnReadFile(null, EventArgs.Empty);
+                    //OnReadFile(null, EventArgs.Empty);
                     Preproccess(InputFile);
                 }
-                catch
+                catch (Exception e)
                 {
+                    if(Program.Talkative)
+                    Console.WriteLine("Assigning apparently failed");
                     Exceptions.Exception(6);
                     OnReadFileFailed(null, EventArgs.Empty);
+                    Console.WriteLine(e.Message);
+                    Console.WriteLine(e.Source);
+                    Console.WriteLine(e.InnerException);
+                    Console.WriteLine(e.StackTrace);
                 }
             }
         }
 
         public static void Preproccess(string[] file)
         {
+            if(Program.Talkative) 
+            Console.WriteLine("Preproccess started");
             foreach (string line in file)
             {
+                if(Program.Talkative) 
+                Console.WriteLine("Looping through lines.");
                 OnNextLine(null, new LineEventArgs(line));
             }
             OnPreprocessCompleted(null, EventArgs.Empty);
+            if(Program.Talkative) 
+            Console.WriteLine("If started");
             if (onlySaveAfterPreprocess)
             {
-                System.IO.StreamWriter output = new System.IO.StreamWriter(Environment.CurrentDirectory + Path.GetFileNameWithoutExtension(FilePath) + ".halp");
+                if(Program.Talkative) 
+                Console.WriteLine("Writing file finished");
+                System.IO.StreamWriter output = new System.IO.StreamWriter(Path.Combine(Environment.CurrentDirectory, Path.GetFileNameWithoutExtension(FilePath) + ".halp"));
                 output.Write(PreprocessedFile + "\n");
                 output.Close();
             }
+            if(Program.Talkative) 
+            Console.WriteLine("Firing OnReset");
+            OnReset(null, EventArgs.Empty);
+            Console.WriteLine("Task completed. \n");
         }
 
         public static void initDirectives()
@@ -102,9 +142,9 @@ namespace Halcyon
         {
             OnPreprocessCompleted += PreprocessorEvents.Preprocessor_OnPreprocessCompleted;
             OnNextLine += PreprocessorEvents.Preprocessor_OnNextLine;
+            OnReset += PreprocessorEvents.Preprocessor_OnReset;
         }
 
-        
         public static void Add(string name, DirectiveCallback callback)
         {
             DirectiveList.Add(new Directive(name, callback));
@@ -130,21 +170,36 @@ namespace Halcyon
         {
             string temp = line;
             string file = "";
+            string defaultIncludePath = Path.Combine(Environment.CurrentDirectory, @"include\");
             temp = temp.Replace("#include", "");
-            if (temp.StartsWith("\""))
+            if (temp.Trim().StartsWith("\""))
             {
-                temp.Replace("\"", "");
+                temp = temp.Trim().Replace("\"", "");
                 if (File.Exists(Path.Combine(Path.GetDirectoryName(Preprocessor.FilePath), temp)))
                     file = File.ReadAllText(Path.Combine(Path.GetDirectoryName(Preprocessor.FilePath), temp));
                 else Exceptions.Exception(7);
             }
-            else if (temp.StartsWith("<"))
+            else if (temp.Trim().StartsWith("<"))
             {
-                temp.Replace("<", "");
-                temp.Replace(">", "");
-                if (File.Exists(Path.Combine(Path.Combine(Environment.CurrentDirectory, "\\include"), temp)))
-                    file = File.ReadAllText(Path.Combine(Path.Combine(Environment.CurrentDirectory, "\\include"), temp));
-                else Exceptions.Exception(7);
+                temp = temp.Trim().Replace("<", "");
+                temp = temp.Trim().Replace(@">", "");
+                if (Program.Talkative)
+                    Console.WriteLine("Include " + temp);
+                if (Program.Talkative)
+                    Console.WriteLine("Environment.CurrentDirectory: " + Environment.CurrentDirectory);
+                if (Program.Talkative)
+                    Console.WriteLine("Default Include Path: " + defaultIncludePath);
+                if (Program.Talkative)
+                    Console.WriteLine("Include file path:" + Path.Combine(defaultIncludePath, temp.Trim()));
+                try 
+                {
+                    file = File.ReadAllText(Path.Combine(defaultIncludePath, temp.Trim()));
+                }
+                catch
+                {
+                    Exceptions.Exception(7);
+                    return;
+                }
             }
             else
             {
@@ -158,9 +213,7 @@ namespace Halcyon
             }
             else
             {
-                StringBuilder sb = new StringBuilder();
-                sb.Append(Preprocessor.PreprocessedFile.ToString());
-                sb.Append(file.Replace("#Halcyon", ""));
+                Preprocessor.PreprocessedFile.Append(file.Replace("#Halcyon", ""));
             }
         }
 
@@ -196,6 +249,10 @@ namespace Halcyon
             {
                 Preprocessor.PreprocessedFile.AppendLine(e.Line);
             }
+        }
+        public static void Preprocessor_OnReset(object sender, EventArgs e)
+        {
+            Preprocessor.PreprocessedFile.Clear();
         }
     }
 

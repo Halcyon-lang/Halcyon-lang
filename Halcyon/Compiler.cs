@@ -13,7 +13,9 @@ namespace Halcyon
             switch (args[0])
             {
                 case "-compile":
+                    if (Program.Talkative) 
                     Console.WriteLine("And here would I place normal compiler, IF I HAD ONE");
+                    if (Program.Talkative) 
                     Console.WriteLine("Wait, I atleast do have Preprocessor!");
                     Preprocessor.LoadFile(args[1]);
                     Console.Write("Halcyon:");
@@ -26,6 +28,7 @@ namespace Halcyon
                     HalcyonConsole.Command(Console.ReadLine());
                     break;
                 case "-preprocess":
+                    if (Program.Talkative) 
                     Console.WriteLine("I only preprocess");
                     Preprocessor.onlySaveAfterPreprocess = true;
                     Preprocessor.LoadFile(args[1]);
@@ -33,8 +36,16 @@ namespace Halcyon
                     Console.Title = "Halcyon Compiler";
                     HalcyonConsole.Command(Console.ReadLine());
                     break;
+                case "-talkative":
+                    Utils.switchTalkative();
+                    Console.Write("Halcyon:");
+                    Console.Title = "Halcyon Compiler";
+                    HalcyonConsole.Command(Console.ReadLine());
+                    break;
                 case "-convert":
+                    if (Program.Talkative) 
                     Console.WriteLine("And here would I place conversion-only compiler, IF I HAD ONE");
+                    if (Program.Talkative) 
                     Console.WriteLine("Wait, I atleast do have Preprocessor!");
                     Preprocessor.LoadFile(args[1]);
                     Console.Write("Halcyon:");
@@ -42,6 +53,7 @@ namespace Halcyon
                     HalcyonConsole.Command(Console.ReadLine());
                     break;
                 case "-result":
+                    if (Program.Talkative) 
                     Console.WriteLine("And here would I place line result, IF I HAD ONE");
                     Console.Write("Halcyon:");
                     Console.Title = "Halcyon Compiler";
