@@ -239,6 +239,9 @@ namespace Halcyon
             string temp = Preprocessor.PreprocessedFile.ToString();
             if (Preprocessor.firstrun)
             {
+                if (Program.Talkative)
+                    Console.WriteLine("Going second run in preprocessor.");
+                Preprocessor.PreprocessedFile.Clear();
                 Preprocessor.Preproccess(temp.Split(Convert.ToChar("\n")));
             }
         }
