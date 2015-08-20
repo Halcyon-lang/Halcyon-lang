@@ -17,7 +17,7 @@ namespace Halcyon
         public static extern void printInfoHelp();*/
         public static void printHelp()
         {
-            Console.WriteLine("SlashButter compiler help:");
+            Console.WriteLine("Halcyon compiler help:");
             Console.WriteLine("   -compile [File] - Compiles file to executable");
             Console.WriteLine("   -convert [File] - Converts file to IL. File's will be written down here");
             Console.WriteLine("   -result [Text] - how does given line look in IL");
@@ -28,7 +28,7 @@ namespace Halcyon
             printf("-info\n");
             printf("   classes - Prints all classes\n");
             printf("   elements - Prints currently loaded elements\n");
-            printf("   version - Prints current version of SlashButter\n");
+            printf("   version - Prints current version of Halcyon\n");
             return;
         }
 
@@ -71,6 +71,20 @@ namespace Halcyon
                 default:
                     Errors.Exceptions.Exception(0);
                     break;
+            }
+        }
+
+        public static void switchTalkative()
+        {
+            if (Program.Talkative)
+            {
+                Console.WriteLine("Talkative mode disabled. \n");
+                Program.Talkative = false;
+            }
+            else
+            {
+                Console.WriteLine("Talkative mode enabled. \n");
+                Program.Talkative = true;
             }
         }
     }
