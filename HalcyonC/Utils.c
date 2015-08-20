@@ -1,20 +1,24 @@
-#include "dllheader.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <iostream>
+#define Dll   __declspec( dllexport )
+//using std;
 
 Dll void printHelp() 
 {
-	printf("SlashButter compiler help:\n");
-	printf("   -compile [File] - Compiles file to executable\n");
-	printf("   -convert [File] - Converts file to IL. File's will be written down here\n");
-	printf("   -result [Text] - how does given line look in IL\n");
+	cout << "Halcyon compiler help:\n";
+	cout << "   -compile [File] - Compiles file to executable\n";
+	cout << "   -convert [File] - Converts file to IL. File's will be written down here\n";
+	cout << "   -result [Text] - how does given line look in IL\n";
 	return;
 }
 
 Dll void printInfoHelp() 
 {
-	printf("-info\n");
-	printf("   classes - Prints all classes\n");
-	printf("   elements - Prints currently loaded elements\n");
-	printf("   version - Prints current version of SlashButter\n");
+	cout << "-info\n";
+	cout << "   classes - Prints all classes\n");
+	cout << "   elements - Prints currently loaded elements\n";
+	cout << "   version - Prints current version of SlashButter\n";
 	return;
 }
 

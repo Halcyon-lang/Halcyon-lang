@@ -27,6 +27,7 @@ namespace Halcyon
         public static string FilePath = "";
         public static List<Directive> DirectiveList = new List<Directive>();
         public static bool onlySaveAfterPreprocess = false;
+        public static bool firstrun = true;
         //Functions
         public static void LoadFile(string path) 
         {
@@ -232,7 +233,13 @@ namespace Halcyon
         {
             foreach (string key in Callbacks.DefineList.Keys)
             {
+                
                 Preprocessor.PreprocessedFile = Preprocessor.PreprocessedFile.Replace(key, Callbacks.DefineList[key]);
+            }
+            string temp = Preprocessor.PreprocessedFile.ToString();
+            if (Preprocessor.firstrun)
+            {
+                Preprocessor.Preproccess(temp.Split(Convert.ToChar("\n")));
             }
         }
 
