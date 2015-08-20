@@ -19,21 +19,22 @@ namespace Halcyon
                     HalcyonConsole.Command(Console.ReadLine());
                     break;
                 case 1:
-                    if (args[0] != "-compile" && args[0] != "-result" && args[0] != "-convert" && args[0] != "-info" && args[0] != "-help" && !string.IsNullOrEmpty(args[0])) Errors.Exceptions.Exception(4);
+                    if (args[0] != "-compile" && args[0] != "-result" && args[0] != "-convert" && args[0] != "-info" && args[0] != "-help" && args[0] != "-talkative" && !string.IsNullOrEmpty(args[0])) Errors.Exceptions.Exception(4);
                     else if (string.IsNullOrEmpty(args[0]))
                     {
-                        Console.Write("SlashButter:");
+                        Console.Write("Halcyon:");
                         HalcyonConsole.Command(Console.ReadLine());
                     }
                     else if (args[0] == "-info") Utils.printInfoHelp();
                     else if (args[0] == "-help") Utils.printHelp();
+                    else if (args[0] == "-talkative") Utils.switchTalkative();
                     else
                     {
                         Errors.Exceptions.Exception(0);
                         Console.WriteLine();
                         Utils.printHelp();
                     }
-                    Console.Write("SlashButter:");
+                    Console.Write("Halcyon:");
                     HalcyonConsole.Command(Console.ReadLine());
                     break;
                 case 2:

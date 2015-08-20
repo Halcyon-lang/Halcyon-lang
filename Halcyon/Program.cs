@@ -9,6 +9,7 @@ namespace Halcyon
     class Program
     {
         public static string[] consoleArgs;
+        public static bool Talkative = false;
         static void Main(string[] args)
         {
             Console.Title = "Halcyon Compiler";
