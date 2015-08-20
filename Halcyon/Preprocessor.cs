@@ -230,7 +230,10 @@ namespace Halcyon
     {
         public static void Preprocessor_OnPreprocessCompleted(object sender, EventArgs e)
         {
-            //To be continued soon enough
+            foreach (string key in Callbacks.DefineList.Keys)
+            {
+                Preprocessor.PreprocessedFile = Preprocessor.PreprocessedFile.Replace(key, Callbacks.DefineList[key]);
+            }
         }
 
         public static void Preprocessor_OnNextLine(object sender, LineEventArgs e)
