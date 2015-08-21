@@ -89,11 +89,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiVersion.cs" />
+    <Compile Include="ApiVersionAttribute.cs" />
     <Compile Include="Compiler.cs" />
     <Compile Include="ContentManager.cs" />
     <Compile Include="Element.cs" />
     <Compile Include="Exceptions.cs" />
+    <Compile Include="ExtensionContainer.cs" />
+    <Compile Include="ExtensionLoader.cs" />
     <Compile Include="HalcyonConsole.cs" />
+    <Compile Include="HalcyonExtension.cs" />
     <Compile Include="Preprocessor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
