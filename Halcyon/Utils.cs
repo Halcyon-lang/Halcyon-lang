@@ -20,9 +20,11 @@ namespace Halcyon
         {
             Console.WriteLine("Halcyon compiler help:");
             Console.WriteLine("   -compile [File] - Compiles file to executable");
-            Console.WriteLine("   -convert [File] - Converts file to IL. File's will be written down here");
+            Console.WriteLine("   -convert [File] - Converts file to IL. File will be written down here");
             Console.WriteLine("   -result [Text] - how does given line look in IL");
             Console.WriteLine("   -preprocess [File] - preprocesses .halcyon file");
+            Console.WriteLine("   -talkative - turns more commandline info viewed mode ON/OFF");
+            Console.WriteLine("   -info <classes|elements|version> - prints a certain piece of info or -info help");
         }
         public static void printInfoHelp()
         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ namespace Halcyon
     {
         public static string[] consoleArgs;
         public static bool Talkative = false;
+        public static event EventHandler<HandledEventArgs> OnExit = delegate { };
         static void Main(string[] args)
         {
             Console.Title = "Halcyon Compiler";
@@ -37,8 +39,12 @@ namespace Halcyon
                     Compiler.checkArgs(args);
                     break;
                 default:
+                    Utils.printHelp();
+                    Console.Write("Halcyon:");
+                    HalcyonConsole.Command(Console.ReadLine());
                     break;
             }
+            OnExit(null, new HandledEventArgs());
         }
     }
 }

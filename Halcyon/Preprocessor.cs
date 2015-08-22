@@ -1,5 +1,6 @@
 ﻿using Halcyon.CustomEventArgs;
 using Halcyon.Errors;
+using Halcyon.Logging;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,8 +22,14 @@ namespace Halcyon
         public static event EventHandler<HandledEventArgs> OnReset = delegate { };
         public static event EventHandler<HandledEventArgs> OnPreprocessCompleted = delegate { };
         public static event EventHandler<HandledEventArgs> OnInitDirectives = delegate { };
-        public static event EventHandler<LineEventArgs> OnNextLine = delegate { };
         public static event EventHandler<PreprocessEventArgs> OnPreprocess = delegate { };
+        public static event EventHandler<LineEventArgs> OnNextLine;
+        public static event EventHandler<HandledEventArgs> OnLoadFileFailed;
+        public static event EventHandler<HandledEventArgs> OnReadFileFailed;
+        //Even trigger wrappers
+        public static void NextLine(object sender, LineEventArgs args) { OnNextLine(sender, args); }
+        public static void LoadFileFailed(object sender, HandledEventArgs args) { OnLoadFileFailed(sender, args); }
+        public static void ReadFileFailed(object sender, HandledEventArgs args) { OnReadFileFailed(sender, args); }
         //fields
         public static string[] InputFile;
         public static StringBuilder PreprocessedFile = new StringBuilder();
@@ -34,7 +41,7 @@ namespace Halcyon
         //Functions
         public static void LoadFile(string path) 
         {
-            if (Program.Talkative) Console.WriteLine("Loadfile started");
+            Logger.TalkyLog("Loadfile started");
             OnStart(null, new HandledEventArgs());
             OnLoadFile(null, new LoadFileArgs(path));
         }
@@ -48,8 +55,7 @@ namespace Halcyon
             OnPreprocess(null, new PreprocessEventArgs(file));
             firstrun = false;
             OnPreprocessCompleted(null, new HandledEventArgs());
-            if (Program.Talkative)
-                Console.WriteLine("Firing OnReset");
+            Logger.TalkyLog("Firing OnReset");
             OnReset(null, new HandledEventArgs());
             Console.WriteLine("Task completed. \n");
         }
@@ -63,7 +69,7 @@ namespace Halcyon
         {
             OnPreprocessCompleted += PreprocessorEvents.Preprocessor_DefineOnPreprocessCompleted;
             OnPreprocessCompleted += PreprocessorEvents.Preprocessor_OnPreprocessCompleted;
-            PreprocessorEvents.OnNextLine += PreprocessorEvents.Preprocessor_OnNextLine;
+            Preprocessor.OnNextLine += PreprocessorEvents.Preprocessor_OnNextLine;
             OnReset += PreprocessorEvents.Preprocessor_OnReset;
             OnInitDirectives += PreprocessorEvents.InitDirectives;
             OnPreprocess += PreprocessorEvents.Preprocess;
@@ -109,14 +115,10 @@ namespace Halcyon
             {
                 temp = temp.Trim().Replace("<", "");
                 temp = temp.Trim().Replace(@">", "");
-                if (Program.Talkative)
-                    Console.WriteLine("Include " + temp);
-                if (Program.Talkative)
-                    Console.WriteLine("Environment.CurrentDirectory: " + Environment.CurrentDirectory);
-                if (Program.Talkative)
-                    Console.WriteLine("Default Include Path: " + defaultIncludePath);
-                if (Program.Talkative)
-                    Console.WriteLine("Include file path:" + Path.Combine(defaultIncludePath, temp.Trim()));
+                Logger.TalkyLog("Include " + temp);
+                Logger.TalkyLog("Environment.CurrentDirectory: " + Environment.CurrentDirectory);
+                Logger.TalkyLog("Default Include Path: " + defaultIncludePath);
+                Logger.TalkyLog("Include file path:" + Path.Combine(defaultIncludePath, temp.Trim()));
                 try 
                 {
                     file = File.ReadAllText(Path.Combine(defaultIncludePath, temp.Trim()));
@@ -142,7 +144,6 @@ namespace Halcyon
                 Preprocessor.PreprocessedFile.Append(file.Replace("#Halcyon", ""));
             }
         }
-
         internal static void Define(string line)
         {
             string temp = line.Replace("#define ", "");
@@ -154,7 +155,7 @@ namespace Halcyon
                 }
             }
             string key = temp.Split(Convert.ToChar(" ")).First();
-            if (Program.Talkative) Console.WriteLine(temp.Replace(" " + key + " ", ""));
+            Logger.TalkyLog(temp.Replace(" " + key + " ", ""));
             string value = temp.Replace(key + " ", "");
             DefineList.Add(key, value);
         }
@@ -162,148 +163,157 @@ namespace Halcyon
 
     public static class PreprocessorEvents 
     {
-        public static event EventHandler<LineEventArgs> OnNextLine;
-        public static event EventHandler<HandledEventArgs> OnLoadFileFailed;
-        public static event EventHandler<HandledEventArgs> OnReadFileFailed;
+        #region Events
+
+        #endregion
+        #region Listeners
         public static void Preprocessor_DefineOnPreprocessCompleted(object sender, EventArgs e)
         {
             foreach (string key in Callbacks.DefineList.Keys)
             {
-                if (Program.Talkative) Console.WriteLine("Key: " + key);
-                if (Program.Talkative) Console.WriteLine("Replacing " + key + " with " + Callbacks.DefineList[key]);
+                Logger.TalkyLog("Key: " + key);
+                Logger.TalkyLog("Replacing " + key + " with " + Callbacks.DefineList[key]);
                 Preprocessor.PreprocessedFile = Preprocessor.PreprocessedFile.Replace(key, Callbacks.DefineList[key]);
             }
             string temp = Preprocessor.PreprocessedFile.ToString();
             if (Preprocessor.firstrun)
             {
-                if (Program.Talkative)
-                    Console.WriteLine("Going second run in preprocessor.");
+                Logger.TalkyLog("Going second run in preprocessor.");
                 Preprocessor.PreprocessedFile.Clear();
                 Preprocessor.Preproccess(temp.Split(Convert.ToChar("\n")));
             }
         }
         public static void Preprocessor_OnNextLine(object sender, LineEventArgs e)
         {
-            if (e.Line.Trim().StartsWith("#"))
+            if (!e.Handled)
             {
-                foreach (Directive dir in Preprocessor.DirectiveList)
+                if (e.Line.Trim().StartsWith("#"))
                 {
-                    if (dir.Name == e.Line.Split(Convert.ToChar(" ")).First().Replace("#", ""))
+                    foreach (Directive dir in Preprocessor.DirectiveList)
                     {
-                        dir.callback(e.Line);
+                        if (dir.Name == e.Line.Split(Convert.ToChar(" ")).First().Replace("#", ""))
+                        {
+                            dir.callback(e.Line);
+                        }
                     }
                 }
+                else
+                {
+                    Preprocessor.PreprocessedFile.AppendLine(e.Line);
+                }
             }
-            else
+        }
+        public static void Preprocessor_OnReset(object sender, HandledEventArgs e)
+        {
+            if (!e.Handled)
             {
-                Preprocessor.PreprocessedFile.AppendLine(e.Line);
+                Preprocessor.PreprocessedFile.Clear();
+                Callbacks.DefineList.Clear();
             }
         }
-        public static void Preprocessor_OnReset(object sender, EventArgs e)
+        public static void InitDirectives(object sender, HandledEventArgs e)
         {
-            Preprocessor.PreprocessedFile.Clear();
-            Callbacks.DefineList.Clear();
-        }
-        public static void InitDirectives(object sender, EventArgs e)
-        {
-            Preprocessor.Add("include", Callbacks.Include);
-            Preprocessor.Add("define", Callbacks.Define);
+            if (!e.Handled)
+            {
+                Preprocessor.Add("include", Callbacks.Include);
+                Preprocessor.Add("define", Callbacks.Define);
+            }
         }
         public static void Preprocess(object sender, PreprocessEventArgs e)
         {
-            if (Program.Talkative)
-                Console.WriteLine("Preproccess started");
-            foreach (string line in e.file)
+            if (!e.Handled)
             {
-                if (Program.Talkative)
-                    Console.WriteLine("Looping through lines.");
-                OnNextLine(null, new LineEventArgs(line));
+                Logger.TalkyLog("Preproccess started");
+                foreach (string line in e.file)
+                {
+                    Logger.TalkyLog("Looping through lines.");
+                    Preprocessor.NextLine(null, new LineEventArgs(line));
+                }
             }
         }
-        public static void Preprocessor_OnPreprocessCompleted(object sender, EventArgs e)
+        public static void Preprocessor_OnPreprocessCompleted(object sender, HandledEventArgs e)
         {
-            if (Program.Talkative)
-                Console.WriteLine("If started");
-            if (Preprocessor.onlySaveAfterPreprocess)
+            if (!e.Handled)
             {
-                if (Program.Talkative)
-                    Console.WriteLine("Writing file finished");
-                System.IO.StreamWriter output = new System.IO.StreamWriter(Path.Combine(Environment.CurrentDirectory, Path.GetFileNameWithoutExtension(Preprocessor.FilePath) + ".halp"));
-                output.Write(Preprocessor.PreprocessedFile + "\n");
-                output.Close();
+                Logger.TalkyLog("If started");
+                if (Preprocessor.onlySaveAfterPreprocess)
+                {
+                    Logger.TalkyLog("Writing file finished");
+                    System.IO.StreamWriter output = new System.IO.StreamWriter(Path.Combine(Environment.CurrentDirectory, Path.GetFileNameWithoutExtension(Preprocessor.FilePath) + ".halp"));
+                    output.Write(Preprocessor.PreprocessedFile + "\n");
+                    output.Close();
+                }
             }
         }
         public static void LoadFile(object sender, LoadFileArgs e)
         {
-            string realPath;
-            try
+            if (!e.Handled)
             {
-                if (Program.Talkative)
-                    Console.WriteLine("try catch started");
-                if (e.path.StartsWith(@"-\"))
+                string realPath;
+                try
                 {
-                    if (Program.Talkative)
-                        Console.WriteLine("Combine path started");
-                    realPath = Path.Combine(Environment.CurrentDirectory, e.path.Replace(@"-\", ""));
+                    Logger.TalkyLog("try catch started");
+                    if (e.path.StartsWith(@"-\"))
+                    {
+                        Logger.TalkyLog("Combine path started");
+                        realPath = Path.Combine(Environment.CurrentDirectory, e.path.Replace(@"-\", ""));
+                    }
+                    else
+                    {
+                        Logger.TalkyLog("Didn't need to combine path");
+                        realPath = e.path;
+                    }
+                    Logger.TalkyLog("Setting path");
+                    Preprocessor.FilePath = realPath;
+                    Console.WriteLine("Path set to " + realPath);
+                    if (System.IO.File.Exists(realPath))
+                    {
+                        Logger.TalkyLog("Readfile started");
+                        Preprocessor.ReadFile(realPath);
+                    }
+                    else
+                    {
+                        Exceptions.Exception(2);
+                    }
                 }
-                else
+                catch
                 {
-                    if (Program.Talkative)
-                        Console.WriteLine("Didn't need to combine path");
-                    realPath = e.path;
+                    Preprocessor.LoadFileFailed(null, new HandledEventArgs());
                 }
-                if (Program.Talkative)
-                    Console.WriteLine("Setting path");
-                Preprocessor.FilePath = realPath;
-                Console.WriteLine("Path set to " + realPath);
-                if (System.IO.File.Exists(realPath))
-                {
-                    if (Program.Talkative)
-                        Console.WriteLine("Readfile started");
-                    Preprocessor.ReadFile(realPath);
-                }
-                else
-                {
-                    Exceptions.Exception(2);
-                }
-            }
-            catch
-            {
-                OnLoadFileFailed(null, new HandledEventArgs());
             }
         }
         public static void ReadFile(object sender, ReadFileArgs e)
         {
-            if (Program.Talkative)
-                Console.WriteLine("If started");
-            if (!e.path.Contains(".halcyon"))
+            if (!e.Handled)
             {
-                Exceptions.Exception(5);
-            }
-            else
-            {
-                if (Program.Talkative)
-                    Console.WriteLine(e.path);
-                try
+                Logger.TalkyLog("Reading input file and checking contents....");
+                if (!e.path.Contains(".halcyon"))
                 {
-                    if (Program.Talkative)
-                        Console.WriteLine("Assigning Input File...");
-                    Preprocessor.InputFile = System.IO.File.ReadAllLines(e.path);
-
-                    Preprocessor.Preproccess(Preprocessor.InputFile);
+                    Exceptions.Exception(5);
                 }
-                catch (Exception ex)
+                else
                 {
-                    if (Program.Talkative)
-                        Console.WriteLine("Assigning apparently failed");
-                    Console.WriteLine(ex.Message);
-                    Console.WriteLine(ex.Source);
-                    Console.WriteLine(ex.InnerException);
-                    Console.WriteLine(ex.StackTrace);
-                    Exceptions.Exception(6);
-                    OnReadFileFailed(null, new HandledEventArgs());
+                    Logger.TalkyLog(e.path);
+                    try
+                    {
+                        Logger.TalkyLog("Assigning Input File to a variable...");
+                        Preprocessor.InputFile = System.IO.File.ReadAllLines(e.path);
+
+                        Preprocessor.Preproccess(Preprocessor.InputFile);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.TalkyLog("Assigning apparently failed");
+                        Console.WriteLine(ex.Message);
+                        Console.WriteLine(ex.Source);
+                        Console.WriteLine(ex.InnerException);
+                        Console.WriteLine(ex.StackTrace);
+                        Exceptions.Exception(6);
+                        Preprocessor.ReadFileFailed(null, new HandledEventArgs());
+                    }
                 }
             }
         }
+        #endregion
     }
 }

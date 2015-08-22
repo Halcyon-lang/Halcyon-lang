@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Halcyon.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,7 @@ namespace Halcyon
         public static void Command(string str) 
         {
             string[] args = str.Split(Convert.ToChar(" "));
+            Logger.Log("Halcyon: " + String.Join(" ", args));
             switch (args.Count())
             {
                 case 0:

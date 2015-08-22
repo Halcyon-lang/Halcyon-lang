@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Halcyon.CustomEventArgs
 {
-    public class LineEventArgs : EventArgs
+    public class LineEventArgs : HandledEventArgs
     {
         private string ln;
 
@@ -19,7 +20,7 @@ namespace Halcyon.CustomEventArgs
             get { return ln; }
         }
     }
-    public class LoadFileArgs : EventArgs
+    public class LoadFileArgs : HandledEventArgs
     {
         private string pth;
         public LoadFileArgs(string Path)
@@ -31,7 +32,7 @@ namespace Halcyon.CustomEventArgs
             get { return pth; }
         }
     }
-    public class ReadFileArgs : EventArgs
+    public class ReadFileArgs : HandledEventArgs
     {
         private string pth;
         public ReadFileArgs(string Path)
@@ -43,7 +44,7 @@ namespace Halcyon.CustomEventArgs
             get { return pth; }
         }
     }
-    public class PreprocessEventArgs : EventArgs
+    public class PreprocessEventArgs : HandledEventArgs
     {
         private string[] fl;
 
