@@ -11,7 +11,7 @@ namespace Halcyon
     {
         public static void checkArgs(string[] args)
         {
-            Logger.Log("Halcyon: " + String.Join(" ", args));
+            Logger.TalkyLog("Halcyon: " + String.Join(" ", args));
             switch (args[0])
             {
                 case "-compile":

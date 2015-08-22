@@ -157,30 +157,66 @@ namespace Halcyon
             string key = temp.Split(Convert.ToChar(" ")).First();
             Logger.TalkyLog(temp.Replace(" " + key + " ", ""));
             string value = temp.Replace(key + " ", "");
-            DefineList.Add(key, value);
+            if (!DefineList.ContainsKey(key))
+            {
+                DefineList.Add(key, value);
+            }
+            else if (DefineList.ContainsKey(key) && DefineList[key] == value)
+            {
+                return;
+            }
+            else
+            {
+                Exceptions.Exception(10);
+            }
+        }
+        public static void Define(string line, object secondCall)
+        {
+            Preprocessor.PreprocessedFile = Preprocessor.PreprocessedFile.Replace(line, "");
+            string temp = line.Replace("#define ", "");
+            if (Program.Talkative)
+            {
+                Utils.removeWhiteSpace(ref temp);
+                foreach (string str in temp.Split(' '))
+                {
+                    Console.WriteLine(str);
+                }
+            }
+            string key = temp.Split(Convert.ToChar(" ")).First();
+            Logger.TalkyLog(temp.Replace(" " + key + " ", ""));
+            string value = temp.Replace(key + " ", "");
+            if (!DefineList.ContainsKey(key))
+            {
+                DefineList.Add(key, value);
+            }
+            else if (DefineList.ContainsKey(key) && DefineList[key] == value)
+            {
+                return;
+            }
+            else
+            {
+                Exceptions.Exception(10);
+            }
         }
     }
 
     public static class PreprocessorEvents 
     {
-        #region Events
-
-        #endregion
         #region Listeners
         public static void Preprocessor_DefineOnPreprocessCompleted(object sender, EventArgs e)
         {
+            foreach (string line in Preprocessor.PreprocessedFile.ToString().Split('\n'))
+            {
+                if (line.Trim().StartsWith("#define"))
+                {
+                    Callbacks.Define(line, null);
+                }
+            }
             foreach (string key in Callbacks.DefineList.Keys)
             {
                 Logger.TalkyLog("Key: " + key);
                 Logger.TalkyLog("Replacing " + key + " with " + Callbacks.DefineList[key]);
                 Preprocessor.PreprocessedFile = Preprocessor.PreprocessedFile.Replace(key, Callbacks.DefineList[key]);
-            }
-            string temp = Preprocessor.PreprocessedFile.ToString();
-            if (Preprocessor.firstrun)
-            {
-                Logger.TalkyLog("Going second run in preprocessor.");
-                Preprocessor.PreprocessedFile.Clear();
-                Preprocessor.Preproccess(temp.Split(Convert.ToChar("\n")));
             }
         }
         public static void Preprocessor_OnNextLine(object sender, LineEventArgs e)
@@ -242,6 +278,7 @@ namespace Halcyon
                     System.IO.StreamWriter output = new System.IO.StreamWriter(Path.Combine(Environment.CurrentDirectory, Path.GetFileNameWithoutExtension(Preprocessor.FilePath) + ".halp"));
                     output.Write(Preprocessor.PreprocessedFile + "\n");
                     output.Close();
+                    Logger.SaveLog();
                 }
             }
         }

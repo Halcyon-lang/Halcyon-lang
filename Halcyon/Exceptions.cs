@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Halcyon.Errors
 {
-    class Exceptions
+    public static class Exceptions
     {
+        private static bool Initiated = false;
         public static Dictionary<int, string> list = new Dictionary<int, string>();
         public static void Add(int id, string text)
         {
@@ -26,16 +27,22 @@ namespace Halcyon.Errors
         }
         public static void initExceptions()
         {
-            Add(0, "Invalid number of command-line arguments");
-            Add(1, "Exception does not exist");
-            Add(2, "Target file not found");
-            Add(3, "Argument not found");
-            Add(4, "Command does not exist");
-            Add(5, "Unknown file type");
-            Add(6, "Unable to read file");
-            Add(7, "Include file not found");
-            Add(8, "Invalid directive syntax");
-            Add(9, "Unsupported header");
+            if (!Initiated)
+            {
+                Add(0, "Invalid number of command-line arguments");
+                Add(1, "Exception does not exist");
+                Add(2, "Target file not found");
+                Add(3, "Argument not found");
+                Add(4, "Command does not exist");
+                Add(5, "Unknown file type");
+                Add(6, "Unable to read file");
+                Add(7, "Include file not found");
+                Add(8, "Invalid directive syntax");
+                Add(9, "Unsupported header");
+                Add(10, "Each #define key has to be unique");
+                Add(11, "Log name cannot be empty or whitespace only.");
+                Initiated = true;
+            }
         }
     }
 }

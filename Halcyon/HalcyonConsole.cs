@@ -12,7 +12,6 @@ namespace Halcyon
         public static void Command(string str) 
         {
             string[] args = str.Split(Convert.ToChar(" "));
-            Logger.Log("Halcyon: " + String.Join(" ", args));
             switch (args.Count())
             {
                 case 0:
@@ -21,7 +20,7 @@ namespace Halcyon
                     HalcyonConsole.Command(Console.ReadLine());
                     break;
                 case 1:
-                    if (args[0] != "-compile" && args[0] != "-result" && args[0] != "-convert" && args[0] != "-info" && args[0] != "-help" && args[0] != "-talkative" && !string.IsNullOrEmpty(args[0])) Errors.Exceptions.Exception(4);
+                    if (args[0] != "-compile" && args[0] != "-result" && args[0] != "-convert" && args[0] != "-info" && args[0] != "-help" && args[0] != "-talkative" && args[0] != "-exit" && !string.IsNullOrEmpty(args[0])) Errors.Exceptions.Exception(4);
                     else if (string.IsNullOrEmpty(args[0]))
                     {
                         Console.Write("Halcyon:");
@@ -30,6 +29,7 @@ namespace Halcyon
                     else if (args[0] == "-info") Utils.printInfoHelp();
                     else if (args[0] == "-help") Utils.printHelp();
                     else if (args[0] == "-talkative") Utils.switchTalkative();
+                    else if (args[0] == "-exit") return;
                     else
                     {
                         Errors.Exceptions.Exception(0);

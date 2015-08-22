@@ -12,7 +12,8 @@ namespace Halcyon.Logging
     /// </summary>
     public static class Logger
     {
-        static StringBuilder LogContent = new StringBuilder("Halcyon Log: \n");
+        private static bool Initiated = false;
+        public static StringBuilder LogContent = new StringBuilder("Halcyon Log: \n");
 
         /// <summary>
         /// Logs input values into log file, which is saved upon end of the program. 
@@ -26,7 +27,7 @@ namespace Halcyon.Logging
                 LogContent.Append(arg);
             }
             Console.WriteLine();
-            LogContent.Append("\n");
+            LogContent.AppendLine();
         }
         public static void TalkyLog(params object[] args)
         {
@@ -42,7 +43,7 @@ namespace Halcyon.Logging
             {
                 Console.WriteLine();
             }
-            LogContent.Append("\n");
+            LogContent.AppendLine();
         }
 
         /// <summary>
@@ -57,17 +58,25 @@ namespace Halcyon.Logging
                 LogContent.Append(arg);
             }
         }
+        /// <summary>
+        /// Inits the logger
+        /// </summary>
         public static void Init()
         {
-            Log("Logger initialized");
-            Program.OnExit += ProgramExit;
+            if (!Initiated)
+            {
+                Log("Logger initialized.");
+                Program.OnExit += ProgramExit;
+            }
         }
-
+        
         public static void ProgramExit(object sender, System.ComponentModel.HandledEventArgs e)
         {
             SaveLog();
         }
-
+        /// <summary>
+        /// Saves what log got so far.
+        /// </summary>
         public static void SaveLog()
         {
             string path = Path.Combine(Environment.CurrentDirectory, "Halcyon.log");
@@ -81,6 +90,23 @@ namespace Halcyon.Logging
             output.Write("\n" + DateTime.Now.ToLongTimeString() + ":\n");
             output.Write(LogContent);
             output.Close();
+        }
+        public static void SaveLog(string filename)
+        {
+            if (!String.IsNullOrEmpty(filename) && !String.IsNullOrWhiteSpace(filename))
+            {
+                string path = Path.Combine(Environment.CurrentDirectory, filename);
+                string existingContents = "";
+                if (File.Exists(path))
+                {
+                    existingContents = File.ReadAllText(path);
+                }
+                StreamWriter output = new StreamWriter(path);
+                output.Write(existingContents);
+                output.Write("\n" + DateTime.Now.ToLongTimeString() + ":\n");
+                output.Write(LogContent);
+                output.Close();
+            }
         }
     }
 }
