@@ -170,7 +170,7 @@ namespace Halcyon
                     }
                     catch (Exception ex)
                     {
-                        // Broken plugins better stop the entire server init.
+                        // Broken extensions better stop the entire server init.
                         break;
                     }
                     Console.WriteLine(string.Format(

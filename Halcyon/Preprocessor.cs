@@ -13,6 +13,7 @@ namespace Halcyon
     public delegate void DirectiveCallback(string line);
     class Preprocessor
     {
+        #region declarations
         //Events
         public static event EventHandler<LoadFileArgs> OnLoadFile = delegate { };
         public static event EventHandler<ReadFileArgs> OnReadFile = delegate { };
@@ -29,6 +30,7 @@ namespace Halcyon
         public static List<Directive> DirectiveList = new List<Directive>();
         public static bool onlySaveAfterPreprocess = false;
         public static bool firstrun = true;
+        #endregion
         //Functions
         public static void LoadFile(string path) 
         {
@@ -44,6 +46,7 @@ namespace Halcyon
         public static void Preproccess(string[] file)
         {
             OnPreprocess(null, new PreprocessEventArgs(file));
+            firstrun = false;
             OnPreprocessCompleted(null, new HandledEventArgs());
             if (Program.Talkative)
                 Console.WriteLine("Firing OnReset");
@@ -142,9 +145,17 @@ namespace Halcyon
 
         internal static void Define(string line)
         {
-            string temp = line.Replace("#define", "");
+            string temp = line.Replace("#define ", "");
+            if (Program.Talkative)
+            {
+                foreach (string str in temp.Split(' '))
+                {
+                    Console.WriteLine(str);
+                }
+            }
             string key = temp.Split(Convert.ToChar(" ")).First();
-            string value = String.Join(" ", temp.Replace(key, "").Split(Convert.ToChar(" ")));
+            if (Program.Talkative) Console.WriteLine(temp.Replace(" " + key + " ", ""));
+            string value = temp.Replace(key + " ", "");
             DefineList.Add(key, value);
         }
     }
@@ -158,7 +169,8 @@ namespace Halcyon
         {
             foreach (string key in Callbacks.DefineList.Keys)
             {
-                
+                if (Program.Talkative) Console.WriteLine("Key: " + key);
+                if (Program.Talkative) Console.WriteLine("Replacing " + key + " with " + Callbacks.DefineList[key]);
                 Preprocessor.PreprocessedFile = Preprocessor.PreprocessedFile.Replace(key, Callbacks.DefineList[key]);
             }
             string temp = Preprocessor.PreprocessedFile.ToString();
@@ -172,7 +184,7 @@ namespace Halcyon
         }
         public static void Preprocessor_OnNextLine(object sender, LineEventArgs e)
         {
-            if (e.Line.StartsWith("#"))
+            if (e.Line.Trim().StartsWith("#"))
             {
                 foreach (Directive dir in Preprocessor.DirectiveList)
                 {
@@ -190,6 +202,7 @@ namespace Halcyon
         public static void Preprocessor_OnReset(object sender, EventArgs e)
         {
             Preprocessor.PreprocessedFile.Clear();
+            Callbacks.DefineList.Clear();
         }
         public static void InitDirectives(object sender, EventArgs e)
         {
@@ -283,12 +296,12 @@ namespace Halcyon
                 {
                     if (Program.Talkative)
                         Console.WriteLine("Assigning apparently failed");
-                    Exceptions.Exception(6);
-                    OnReadFileFailed(null, new HandledEventArgs());
                     Console.WriteLine(ex.Message);
                     Console.WriteLine(ex.Source);
                     Console.WriteLine(ex.InnerException);
                     Console.WriteLine(ex.StackTrace);
+                    Exceptions.Exception(6);
+                    OnReadFileFailed(null, new HandledEventArgs());
                 }
             }
         }
