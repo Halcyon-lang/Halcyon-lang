@@ -94,6 +94,7 @@
     <Compile Include="Compiler.cs" />
     <Compile Include="ContentManager.cs" />
     <Compile Include="Element.cs" />
+    <Compile Include="EventArgsCollection.cs" />
     <Compile Include="Exceptions.cs" />
     <Compile Include="ExtensionContainer.cs" />
     <Compile Include="ExtensionLoader.cs" />
