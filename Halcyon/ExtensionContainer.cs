@@ -17,7 +17,7 @@ using System;
 
 namespace Halcyon
 {
-    public class PluginContainer : IDisposable
+    public class ExtensionContainer : IDisposable
     {
         public HalcyonExtension Plugin
         {
@@ -36,12 +36,12 @@ namespace Halcyon
             set;
         }
 
-        public PluginContainer(HalcyonExtension plugin)
+        public ExtensionContainer(HalcyonExtension plugin)
             : this(plugin, true)
         {
         }
 
-        public PluginContainer(HalcyonExtension plugin, bool dll)
+        public ExtensionContainer(HalcyonExtension plugin, bool dll)
         {
             this.Plugin = plugin;
             this.Initialized = false;

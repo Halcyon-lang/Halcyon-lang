@@ -2,6 +2,7 @@
 using Halcyon.Errors;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -15,10 +16,10 @@ namespace Halcyon
         //Events
         public static event EventHandler<LoadFileArgs> OnLoadFile = delegate { };
         public static event EventHandler<ReadFileArgs> OnReadFile = delegate { };
-        public static event EventHandler OnStart = delegate { };
-        public static event EventHandler OnReset = delegate { };
-        public static event EventHandler OnPreprocessCompleted = delegate { };
-        public static event EventHandler OnInitDirectives = delegate { };
+        public static event EventHandler<HandledEventArgs> OnStart = delegate { };
+        public static event EventHandler<HandledEventArgs> OnReset = delegate { };
+        public static event EventHandler<HandledEventArgs> OnPreprocessCompleted = delegate { };
+        public static event EventHandler<HandledEventArgs> OnInitDirectives = delegate { };
         public static event EventHandler<LineEventArgs> OnNextLine = delegate { };
         public static event EventHandler<PreprocessEventArgs> OnPreprocess = delegate { };
         //fields
@@ -32,7 +33,7 @@ namespace Halcyon
         public static void LoadFile(string path) 
         {
             if (Program.Talkative) Console.WriteLine("Loadfile started");
-            OnStart(null, EventArgs.Empty);
+            OnStart(null, new HandledEventArgs());
             OnLoadFile(null, new LoadFileArgs(path));
         }
         public static void ReadFile(string path)
@@ -43,16 +44,16 @@ namespace Halcyon
         public static void Preproccess(string[] file)
         {
             OnPreprocess(null, new PreprocessEventArgs(file));
-            OnPreprocessCompleted(null, EventArgs.Empty);
+            OnPreprocessCompleted(null, new HandledEventArgs());
             if (Program.Talkative)
                 Console.WriteLine("Firing OnReset");
-            OnReset(null, EventArgs.Empty);
+            OnReset(null, new HandledEventArgs());
             Console.WriteLine("Task completed. \n");
         }
 
         public static void initDirectives()
         {
-            OnInitDirectives(null, EventArgs.Empty);
+            OnInitDirectives(null, new HandledEventArgs());
         }
 
         public static void initCommonPreprocessorEvents()
@@ -151,8 +152,8 @@ namespace Halcyon
     public static class PreprocessorEvents 
     {
         public static event EventHandler<LineEventArgs> OnNextLine;
-        public static event EventHandler OnLoadFileFailed;
-        public static event EventHandler OnReadFileFailed;
+        public static event EventHandler<HandledEventArgs> OnLoadFileFailed;
+        public static event EventHandler<HandledEventArgs> OnReadFileFailed;
         public static void Preprocessor_DefineOnPreprocessCompleted(object sender, EventArgs e)
         {
             foreach (string key in Callbacks.DefineList.Keys)
@@ -214,7 +215,7 @@ namespace Halcyon
             {
                 if (Program.Talkative)
                     Console.WriteLine("Writing file finished");
-                System.IO.StreamWriter output = new System.IO.StreamWriter(Path.Combine(Environment.CurrentDirectory, Path.GetFileNameWithoutExtension(FilePath) + ".halp"));
+                System.IO.StreamWriter output = new System.IO.StreamWriter(Path.Combine(Environment.CurrentDirectory, Path.GetFileNameWithoutExtension(Preprocessor.FilePath) + ".halp"));
                 output.Write(Preprocessor.PreprocessedFile + "\n");
                 output.Close();
             }
@@ -255,10 +256,9 @@ namespace Halcyon
             }
             catch
             {
-                OnLoadFileFailed(null, EventArgs.Empty);
+                OnLoadFileFailed(null, new HandledEventArgs());
             }
         }
-
         public static void ReadFile(object sender, ReadFileArgs e)
         {
             if (Program.Talkative)
@@ -284,7 +284,7 @@ namespace Halcyon
                     if (Program.Talkative)
                         Console.WriteLine("Assigning apparently failed");
                     Exceptions.Exception(6);
-                    OnReadFileFailed(null, EventArgs.Empty);
+                    OnReadFileFailed(null, new HandledEventArgs());
                     Console.WriteLine(ex.Message);
                     Console.WriteLine(ex.Source);
                     Console.WriteLine(ex.InnerException);

@@ -30,27 +30,30 @@ namespace Halcyon
     // TODO: Maybe re-implement a reload functionality for plugins, but you'll have to load all assemblies into their own
     // AppDomain in order to unload them again later. Beware that having them in their own AppDomain might cause threading 
     // problems as usual locks will only work in their own AppDomains.
-    public static class PluginLoader
+    public static class ExtensionLoader
     {
         public const string PluginsPath = "extensions";
         private static readonly Dictionary<string, Assembly> loadedAssemblies = new Dictionary<string, Assembly>();
-        private static readonly List<PluginContainer> plugins = new List<PluginContainer>();
+        private static readonly List<ExtensionContainer> plugins = new List<ExtensionContainer>();
         public static string ServerPluginsDirectoryPath
         {
             get;
             private set;
         }
-        public static ReadOnlyCollection<PluginContainer> Plugins
+        public static ReadOnlyCollection<ExtensionContainer> Plugins
         {
-            get { return new ReadOnlyCollection<PluginContainer>(plugins); }
+            get { return new ReadOnlyCollection<ExtensionContainer>(plugins); }
         }
 
-        static PluginLoader()
+        static ExtensionLoader()
         {
         }
 
         internal static void Initialize()
         {
+            Console.WriteLine(
+                string.Format("Halcyon v{0} started.", ApiVersion.Major.ToString() + "." + ApiVersion.Minor.ToString(), TraceLevel.Verbose));
+            ServerPluginsDirectoryPath = Path.Combine(Environment.CurrentDirectory, PluginsPath);
             if (!Directory.Exists(ServerPluginsDirectoryPath))
             {
                 string lcDirectoryPath =
@@ -124,7 +127,7 @@ namespace Halcyon
                         if (apiVersion.Major != ApiVersion.Major || apiVersion.Minor != ApiVersion.Minor)
                         {
                             Console.WriteLine(
-                                string.Format("Extension \"{0}\" is designed for a different Server API version ({1}) and was ignored.",
+                                string.Format("Extension \"{0}\" is designed for a different Halcyon API version ({1}) and was ignored.",
                                 type.FullName, apiVersion.ToString(2)), TraceLevel.Warning);
                             continue;
                         }
@@ -137,9 +140,9 @@ namespace Halcyon
                         catch (Exception ex)
                         {
                             // Broken plugins better stop the entire server init.
-                            Console.WriteLine(String.Format("Could not create an instance of plugin class \"{0}\""), type.FullName + "\n" + ex);
+                            Console.WriteLine(String.Format("Could not create an instance of extension class \"{0}\""), type.FullName + "\n" + ex);
                         }
-                        plugins.Add(new PluginContainer(pluginInstance));
+                        plugins.Add(new ExtensionContainer(pluginInstance));
                     }
                 }
                 catch (Exception ex)
@@ -148,19 +151,18 @@ namespace Halcyon
                     Console.WriteLine(string.Format("Failed to load assembly \"{0}\".", fileInfo.Name) + ex);
                 }
             }
-            IOrderedEnumerable<PluginContainer> orderedPluginSelector =
+            IOrderedEnumerable<ExtensionContainer> orderedPluginSelector =
                 from x in Plugins
                 orderby x.Plugin.Order, x.Plugin.Name
                 select x;
             try
             {
                 int count = 0;
-                foreach (PluginContainer current in orderedPluginSelector)
+                foreach (ExtensionContainer current in orderedPluginSelector)
                 {
                     count++;
                 }
-                Console.WriteLine(count);
-                foreach (PluginContainer current in orderedPluginSelector)
+                foreach (ExtensionContainer current in orderedPluginSelector)
                 {
                     try
                     {
@@ -172,7 +174,7 @@ namespace Halcyon
                         break;
                     }
                     Console.WriteLine(string.Format(
-                        "Plugin {0} v{1} (by {2}) initiated.", current.Plugin.Name, current.Plugin.Version, current.Plugin.Author),
+                        "Extension {0} v{1} (by {2}) initiated.", current.Plugin.Name, current.Plugin.Version, current.Plugin.Author),
                         TraceLevel.Info);
                 }
             }
@@ -183,24 +185,24 @@ namespace Halcyon
 
         internal static void UnloadPlugins()
         {
-            foreach (PluginContainer pluginContainer in plugins)
+            foreach (ExtensionContainer pluginContainer in plugins)
             {
                 try
                 {
                     pluginContainer.DeInitialize();
                     Console.WriteLine(string.Format(
-                        "Plugin \"{0}\" was deinitialized", pluginContainer.Plugin.Name),
+                        "Extension \"{0}\" was deinitialized", pluginContainer.Plugin.Name),
                         TraceLevel.Error);
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(string.Format(
-                        "Plugin \"{0}\" has thrown an exception while being deinitialized:\n{1}", pluginContainer.Plugin.Name, ex),
+                        "Extension \"{0}\" has thrown an exception while being deinitialized:\n{1}", pluginContainer.Plugin.Name, ex),
                         TraceLevel.Error);
                 }
             }
 
-            foreach (PluginContainer pluginContainer in plugins)
+            foreach (ExtensionContainer pluginContainer in plugins)
             {
 
 
@@ -211,7 +213,7 @@ namespace Halcyon
                 catch (Exception ex)
                 {
                     Console.WriteLine(string.Format(
-                        "Plugin \"{0}\" has thrown an exception while being disposed:\n{1}", pluginContainer.Plugin.Name, ex),
+                        "Extension \"{0}\" has thrown an exception while being disposed:\n{1}", pluginContainer.Plugin.Name, ex),
                         TraceLevel.Error);
                 }
 

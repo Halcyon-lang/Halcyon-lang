@@ -13,6 +13,7 @@ namespace Halcyon
         static void Main(string[] args)
         {
             Console.Title = "Halcyon Compiler";
+            ExtensionLoader.Initialize();
             Errors.Exceptions.initExceptions();
             Preprocessor.initCommonPreprocessorEvents();
             Preprocessor.initDirectives();

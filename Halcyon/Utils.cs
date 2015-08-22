@@ -12,9 +12,10 @@ namespace Halcyon
     {
         //Why it no work, jeez
         /*[DllImport(@"Utils.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void printHelp();
+        public static unsafe extern void printHelp();
         [DllImport(@"Utils.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void printInfoHelp();*/
+        public static unsafe extern void printInfoHelp();*/
+        
         public static void printHelp()
         {
             Console.WriteLine("Halcyon compiler help:");
