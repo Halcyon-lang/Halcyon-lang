@@ -36,6 +36,7 @@ namespace Halcyon
         public static string FilePath = "";
         public static List<Directive> DirectiveList = new List<Directive>();
         public static bool onlySaveAfterPreprocess = false;
+        private static bool EventsInitialized = false;
         public static bool firstrun = true;
         #endregion
         //Functions
@@ -67,14 +68,18 @@ namespace Halcyon
 
         public static void initCommonPreprocessorEvents()
         {
-            OnPreprocessCompleted += PreprocessorEvents.Preprocessor_DefineOnPreprocessCompleted;
-            OnPreprocessCompleted += PreprocessorEvents.Preprocessor_OnPreprocessCompleted;
-            Preprocessor.OnNextLine += PreprocessorEvents.Preprocessor_OnNextLine;
-            OnReset += PreprocessorEvents.Preprocessor_OnReset;
-            OnInitDirectives += PreprocessorEvents.InitDirectives;
-            OnPreprocess += PreprocessorEvents.Preprocess;
-            OnLoadFile += PreprocessorEvents.LoadFile;
-            OnReadFile += PreprocessorEvents.ReadFile;
+            if (!EventsInitialized)
+            {
+                OnPreprocessCompleted += PreprocessorEvents.Preprocessor_DefineOnPreprocessCompleted;
+                OnPreprocessCompleted += PreprocessorEvents.Preprocessor_OnPreprocessCompleted;
+                Preprocessor.OnNextLine += PreprocessorEvents.Preprocessor_OnNextLine;
+                OnReset += PreprocessorEvents.Preprocessor_OnReset;
+                OnInitDirectives += PreprocessorEvents.InitDirectives;
+                OnPreprocess += PreprocessorEvents.Preprocess;
+                OnLoadFile += PreprocessorEvents.LoadFile;
+                OnReadFile += PreprocessorEvents.ReadFile;
+                EventsInitialized = true;
+            }
         }
 
         public static void Add(string name, DirectiveCallback callback)
@@ -97,7 +102,7 @@ namespace Halcyon
 
     public static class Callbacks
     {
-        internal static Dictionary<string, string> DefineList = new Dictionary<string, string>();
+        public static Dictionary<string, string> DefineList = new Dictionary<string, string>();
         internal static void Include(string line)
         {
             string temp = line;
@@ -144,7 +149,7 @@ namespace Halcyon
                 Preprocessor.PreprocessedFile.Append(file.Replace("#Halcyon", ""));
             }
         }
-        internal static void Define(string line)
+        public static void Define(string line)
         {
             string temp = line.Replace("#define ", "");
             if (Program.Talkative)
@@ -271,10 +276,10 @@ namespace Halcyon
         {
             if (!e.Handled)
             {
-                Logger.TalkyLog("If started");
+                Logger.TalkyLog("Post-preprocessor actions started");
                 if (Preprocessor.onlySaveAfterPreprocess)
                 {
-                    Logger.TalkyLog("Writing file finished");
+                    Logger.TalkyLog("Writing file " + Path.GetFileNameWithoutExtension(Preprocessor.FilePath) + ".halp");
                     System.IO.StreamWriter output = new System.IO.StreamWriter(Path.Combine(Environment.CurrentDirectory, Path.GetFileNameWithoutExtension(Preprocessor.FilePath) + ".halp"));
                     output.Write(Preprocessor.PreprocessedFile + "\n");
                     output.Close();
