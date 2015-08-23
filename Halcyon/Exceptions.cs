@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Halcyon.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,7 +19,7 @@ namespace Halcyon.Errors
         {
             if (list.ContainsKey(id))
             {
-                Console.WriteLine(string.Format("Exception {0}: {1}", id.ToString(), list[id]));
+                Logger.Log(string.Format("Exception {0}: {1}", id.ToString(), list[id]));
             }
             else
             {
@@ -41,6 +42,8 @@ namespace Halcyon.Errors
                 Add(9, "Unsupported header");
                 Add(10, "Each #define key has to be unique");
                 Add(11, "Log name cannot be empty or whitespace only.");
+                Add(12, "Duplicit declarations in config.");
+                Add(13, "Getting key failed");
                 Initiated = true;
             }
         }
