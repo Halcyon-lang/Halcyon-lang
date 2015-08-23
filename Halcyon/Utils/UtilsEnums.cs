@@ -90,4 +90,17 @@ namespace Halcyon
         NotInstantiableType,
         NoValidConversion
     }
+    public enum TryUpdateKeyResult
+    {
+        Success,
+        NewKey,
+        Failed,
+        Unchanged
+    }
+    public enum TryGetValueResult
+    {
+        Success,
+        Default,
+        Failed
+    }
 }
