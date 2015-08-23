@@ -24,6 +24,7 @@ using System.Reflection;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Halcyon;
+using Halcyon.Logging;
 
 namespace Halcyon
 {
@@ -51,7 +52,7 @@ namespace Halcyon
 
         internal static void Initialize()
         {
-            Console.WriteLine(
+            Logger.Log(
                 string.Format("Halcyon v{0} started.", ApiVersion.Major.ToString() + "." + ApiVersion.Minor.ToString(), TraceLevel.Verbose));
             ServerPluginsDirectoryPath = Path.Combine(Environment.CurrentDirectory, PluginsPath);
             if (!Directory.Exists(ServerPluginsDirectoryPath))
@@ -126,7 +127,7 @@ namespace Halcyon
                         Version apiVersion = apiVersionAttribute.ApiVersion;
                         if (apiVersion.Major != ApiVersion.Major || apiVersion.Minor != ApiVersion.Minor)
                         {
-                            Console.WriteLine(
+                            Logger.Log(
                                 string.Format("Extension \"{0}\" is designed for a different Halcyon API version ({1}) and was ignored.",
                                 type.FullName, apiVersion.ToString(2)), TraceLevel.Warning);
                             continue;
@@ -140,7 +141,7 @@ namespace Halcyon
                         catch (Exception ex)
                         {
                             // Broken plugins better stop the entire server init.
-                            Console.WriteLine(String.Format("Could not create an instance of extension class \"{0}\""), type.FullName + "\n" + ex);
+                            Logger.Log(String.Format("Could not create an instance of extension class \"{0}\""), type.FullName + "\n" + ex);
                         }
                         plugins.Add(new ExtensionContainer(pluginInstance));
                     }
@@ -148,7 +149,7 @@ namespace Halcyon
                 catch (Exception ex)
                 {
                     // Broken assemblies / plugins better stop the entire server init.
-                    Console.WriteLine(string.Format("Failed to load assembly \"{0}\".", fileInfo.Name) + ex);
+                    Logger.Log(string.Format("Failed to load assembly \"{0}\".", fileInfo.Name) + ex);
                 }
             }
             IOrderedEnumerable<ExtensionContainer> orderedPluginSelector =
@@ -170,10 +171,14 @@ namespace Halcyon
                     }
                     catch (Exception ex)
                     {
+                        Logger.LogNoTrace(ex.Message);
+                        Logger.LogNoTrace(ex.Source);
+                        Logger.LogNoTrace(ex.HelpLink);
+                        Logger.LogNoTrace(ex.StackTrace);
                         // Broken extensions better stop the entire server init.
                         break;
                     }
-                    Console.WriteLine(string.Format(
+                    Logger.Log(string.Format(
                         "Extension {0} v{1} (by {2}) initiated.", current.Plugin.Name, current.Plugin.Version, current.Plugin.Author),
                         TraceLevel.Info);
                 }
@@ -190,13 +195,13 @@ namespace Halcyon
                 try
                 {
                     pluginContainer.DeInitialize();
-                    Console.WriteLine(string.Format(
+                    Logger.Log(string.Format(
                         "Extension \"{0}\" was deinitialized", pluginContainer.Plugin.Name),
                         TraceLevel.Error);
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(string.Format(
+                    Logger.Log(string.Format(
                         "Extension \"{0}\" has thrown an exception while being deinitialized:\n{1}", pluginContainer.Plugin.Name, ex),
                         TraceLevel.Error);
                 }
@@ -212,7 +217,7 @@ namespace Halcyon
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(string.Format(
+                    Logger.Log(string.Format(
                         "Extension \"{0}\" has thrown an exception while being disposed:\n{1}", pluginContainer.Plugin.Name, ex),
                         TraceLevel.Error);
                 }
@@ -240,7 +245,7 @@ namespace Halcyon
             }
             catch (Exception ex)
             {
-                Console.WriteLine(
+                Logger.Log(
                     string.Format("Error on resolving assembly \"{0}.dll\":\n{1}", fileName, ex),
                     TraceLevel.Error);
             }
