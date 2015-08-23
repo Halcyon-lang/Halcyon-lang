@@ -8,6 +8,7 @@ namespace Halcyon.Utils
 {
     public static class MathUtils
     {
+        public static Random Random = new Random();
         public static int IntLength(ulong i)
         {
             if (i < 10000000000uL)
