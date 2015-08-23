@@ -16,14 +16,8 @@ using System.Data.SqlTypes;
 namespace Halcyon
 {
     public delegate TResult MethodCall<T, TResult>(T target, params object[] args);
-    class Utils
-    {
-        //Why it no work, jeez
-        /*[DllImport(@"Utils.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static unsafe extern void printHelp();
-        [DllImport(@"Utils.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static unsafe extern void printInfoHelp();*/
-        
+    public class Utils
+    {   
         /// <summary>
         /// Prints help
         /// </summary>
