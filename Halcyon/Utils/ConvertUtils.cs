@@ -735,6 +735,56 @@ namespace Halcyon.Utils
             }
             return false;
         }
+        public static ParseResult Int16TryParse(char[] chars, int start, int length, out short value)
+        {
+            value = 0;
+            if (length == 0)
+            {
+                return ParseResult.Invalid;
+            }
+            bool flag = chars[start] == '-';
+            if (flag)
+            {
+                if (length == 1)
+                {
+                    return ParseResult.Invalid;
+                }
+                start++;
+                length--;
+            }
+            int num = start + length;
+            for (int i = start; i < num; i++)
+            {
+                short num2 = (short)(chars[i] - '0');
+                if (num2 < 0 || num2 > 9)
+                {
+                    return ParseResult.Invalid;
+                }
+                short num3 = (short)(10 * value - num2);
+                if (num3 > value)
+                {
+                    for (i++; i < num; i++)
+                    {
+                        num2 = (short)(chars[i] - '0');
+                        if (num2 < 0 || num2 > 9)
+                        {
+                            return ParseResult.Invalid;
+                        }
+                    }
+                    return ParseResult.Overflow;
+                }
+                value = num3;
+            }
+            if (!flag)
+            {
+                if (value == -32768)
+                {
+                    return ParseResult.Overflow;
+                }
+                value = (short)(-value);
+            }
+            return ParseResult.Success;
+        }
         public static ParseResult Int32TryParse(char[] chars, int start, int length, out int value)
         {
             value = 0;

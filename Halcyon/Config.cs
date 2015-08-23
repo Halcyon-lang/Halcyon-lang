@@ -23,12 +23,24 @@ namespace Halcyon
             {
                 string key = line.Trim().Split('=').First();
                 string unprocessedValue = line.Trim().Split('=')[1].Substring(1);
-
+                object value = new object();
+                int holder = new int();
+                short shortholder = new short();
                 switch (unprocessedValue)
                 {
                     case "true":
                     case "false":
-                        ConvertUtils.ToBool(unprocessedValue);
+                        value = ConvertUtils.Convert(unprocessedValue, new System.Globalization.CultureInfo(1), typeof(bool));
+                        break;
+                    default:
+                        if (ConvertUtils.Int16TryParse(unprocessedValue.ToCharArray(), 0, unprocessedValue.Count(), out shortholder) == ParseResult.Success)
+                        {
+
+                        }
+                        if(ConvertUtils.Int32TryParse(unprocessedValue.ToCharArray(), 0, unprocessedValue.Count(), out holder) == ParseResult.Success) 
+                        {
+                            value = (object)holder;
+                        }
                         break;
                 }
             }
