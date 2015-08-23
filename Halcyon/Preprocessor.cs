@@ -1,6 +1,7 @@
 ﻿using Halcyon.CustomEventArgs;
 using Halcyon.Errors;
 using Halcyon.Logging;
+using Halcyon.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -181,7 +182,7 @@ namespace Halcyon
             string temp = line.Replace("#define ", "");
             if (Program.Talkative)
             {
-                Utils.removeWhiteSpace(ref temp);
+                GeneralUtils.removeWhiteSpace(ref temp);
                 foreach (string str in temp.Split(' '))
                 {
                     Console.WriteLine(str);

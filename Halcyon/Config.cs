@@ -1,4 +1,5 @@
 ﻿using Halcyon;
+using Halcyon.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -27,17 +28,17 @@ namespace Halcyon
                 {
                     case "true":
                     case "false":
-                        //ConvertUtils.
+                        ConvertUtils.ToBool(unprocessedValue);
                         break;
                 }
             }
         }
 
-        public void Save()
+        public static void Save()
         {
             using (StreamWriter sw = new StreamWriter(File.Open(Path.Combine(Environment.CurrentDirectory, @"\Halcyon.cfg"), FileMode.Create)))
             {
-                sw.Write(Json.Serialize(this));
+            
             }
         }
     }

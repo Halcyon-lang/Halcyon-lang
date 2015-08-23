@@ -1,4 +1,5 @@
 ﻿using Halcyon.Logging;
+using Halcyon.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,15 +27,15 @@ namespace Halcyon
                         Console.Write("Halcyon:");
                         HalcyonConsole.Command(Console.ReadLine());
                     }
-                    else if (args[0] == "-info") Utils.printInfoHelp();
-                    else if (args[0] == "-help") Utils.printHelp();
-                    else if (args[0] == "-talkative") Utils.switchTalkative();
+                    else if (args[0] == "-info") GeneralUtils.printInfoHelp();
+                    else if (args[0] == "-help") GeneralUtils.printHelp();
+                    else if (args[0] == "-talkative") GeneralUtils.switchTalkative();
                     else if (args[0] == "-exit") return;
                     else
                     {
                         Errors.Exceptions.Exception(0);
                         Console.WriteLine();
-                        Utils.printHelp();
+                        GeneralUtils.printHelp();
                     }
                     Console.Write("Halcyon:");
                     HalcyonConsole.Command(Console.ReadLine());

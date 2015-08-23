@@ -863,5 +863,10 @@ namespace Halcyon.Utils
             }
             return null;
         }
+
+        public static void ToBool(string unprocessedValue)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

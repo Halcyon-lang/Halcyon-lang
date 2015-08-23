@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Halcyon.Utils;
 
 namespace Halcyon
 {
@@ -23,7 +24,7 @@ namespace Halcyon
                     HalcyonConsole.Command(Console.ReadLine());
                     break;
                 case "-help":
-                    Utils.printHelp();
+                    GeneralUtils.printHelp();
                     Console.Write("Halcyon:");
                     HalcyonConsole.Command(Console.ReadLine());
                     break;
@@ -36,7 +37,7 @@ namespace Halcyon
                     HalcyonConsole.Command(Console.ReadLine());
                     break;
                 case "-talkative":
-                    Utils.switchTalkative();
+                    GeneralUtils.switchTalkative();
                     Console.Write("Halcyon:");
                     Console.Title = "Halcyon Compiler";
                     HalcyonConsole.Command(Console.ReadLine());
@@ -56,7 +57,7 @@ namespace Halcyon
                     HalcyonConsole.Command(Console.ReadLine());
                     break;
                 case "-info":
-                    Utils.giveInfo(args[1]);
+                    GeneralUtils.giveInfo(args[1]);
                     Console.Write("Halcyon:");
                     Console.Title = "Halcyon Compiler";
                     HalcyonConsole.Command(Console.ReadLine());

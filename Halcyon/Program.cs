@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Halcyon.Utils;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -26,12 +27,12 @@ namespace Halcyon
             switch (args.Count())
             {
                 case 0:
-                    Utils.printHelp();
+                    GeneralUtils.printHelp();
                     Console.Write("Halcyon:");
                     HalcyonConsole.Command(Console.ReadLine());
                     break;
                 case 1:
-                    Utils.printHelp();
+                    GeneralUtils.printHelp();
                     Console.Write("Halcyon:");
                     HalcyonConsole.Command(Console.ReadLine());
                     break;
@@ -39,7 +40,7 @@ namespace Halcyon
                     Compiler.checkArgs(args);
                     break;
                 default:
-                    Utils.printHelp();
+                    GeneralUtils.printHelp();
                     Console.Write("Halcyon:");
                     HalcyonConsole.Command(Console.ReadLine());
                     break;
