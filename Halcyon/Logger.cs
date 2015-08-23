@@ -29,6 +29,10 @@ namespace Halcyon.Logging
             Console.WriteLine();
             LogContent.AppendLine();
         }
+        /// <summary>
+        /// Log showing output to console only when Talkative mode is enabled.
+        /// </summary>
+        /// <param name="args"></param>
         public static void TalkyLog(params object[] args)
         {
             foreach (object arg in args)
@@ -57,6 +61,18 @@ namespace Halcyon.Logging
                 Console.Write(arg);
                 LogContent.Append(arg);
             }
+        }
+        /// <summary>
+        /// Logs without telling anyone anything.
+        /// </summary>
+        /// <param name="args"></param>
+        public static void LogNoTrace(params object[] args)
+        {
+            foreach (object arg in args)
+            {
+                LogContent.Append(arg);
+            }
+            LogContent.AppendLine();
         }
         /// <summary>
         /// Inits the logger
@@ -91,6 +107,10 @@ namespace Halcyon.Logging
             output.Write(LogContent);
             output.Close();
         }
+        /// <summary>
+        /// Saves log to a file with custom filename.
+        /// </summary>
+        /// <param name="filename"></param>
         public static void SaveLog(string filename)
         {
             if (!String.IsNullOrEmpty(filename) && !String.IsNullOrWhiteSpace(filename))

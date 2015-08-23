@@ -17,6 +17,7 @@ namespace Halcyon
         {
             Console.Title = "Halcyon Compiler";
             ExtensionLoader.Initialize();
+            Config.Initialize();
             Errors.Exceptions.initExceptions();
             Preprocessor.initCommonPreprocessorEvents();
             Preprocessor.initDirectives();
@@ -46,6 +47,11 @@ namespace Halcyon
                     break;
             }
             OnExit(null, new HandledEventArgs());
+        }
+
+        public static void Halt()
+        {
+            Environment.Exit(1);
         }
     }
 }
