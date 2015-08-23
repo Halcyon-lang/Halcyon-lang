@@ -95,7 +95,8 @@
     <Compile Include="Compiler.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="ContentManager.cs" />
-    <Compile Include="DateTimeParser.cs" />
+    <Compile Include="Utils\DateTimeParser.cs" />
+    <Compile Include="Utils\DateTimeUtils.cs" />
     <Compile Include="Element.cs" />
     <Compile Include="EventArgsCollection.cs" />
     <Compile Include="Exceptions.cs" />
@@ -104,21 +105,25 @@
     <Compile Include="HalcyonConsole.cs" />
     <Compile Include="HalcyonExtension.cs" />
     <Compile Include="Logger.cs" />
-    <Compile Include="Misc.cs" />
+    <Compile Include="Utils\Misc.cs" />
     <Compile Include="Preprocessor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReflectionUtils.cs" />
-    <Compile Include="ThreadSaveStore.cs" />
-    <Compile Include="Utils.cs" />
-    <Compile Include="UtilsEnums.cs" />
+    <Compile Include="Utils\ReflectionUtils.cs" />
+    <Compile Include="Utils\ThreadSaveStore.cs" />
+    <Compile Include="Utils\UtilsEnums.cs" />
+    <Compile Include="Utils\ConvertUtils.cs" />
+    <Compile Include="Utils\GeneralUtils.cs" />
+    <Compile Include="Utils\MathUtils.cs" />
+    <Compile Include="Utils\MiscellaneousUtils.cs" />
+    <Compile Include="Utils\StringUtils.cs" />
+    <Compile Include="Utils\TResult.cs" />
+    <Compile Include="Utils\ValidationUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Minimal Tools\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
