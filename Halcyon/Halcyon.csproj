@@ -82,6 +82,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -92,7 +93,9 @@
     <Compile Include="ApiVersion.cs" />
     <Compile Include="ApiVersionAttribute.cs" />
     <Compile Include="Compiler.cs" />
+    <Compile Include="Config.cs" />
     <Compile Include="ContentManager.cs" />
+    <Compile Include="DateTimeParser.cs" />
     <Compile Include="Element.cs" />
     <Compile Include="EventArgsCollection.cs" />
     <Compile Include="Exceptions.cs" />
@@ -101,13 +104,20 @@
     <Compile Include="HalcyonConsole.cs" />
     <Compile Include="HalcyonExtension.cs" />
     <Compile Include="Logger.cs" />
+    <Compile Include="Misc.cs" />
     <Compile Include="Preprocessor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReflectionUtils.cs" />
+    <Compile Include="ThreadSaveStore.cs" />
     <Compile Include="Utils.cs" />
+    <Compile Include="UtilsEnums.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Minimal Tools\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
