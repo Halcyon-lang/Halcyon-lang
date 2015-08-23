@@ -220,9 +220,12 @@ namespace Halcyon
             }
             foreach (string key in Callbacks.DefineList.Keys)
             {
-                Logger.TalkyLog("Key: " + key);
-                Logger.TalkyLog("Replacing " + key + " with " + Callbacks.DefineList[key]);
-                Preprocessor.PreprocessedFile = Preprocessor.PreprocessedFile.Replace(key, Callbacks.DefineList[key]);
+                if (!String.IsNullOrEmpty(key))
+                {
+                    Logger.TalkyLog("Key: " + key);
+                    Logger.TalkyLog("Replacing " + key + " with " + Callbacks.DefineList[key]);
+                    Preprocessor.PreprocessedFile = Preprocessor.PreprocessedFile.Replace(key, Callbacks.DefineList[key]);
+                }
             }
         }
         public static void Preprocessor_OnNextLine(object sender, LineEventArgs e)

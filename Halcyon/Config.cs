@@ -118,73 +118,80 @@ namespace Halcyon
         /// </summary>
         public static void Load()
         {
-            StreamReader sr = new StreamReader(File.Open(Path.Combine(Environment.CurrentDirectory, @"\Halcyon.cfg"), FileMode.Open));
+            StreamReader sr = new StreamReader(File.Open(Path.Combine(Environment.CurrentDirectory, @"Halcyon.cfg"), FileMode.Open));
             string content = sr.ReadToEnd();
             foreach (string line in content.Split('\n'))
             {
-                string key = line.Trim().Split('=').First();
-                string unprocessedValue = line.Replace(key, "").Replace(" = ", "");
-                object value = new object();
-                int holder = new int();
-                short shortholder = new short();
-                long longholder = new long();
-                switch (unprocessedValue)
+                if (!String.IsNullOrEmpty(line) && line.Contains(" = "))
                 {
-                    case "true":
-                    case "false":
-                        value = ConvertUtils.Convert(unprocessedValue, new System.Globalization.CultureInfo(1), typeof(bool));
-                        break;
-                    default:
-                        if (ConvertUtils.Int16TryParse(unprocessedValue.ToCharArray(), 0, unprocessedValue.Count(), out shortholder) == ParseResult.Success)
-                        {
-                            value = (object)shortholder;
-                        }
-                        else if (ConvertUtils.Int32TryParse(unprocessedValue.ToCharArray(), 0, unprocessedValue.Count(), out holder) == ParseResult.Success)
-                        {
-                            value = (object)holder;
-                        }
-                        else if (ConvertUtils.Int64TryParse(unprocessedValue.ToCharArray(), 0, unprocessedValue.Count(), out longholder) == ParseResult.Success)
-                        {
-                            value = (object)longholder;
-                        }
-                        else if (unprocessedValue.StartsWith("\""))
-                        {
-                            int check = MathUtils.Random.Next();
-                            unprocessedValue = unprocessedValue.Replace("\\\"", "STRING_PLACEHOLDER" + check.ToString());
-                            unprocessedValue = unprocessedValue.Replace("\"", "");
-                            unprocessedValue = unprocessedValue.Replace("STRING_PLACEHOLDER" + check.ToString(), "\\\"");
-                            value = (object)unprocessedValue;
-                        }
-                        //This the least safe way
-                        else
-                        {
-                            value = (object)unprocessedValue;
-                        }
-                        break;
-                }
-                if (!valueStash.ContainsKey(key))
-                {
-                    valueStash.Add(key, value);
-                }
-                else
-                {
-                    Exceptions.Exception(11);
-                    Logger.TalkyLog("at " + line);
+                    string key = line.Trim().Split('=').First();
+                    key = key.Substring(0, key.Length - 1);
+                    string unprocessedValue = line.Replace(key, "").Replace(" = ", "");
+                    unprocessedValue = unprocessedValue.Substring(0, unprocessedValue.Length - 1);
+                    object value = new object();
+                    int holder = new int();
+                    short shortholder = new short();
+                    long longholder = new long();
+                    switch (unprocessedValue)
+                    {
+                        case "true":
+                        case "false":
+                            value = ConvertUtils.Convert(unprocessedValue, new System.Globalization.CultureInfo(1), typeof(bool));
+                            break;
+                        default:
+                            if (ConvertUtils.Int16TryParse(unprocessedValue.ToCharArray(), 0, unprocessedValue.Count(), out shortholder) == ParseResult.Success)
+                            {
+                                value = (object)shortholder;
+                            }
+                            else if (ConvertUtils.Int32TryParse(unprocessedValue.ToCharArray(), 0, unprocessedValue.Count(), out holder) == ParseResult.Success)
+                            {
+                                value = (object)holder;
+                            }
+                            else if (ConvertUtils.Int64TryParse(unprocessedValue.ToCharArray(), 0, unprocessedValue.Count(), out longholder) == ParseResult.Success)
+                            {
+                                value = (object)longholder;
+                            }
+                            else if (unprocessedValue.StartsWith("\""))
+                            {
+                                int check = MathUtils.Random.Next();
+                                unprocessedValue = unprocessedValue.Replace("\\\"", "STRING_PLACEHOLDER" + check.ToString());
+                                unprocessedValue = unprocessedValue.Replace("\"", "");
+                                unprocessedValue = unprocessedValue.Replace("STRING_PLACEHOLDER" + check.ToString(), "\\\"");
+                                value = (object)unprocessedValue;
+                            }
+                            //This the least safe way
+                            else
+                            {
+                                value = (object)unprocessedValue;
+                            }
+                            break;
+                    }
+                    if (!valueStash.ContainsKey(key))
+                    {
+                        valueStash.Add(key, value);
+                    }
+                    else
+                    {
+                        Exceptions.Exception(11);
+                        Logger.TalkyLog("at " + line);
+                    }
                 }
             }
             OnLoad(null, EventArgs.Empty);
+            sr.Close();
         }
         /// <summary>
         /// Saves this config.
         /// </summary>
+        /// 
+        
         public static void Save()
         {
-            using (StreamWriter sw = new StreamWriter(File.Open(Path.Combine(Environment.CurrentDirectory, @"\Halcyon.cfg"), FileMode.Create)))
-            {
-                sw.WriteLine("defaultTalkative = " + (string)GetValue("defaultTalkative", (object)"false"));
-                sw.WriteLine("logName = " + (string)GetValue("logName", (object)"Halcyon.log"));
-                OnSave(null, EventArgs.Empty);
-            }
+            StreamWriter sw = new StreamWriter(Path.Combine(Environment.CurrentDirectory, @"Halcyon.cfg"));
+            sw.WriteLine("defaultTalkative = " + GetValue("defaultTalkative", (object)"false").ToString());
+            sw.WriteLine("logName = " + (string)GetValue("logName", (object)"Halcyon.log"));
+            sw.Close();
+            OnSave(null, EventArgs.Empty);
         }
         /// <summary>
         /// Initializes the main config.
@@ -193,7 +200,7 @@ namespace Halcyon
         {
             if (!Initialized)
             {
-                if (File.Exists(Path.Combine(Environment.CurrentDirectory, @"\Halcyon.cfg")))
+                if (File.Exists(Path.Combine(Environment.CurrentDirectory, @"Halcyon.cfg")))
                 {
                     Load();
                 }

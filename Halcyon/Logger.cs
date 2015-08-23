@@ -13,7 +13,7 @@ namespace Halcyon.Logging
     public static class Logger
     {
         private static bool Initiated = false;
-        public static StringBuilder LogContent = new StringBuilder("Halcyon Log: \n");
+        public static StringBuilder LogContent = new StringBuilder();
 
         /// <summary>
         /// Logs input values into log file, which is saved upon end of the program. 
@@ -103,7 +103,8 @@ namespace Halcyon.Logging
             }
             StreamWriter output = new StreamWriter(path);
             output.Write(existingContents);
-            output.Write("\n" + DateTime.Now.ToLongTimeString() + ":\n");
+            output.Write("[" + DateTime.Now.ToLongTimeString() + "] Halcyon says hi!:");
+            output.WriteLine();
             output.Write(LogContent);
             output.Close();
         }
@@ -113,6 +114,7 @@ namespace Halcyon.Logging
         /// <param name="filename"></param>
         public static void SaveLog(string filename)
         {
+            bool SeparateAdditions = false;
             if (!String.IsNullOrEmpty(filename) && !String.IsNullOrWhiteSpace(filename))
             {
                 string path = Path.Combine(Environment.CurrentDirectory, filename);
@@ -120,10 +122,16 @@ namespace Halcyon.Logging
                 if (File.Exists(path))
                 {
                     existingContents = File.ReadAllText(path);
+                    SeparateAdditions = true;
                 }
                 StreamWriter output = new StreamWriter(path);
                 output.Write(existingContents);
-                output.Write("\n" + DateTime.Now.ToLongTimeString() + ":\n");
+                if (SeparateAdditions)
+                {
+                    output.WriteLine("\n");
+                    output.WriteLine("\n");
+                }
+                output.Write("\n" + DateTime.Now.ToLongTimeString() + "\n");
                 output.Write(LogContent);
                 output.Close();
             }
