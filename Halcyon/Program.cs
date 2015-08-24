@@ -23,9 +23,10 @@ namespace Halcyon
         static void Main(string[] args)
         {
             Console.Title = "Halcyon Compiler";
+            Errors.Exceptions.initExceptions();
             ExtensionLoader.Initialize();
             Config.Initialize();
-            Errors.Exceptions.initExceptions();
+            ILasmInfo.Initialize();
             Preprocessor.initCommonPreprocessorEvents();
             Preprocessor.initDirectives();
             OnStart(null, EventArgs.Empty);
@@ -56,7 +57,6 @@ namespace Halcyon
             }
             OnExit(null, new HandledEventArgs());
         }
-
         /// <summary>
         /// Shut down the program when something goes really really wrong with Halt();
         /// </summary>

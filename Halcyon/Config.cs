@@ -37,6 +37,7 @@ namespace Halcyon
         public static event EventHandler OnSave = delegate { };
         public static bool defaultTalkative { get { return (bool)GetValue("defaultTalkative", (object)false); } set { TryUpdateKey("defaultTalkative", (object)value); } }
         public static string logName { get { return (string)GetValue("logName", (object)"Halcyon.log"); } set { TryUpdateKey("logName", value); } }
+        public static bool benevolentOptions { get { return (bool)GetValue("benevolentOptions", (object)false); } set { TryUpdateKey("benevolentOptions", (object)value); } }
         private static string SavePath { get { return Path.Combine(Environment.CurrentDirectory, @"\Halcyon.cfg"); } }
         private static bool Initialized = false;
        
@@ -87,6 +88,8 @@ namespace Halcyon
                 }
                 else
                 {
+                    Exceptions.Exception(18);
+                    Logger.Log(key);
                     return TryGetValueResult.Default;
                 }
             }
@@ -194,6 +197,7 @@ namespace Halcyon
             StreamWriter sw = new StreamWriter(Path.Combine(Environment.CurrentDirectory, @"Halcyon.cfg"));
             sw.WriteLine("defaultTalkative = " + GetValue("defaultTalkative", (object)"false").ToString());
             sw.WriteLine("logName = " + (string)GetValue("logName", (object)"Halcyon.log"));
+            sw.WriteLine("benevolentOptions = " + (string)GetValue("benevolentOptions", (object)"false").ToString()); 
             sw.Close();
             OnSave(null, EventArgs.Empty);
         }
