@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace Halcyon
 {
     public delegate void DirectiveCallback(string line);
-    class Preprocessor
+    public class Preprocessor
     {
         #region declarations
         //Events
@@ -51,7 +51,6 @@ namespace Halcyon
         {
             OnReadFile(null, new ReadFileArgs(path));
         }
-
         public static void Preproccess(string[] file)
         {
             OnPreprocess(null, new PreprocessEventArgs(file));
@@ -61,7 +60,6 @@ namespace Halcyon
             OnReset(null, new HandledEventArgs());
             Console.WriteLine("Task completed. \n");
         }
-
         public static void initDirectives()
         {
             OnInitDirectives(null, new HandledEventArgs());
