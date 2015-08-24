@@ -66,7 +66,9 @@ namespace Halcyon
         {
             OnInitDirectives(null, new HandledEventArgs());
         }
-
+        /// <summary>
+        /// Basically turns on the preprocessor.
+        /// </summary>
         public static void initCommonPreprocessorEvents()
         {
             if (!EventsInitialized)
@@ -82,7 +84,11 @@ namespace Halcyon
                 EventsInitialized = true;
             }
         }
-
+        /// <summary>
+        /// For adding Directives
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="callback"></param>
         public static void Add(string name, DirectiveCallback callback)
         {
             DirectiveList.Add(new Directive(name, callback));

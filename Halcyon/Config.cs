@@ -72,6 +72,11 @@ namespace Halcyon
                 return TryUpdateKeyResult.Failed;
             }
         }
+        /// <summary>
+        /// Checks if get value should return value of the key (if key is found) or default or if something has failed.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public static TryGetValueResult TryGetValue(string key)
         {
             try
@@ -184,7 +189,6 @@ namespace Halcyon
         /// Saves this config.
         /// </summary>
         /// 
-        
         public static void Save()
         {
             StreamWriter sw = new StreamWriter(Path.Combine(Environment.CurrentDirectory, @"Halcyon.cfg"));

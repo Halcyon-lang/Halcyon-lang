@@ -10,9 +10,14 @@ namespace Halcyon
 {
     class HalcyonConsole
     {
+        /// <summary>
+        /// Handles user input.
+        /// </summary>
+        /// <param name="str"></param>
         public static void Command(string str) 
         {
             string[] args = str.Split(Convert.ToChar(" "));
+            Config.Save();
             switch (args.Count())
             {
                 case 0:

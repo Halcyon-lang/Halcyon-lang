@@ -8,11 +8,18 @@ using System.Threading.Tasks;
 
 namespace Halcyon
 {
-    class Program
+    /// <summary>
+    /// Entry point of Halcyon
+    /// </summary>
+    public class Program
     {
         public static string[] consoleArgs;
         public static bool Talkative = false;
+        /// <summary>
+        /// Events
+        /// </summary>
         public static event EventHandler<HandledEventArgs> OnExit = delegate { };
+        public static event EventHandler OnStart = delegate { };
         static void Main(string[] args)
         {
             Console.Title = "Halcyon Compiler";
@@ -21,6 +28,7 @@ namespace Halcyon
             Errors.Exceptions.initExceptions();
             Preprocessor.initCommonPreprocessorEvents();
             Preprocessor.initDirectives();
+            OnStart(null, EventArgs.Empty);
             if (args != null)
             {
                 consoleArgs = args;
@@ -49,6 +57,9 @@ namespace Halcyon
             OnExit(null, new HandledEventArgs());
         }
 
+        /// <summary>
+        /// Shut down the program when something goes really really wrong with Halt();
+        /// </summary>
         public static void Halt()
         {
             Environment.Exit(1);
