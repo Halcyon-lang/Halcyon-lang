@@ -19,6 +19,7 @@ namespace Halcyon
         public static event EventHandler OnLoad = delegate { };
         public static event EventHandler OnBuild = delegate { };
         private static string _CommandLine;
+        public static bool BenevolentOptions = false;
         public static string CommandLine
         {
             get { return _CommandLine; }
@@ -149,27 +150,30 @@ namespace Halcyon
             if (Enum.IsDefined(typeof(ILasmExtra), option))
             {
                 int HackyInt = 0;
-                switch (option)
+                if (!BenevolentOptions)
                 {
-                    case ILasm.RESOURCE:
-                        if (!extraInfo.EndsWith(".res") && !Config.benevolentOptions)
-                        {
-                            Exceptions.Exception(16);
-                            Exceptions.Exception(19);
-                            return;
-                        }
-                        break;
-                    case ILasm.BASE:
-                    case ILasm.STACK:
-                    case ILasm.FLAGS:
-                    case ILasm.SUBSYSTEM:
-                    case ILasm.ALIGNMENT:
-                        if (!Int32.TryParse(extraInfo, out HackyInt))
-                        {
-                            Exceptions.Exception(16);
-                            Exceptions.Exception(20);
-                        }
-                        break;
+                    switch (option)
+                    {
+                        case ILasm.RESOURCE:
+                            if (!extraInfo.EndsWith(".res") && !Config.benevolentOptions)
+                            {
+                                Exceptions.Exception(16);
+                                Exceptions.Exception(19);
+                                return;
+                            }
+                            break;
+                        case ILasm.BASE:
+                        case ILasm.STACK:
+                        case ILasm.FLAGS:
+                        case ILasm.SUBSYSTEM:
+                        case ILasm.ALIGNMENT:
+                            if (!Int32.TryParse(extraInfo, out HackyInt))
+                            {
+                                Exceptions.Exception(16);
+                                Exceptions.Exception(20);
+                            }
+                            break;
+                    }
                 }
                 switch (pos)
                 {

@@ -12,8 +12,14 @@ namespace Halcyon.Logging
     /// </summary>
     public static class Logger
     {
-        private static bool Initiated = false;
+        private static bool _Initiated = false;
+        public static bool Initiated 
+        {
+            get { return _Initiated; }
+            private set { _Initiated = value; }
+        }
         public static StringBuilder LogContent = new StringBuilder();
+        public static string LogName = "Halcyon.log";
 
         /// <summary>
         /// Logs input values into log file, which is saved upon end of the program. 

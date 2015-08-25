@@ -68,6 +68,11 @@ namespace Halcyon
                     Console.Write("Halcyon:");
                     HalcyonConsole.Command(Console.ReadLine());
                     break;
+                case "-ilasmhelp":
+                    ILasmCompiler.ILasmCommand(" ");
+                    Console.Write("Halcyon:");
+                    HalcyonConsole.Command(Console.ReadLine());
+                    break;
                 default:
                     Errors.Exceptions.Exception(3);
                     Console.Write("Halcyon:");

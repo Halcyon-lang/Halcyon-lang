@@ -30,6 +30,7 @@ namespace Halcyon
             Preprocessor.initDirectives();
             ILasmInfo.Initialize();
             ExtensionLoader.Initialize();
+            Config.PerformCheck();
             OnStart(null, EventArgs.Empty);
             if (args != null)
             {
