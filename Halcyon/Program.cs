@@ -1,4 +1,5 @@
-﻿using Halcyon.Utils;
+﻿using Halcyon.Logging;
+using Halcyon.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -24,15 +25,21 @@ namespace Halcyon
         {
             Console.Title = "Halcyon Compiler";
             Errors.Exceptions.initExceptions();
-            ExtensionLoader.Initialize();
             Config.Initialize();
-            ILasmInfo.Initialize();
             Preprocessor.initCommonPreprocessorEvents();
             Preprocessor.initDirectives();
+            ILasmInfo.Initialize();
+            ExtensionLoader.Initialize();
             OnStart(null, EventArgs.Empty);
             if (args != null)
             {
                 consoleArgs = args;
+            }
+            if (args.Count() >= 2 && args[0] == "-ilasm")
+            {
+                Logger.Log(string.Format("ILasm wrapper v{0}.{1}", ApiVersion.ILasmMinor, ApiVersion.ILasmMajor));
+                ILasmCompiler.ILasm(args.Skip(1).ToArray().JoinToString(" "));
+                HalcyonConsole.Command(Console.ReadLine());
             }
             switch (args.Count())
             {

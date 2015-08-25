@@ -112,6 +112,9 @@
     <Compile Include="Config.cs" />
     <Compile Include="ContentManager.cs" />
     <Compile Include="Enums.cs" />
+    <Compile Include="ILasm.cs" />
+    <Compile Include="TargetAssembly.cs" />
+    <Compile Include="Utils\ArrayExtensions.cs" />
     <Compile Include="Utils\DateTimeParser.cs" />
     <Compile Include="Utils\DateTimeUtils.cs" />
     <Compile Include="Element.cs" />
@@ -137,6 +140,7 @@
     <Compile Include="Utils\StringUtils.cs" />
     <Compile Include="Utils\TResult.cs" />
     <Compile Include="Utils\ValidationUtils.cs" />
+    <Compile Include="ValuePair.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -9,5 +9,7 @@ namespace Halcyon
     {
         public static int Major = 0;
         public static int Minor = 1;
+        public static int ILasmMinor = 0;
+        public static int ILasmMajor = 1;
     }
 }

@@ -6,16 +6,18 @@ using System.Text;
 using System.Threading.Tasks;
 using Halcyon.Errors;
 
-namespace Halcyon.Utils
+namespace Halcyon
 {
     public static class ILasmInfo
     {
         public static bool Initialized = false;
+        public static bool Built = false;
         public static Dictionary<Halcyon.ILasm, string> Options = new Dictionary<ILasm,string>();
         public static List<string> PreOptions = new List<string>();
         public static List<string> PostOptions = new List<string>();
         public static string name;
         public static event EventHandler OnLoad = delegate { };
+        public static event EventHandler OnBuild = delegate { };
         private static string _CommandLine;
         public static string CommandLine
         {
@@ -217,6 +219,8 @@ namespace Halcyon.Utils
                 sb.Append(" " + str2);
             }
             CommandLine = sb.ToString();
+            OnBuild(null, EventArgs.Empty);
+            Built = true;
         }
     }
 }

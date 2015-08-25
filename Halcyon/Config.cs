@@ -38,7 +38,8 @@ namespace Halcyon
         public static bool defaultTalkative { get { return (bool)GetValue("defaultTalkative", (object)false); } set { TryUpdateKey("defaultTalkative", (object)value); } }
         public static string logName { get { return (string)GetValue("logName", (object)"Halcyon.log"); } set { TryUpdateKey("logName", value); } }
         public static bool benevolentOptions { get { return (bool)GetValue("benevolentOptions", (object)false); } set { TryUpdateKey("benevolentOptions", (object)value); } }
-        private static string SavePath { get { return Path.Combine(Environment.CurrentDirectory, @"\Halcyon.cfg"); } }
+        public static string ILasmExecutableName { get { return (string)GetValue("ILasmExecutableName", (object)"ILasm.exe"); } set { TryUpdateKey("ILasmExecutableName", (object)value); } }
+        private static string SavePath { get { return Path.Combine(Environment.CurrentDirectory, @"Halcyon.cfg"); } }
         private static bool Initialized = false;
        
         /// <summary>
@@ -198,6 +199,7 @@ namespace Halcyon
             sw.WriteLine("defaultTalkative = " + GetValue("defaultTalkative", (object)"false").ToString());
             sw.WriteLine("logName = " + (string)GetValue("logName", (object)"Halcyon.log"));
             sw.WriteLine("benevolentOptions = " + (string)GetValue("benevolentOptions", (object)"false").ToString()); 
+            sw.WriteLine("ILasmExecutableName = " + (string)GetValue("ILasmExecutableName", (object)"ILasm.exe").ToString());
             sw.Close();
             OnSave(null, EventArgs.Empty);
         }
