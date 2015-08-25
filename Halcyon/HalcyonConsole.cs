@@ -38,7 +38,7 @@ namespace Halcyon
                     else if (args[0] == "-ilasm")
                     {
                         Logger.Log(string.Format("ILasm wrapper v{0}.{1}", ApiVersion.ILasmMinor, ApiVersion.ILasmMajor));
-                        ILasmCompiler.ILasm(" ");
+                        ILasmCompiler.ILasmCommand(" ");
                         Console.Write("Halcyon:");
                         HalcyonConsole.Command(Console.ReadLine());
                     }

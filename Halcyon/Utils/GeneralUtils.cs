@@ -21,6 +21,8 @@ namespace Halcyon.Utils
             Console.WriteLine("   -preprocess [File] - preprocesses .halcyon file");
             Console.WriteLine("   -talkative - turns more commandline info viewed mode ON/OFF");
             Console.WriteLine("   -info <classes|elements|version> - prints a certain piece of info or -info help");
+            Console.WriteLine("   -ilasm - provides direct access to ILasm. Just type your args behind and let ILasm do its stuff. Still encased in Halcyon");
+            Console.WriteLine("   -ilasmhelp - provides you with that nifty help string it gives you everytime you forget to type");
             Console.WriteLine("   -exit exits the program safely");
         }
         /// <summary>
@@ -34,7 +36,7 @@ namespace Halcyon.Utils
             printf("   version - Prints current version of Halcyon\n");
             return;
         }
-        //I am ashamed for this workaround of complete laziness, but I need it to start at least once
+        //I am ashamed for this thing of complete laziness, but I need it to start at least once
         /// <summary>
         /// Just like in C... I am so lazy
         /// </summary>

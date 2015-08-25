@@ -17,7 +17,7 @@ namespace Halcyon
     public static class ILasmCompiler
     {
         public static string FinalFile = "";
-        public static Process ILasmProc = new Process();
+        
         public static StreamReader output;
         public static string Path = System.IO.Path.Combine(Environment.CurrentDirectory, "halc.tmp");
         public static Dictionary<string, ValuePair<string, string>> References = new Dictionary<string, ValuePair<string, string>>();
@@ -35,40 +35,30 @@ namespace Halcyon
                 ILasmInfo.name = "halc.tmp";
                 ILasmInfo.BuildOptions();
             }
-            
+            Process ILasmProc = new Process();
             ILasmProc.StartInfo.Arguments = ILasmInfo.CommandLine;
             ILasmProc.StartInfo.FileName = Config.ILasmExecutableName;
             ILasmProc.StartInfo.UseShellExecute = false;
-            ILasmProc.OutputDataReceived += CatchILasmOutput;
             ILasmProc.StartInfo.RedirectStandardOutput = true;
             ILasmProc.StartInfo.CreateNoWindow = true;
             ILasmProc.Start();
-            ILasmProc.WaitForExit();
-            Logger.Log("\nIlasm job done.");
+            Logger.Log("\nIlasm job bone.");
             DeleteTemporary();
+            Logger.SaveLog();
         }
         public static void ILasmCommand(string CommandLine)
         {
+            Process ILasmProc = new Process();
             ILasmProc.StartInfo.Arguments = CommandLine;
             ILasmProc.StartInfo.FileName = Config.ILasmExecutableName;
             ILasmProc.StartInfo.UseShellExecute = false;
-            ILasmProc.OutputDataReceived += CatchILasmOutput;
             ILasmProc.StartInfo.RedirectStandardOutput = true;
-            output = ILasmProc.StandardOutput;
             ILasmProc.StartInfo.CreateNoWindow = true;
             ILasmProc.Start();
-            ILasmProc.WaitForExit();
-            Logger.Log("\nIlasm job done.");
+            output = ILasmProc.StandardOutput;
             Logger.Log(output.ReadToEnd());
-        }
-        /// <summary>
-        /// Handles transferring ILasm output to logs and console windowx 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        public static void CatchILasmOutput(object sender, DataReceivedEventArgs e)
-        {
-            Logger.Log(e.Data);
+            Logger.Log("\nIlasm job done.");
+            Logger.SaveLog();
         }
         /// <summary>
         /// Creates temporary file requiered for execution of ILasm.

@@ -64,7 +64,7 @@ namespace Halcyon
                     break;
                 case "-ilasm":
                     Logger.Log(string.Format("ILasm wrapper v{0}.{1}", ApiVersion.ILasmMinor, ApiVersion.ILasmMajor));
-                    ILasmCompiler.ILasm(args.Skip(1).ToArray().JoinToString(" "));
+                    ILasmCompiler.ILasmCommand(args.Skip(1).ToArray().JoinToString(" "));
                     Console.Write("Halcyon:");
                     HalcyonConsole.Command(Console.ReadLine());
                     break;

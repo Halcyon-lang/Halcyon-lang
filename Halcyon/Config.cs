@@ -199,7 +199,7 @@ namespace Halcyon
             sw.WriteLine("defaultTalkative = " + GetValue("defaultTalkative", (object)"false").ToString());
             sw.WriteLine("logName = " + (string)GetValue("logName", (object)"Halcyon.log"));
             sw.WriteLine("benevolentOptions = " + (string)GetValue("benevolentOptions", (object)"false").ToString()); 
-            sw.WriteLine("ILasmExecutableName = " + (string)GetValue("ILasmExecutableName", (object)"ILasm.exe").ToString());
+            sw.WriteLine("ILasmExecutableName = " + (string)GetValue("ILasmExecutableName", (object)"ilasm.exe").ToString());
             sw.Close();
             OnSave(null, EventArgs.Empty);
         }
