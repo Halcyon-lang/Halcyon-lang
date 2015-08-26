@@ -35,9 +35,9 @@ namespace Halcyon
         /// Fired at the end of Save()
         /// </summary>
         public static event EventHandler OnSave = delegate { };
-        public static bool defaultTalkative { get { return (bool)GetValue("defaultTalkative", (object)false); } set { TryUpdateKey("defaultTalkative", (object)value); } }
+        public static bool defaultTalkative { get { return BooleanUtils.ParseBool((string)GetValue("defaultTalkative", (object)"False")); } set { TryUpdateKey("defaultTalkative", (object)value); } }
         public static string logName { get { return (string)GetValue("logName", (object)"Halcyon.log"); } set { TryUpdateKey("logName", value); } }
-        public static bool benevolentOptions { get { return (bool)GetValue("benevolentOptions", (object)false); } set { TryUpdateKey("benevolentOptions", (object)value); } }
+        public static bool benevolentOptions { get { return BooleanUtils.ParseBool((string)GetValue("benevolentOptions", (object)false)); } set { TryUpdateKey("benevolentOptions", (object)value); } }
         public static string ILasmExecutableName { get { return (string)GetValue("ILasmExecutableName", (object)"ilasm.exe"); } set { TryUpdateKey("ILasmExecutableName", (object)value); } }
         private static string SavePath { get { return Path.Combine(Environment.CurrentDirectory, @"Halcyon.cfg"); } }
         private static bool Initialized = false;
