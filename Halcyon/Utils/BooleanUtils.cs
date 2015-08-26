@@ -23,5 +23,39 @@ namespace Halcyon.Utils
                 return false;
             }
         }
+        public static bool And(bool left, bool right)
+        {
+            if (right && left)
+            {
+                return true;
+            }
+            else { return false; } 
+        }
+        public static bool Or(bool left, bool right)
+        {
+            if (right || left)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public static bool XOr(bool left, bool right)
+        {
+            if (left && !right)
+            {
+                return true;
+            }
+            else if (!left && right)
+            {
+                return true;
+            }
+            else 
+            {
+                return false;
+            }
+        }
     }
 }

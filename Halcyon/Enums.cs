@@ -97,4 +97,13 @@ namespace Halcyon
         PRESTART,
         POSTSTART
     }
+    public enum HalcyonMode
+    {
+        Preprocess,
+        Convert,
+        Compile,
+        Result,
+        //Don't use, it is for testing and its functions changes quickly. Usually does some odd stuff.
+        Special
+    }
 }
