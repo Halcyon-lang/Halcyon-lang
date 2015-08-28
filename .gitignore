@@ -79,3 +79,7 @@
 /Halcyon/bin/x86/Halcyon/spongebib.exe
 /Halcyon/bin/x86/Halcyon/al.exe
 /Halcyon/bin/x86/Halcyon/al.exe.config
+/Halcyon/bin/x86/Halcyon/Halcyon.il
+/Halcyon/bin/x86/Halcyon/ildasm.exe
+/MinimalBuild/Halcyon.il
+/MinimalBuild/Halcyon.res
