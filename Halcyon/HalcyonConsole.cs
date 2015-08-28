@@ -70,6 +70,9 @@ namespace Halcyon
                     Compiler.checkArgs(args);
                     break;
                 default:
+                    Compiler.checkArgs(args);
+                    Console.Write("Halcyon:");
+                    HalcyonConsole.Command(Console.ReadLine());
                     break;
             }
             Console.ReadLine();

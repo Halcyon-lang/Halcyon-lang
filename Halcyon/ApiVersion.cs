@@ -34,5 +34,13 @@ namespace Halcyon
         /// AssemblyLinker (AL) wrapper minor version
         /// </summary>
         public static int ALMinor = 1;
+        /// <summary>
+        /// WrapperSelector's major version.
+        /// </summary>
+        public static int WrapperMajor = 0;
+        /// <summary>
+        /// WrapperSelector's minor version
+        /// </summary>
+        public static int WrapperMinor = 1;
     }
 }

@@ -68,7 +68,7 @@ namespace Halcyon
                     HalcyonConsole.Command(Console.ReadLine());
                     break;
                 case "-exec":
-                    Logger.Log(string.Format("Halcyon WrapperSelecter v{0}.{1} started", ApiVersion.ALMajor, ApiVersion.ALMajor));
+                    Logger.Log(string.Format("Halcyon WrapperSelector v{0}.{1} started", ApiVersion.WrapperMajor, ApiVersion.WrapperMinor));
                     WrapperSelector.Select(args.Skip(1).ToArray());
                     Console.Write("Halcyon:");
                     Console.Title = "Halcyon Compiler";

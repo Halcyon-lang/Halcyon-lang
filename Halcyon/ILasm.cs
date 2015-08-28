@@ -49,6 +49,7 @@ namespace Halcyon
         }
         public static void ILasmCommand(string CommandLine)
         {
+            Logger.Log("Ilasm started");
             Process ILasmProc = new Process();
             ILasmProc.StartInfo.Arguments = CommandLine;
             ILasmProc.StartInfo.FileName = Config.ILasmExecutableName;
