@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Halcyon
 {
-    class HalcyonConsole
+    public class HalcyonConsole
     {
         /// <summary>
         /// Handles user input.

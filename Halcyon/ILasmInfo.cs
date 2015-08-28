@@ -10,22 +10,61 @@ namespace Halcyon
 {
     public static class ILasmInfo
     {
+        /// <summary>
+        /// Whether was ILasmInfo initialized or not
+        /// </summary>
         public static bool Initialized = false;
+        /// <summary>
+        /// If options are "built"
+        /// </summary>
         public static bool Built = false;
+        /// <summary>
+        /// Options in unbuilt form
+        /// </summary>
         public static Dictionary<Halcyon.ILasm, string> Options = new Dictionary<ILasm,string>();
+        /// <summary>
+        /// Options before filename
+        /// </summary>
         public static List<string> PreOptions = new List<string>();
+        /// <summary>
+        /// Options after filename
+        /// </summary>
         public static List<string> PostOptions = new List<string>();
+        /// <summary>
+        /// Filename
+        /// </summary>
         public static string name;
+        /// <summary>
+        /// Fired during load of ILasmInfo
+        /// </summary>
         public static event EventHandler OnLoad = delegate { };
+        /// <summary>
+        /// Fired when Options are being built
+        /// </summary>
         public static event EventHandler OnBuild = delegate { };
         private static string _CommandLine;
+        /// <summary>
+        /// Char used by wrapped executable for equations between option name and value
+        /// </summary>
         public static char equationChar = '=';
+        /// <summary>
+        /// Whether ignore type of options or not
+        /// </summary>
         public static bool BenevolentOptions = false;
+        /// <summary>
+        /// Built options
+        /// </summary>
         public static string CommandLine
         {
             get { return _CommandLine; }
             private set { _CommandLine = value; }
         }
+        /// <summary>
+        /// Used for "registering" options with their strings
+        /// </summary>
+        /// <param name="option"></param>
+        /// <param name="optionText"></param>
+        /// <returns></returns>
         public static ILasmAddResult Add(ILasm option, string optionText)
         {
             try
@@ -45,6 +84,12 @@ namespace Halcyon
                 return ILasmAddResult.FAIL;
             }
         }
+        /// <summary>
+        /// Used for "registering" options with their strings
+        /// </summary>
+        /// <param name="option"></param>
+        /// <param name="optionText"></param>
+        /// <returns></returns>
         public static ILasmAddResult Add(ILasm option, string optionText, bool overwriteExisting)
         {
             try
@@ -210,6 +255,9 @@ namespace Halcyon
                 }
             }
         }
+        /// <summary>
+        /// Builds option string
+        /// </summary>
         public static void BuildOptions()
         {
             StringBuilder sb = new StringBuilder();

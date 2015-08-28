@@ -14,15 +14,35 @@ namespace Halcyon
     /// </summary>
     public class Program
     {
+        /// <summary>
+        /// Args given to the console on launch of Halcyon
+        /// </summary>
         public static string[] consoleArgs;
+        /// <summary>
+        /// Verbose tracing
+        /// </summary>
         public static bool Talkative = false;
+        /// <summary>
+        /// Path of the selected file
+        /// </summary>
         public static string Path;
+        /// <summary>
+        /// Compilation mode
+        /// </summary>
         public static HalcyonMode Mode;
         /// <summary>
-        /// Events
+        /// Triggered when Halcyon exits through -exit command
         /// </summary>
         public static event EventHandler<HandledEventArgs> OnExit = delegate { };
+        /// <summary>
+        /// Triggered during initialization of Halcyon
+        /// </summary>
         public static event EventHandler OnStart = delegate { };
+
+        /// <summary>
+        /// Entrypoint of Halcyon
+        /// </summary>
+        /// <param name="args"></param>
         static void Main(string[] args)
         {
             Console.Title = "Halcyon Compiler";
