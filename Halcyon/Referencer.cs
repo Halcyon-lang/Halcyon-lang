@@ -34,11 +34,12 @@ namespace Halcyon
         public static readonly Dictionary<string, Assembly> LoadedAssemblies = new Dictionary<string, Assembly>();
         /// <summary>
         /// Used to init Referencer. Call this method always before you want to use Referencer. DeInitialize after your job is done;
+        /// <param name="path">Everything on where Path.GetDirectoryName() works</param>
         /// </summary>
         public static void Initialize(string path)
         {
             Logger.TalkyLog("Initiating Referencer.");
-            Folder = path;
+            Folder = Path.GetDirectoryName(path);
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
             LoadAssemblies();
         }
