@@ -296,7 +296,7 @@ namespace Halcyon
                 else
                 {
                     Logger.TalkyLog("Preprocessing completed. Procceeding to Assembly information parsing");
-                    Referencer.Initialize();
+                    Referencer.Initialize(Program.Path);
                     //ParserSwitch.Start(Preprocessor.PreprocessedFile.ToString());
                 }
             }

@@ -12,16 +12,33 @@ using System.Threading.Tasks;
 
 namespace Halcyon
 {
+    /// <summary>
+    /// Used for retrieving ReferenceStrings of assemblies, which, is then required to reference any assembly in Halcyon
+    /// </summary>
     public static class Referencer
     {
+        /// <summary>
+        /// The folder of th
+        /// </summary>
         public static string Folder;
+        /// <summary>
+        /// Contains information required for building ReferenceStrings of all assemblies that are : 
+        ///     loaded, 
+        ///     or in the same folder as the .halcyon file (or where Initialize specifies),
+        ///     mscorlib and other that are loaded automatically or so
+        /// </summary>
         public static Dictionary<string, ValuePair<string, string>> AssemblyInfos = new Dictionary<string,ValuePair<string,string>>();
+        /// <summary>
+        /// All assemblies loaded
+        /// </summary>
         public static readonly Dictionary<string, Assembly> LoadedAssemblies = new Dictionary<string, Assembly>();
-
-        public static void Initialize()
+        /// <summary>
+        /// Used to init Referencer. Call this method always before you want to use Referencer. DeInitialize after your job is done;
+        /// </summary>
+        public static void Initialize(string path)
         {
             Logger.TalkyLog("Initiating Referencer.");
-            Folder = Path.GetDirectoryName(Program.Path);
+            Folder = path;
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
             LoadAssemblies();
         }
@@ -124,14 +141,17 @@ namespace Halcyon
                     assembly.GetName().Version.Minor.ToString(),
                     assembly.GetName().Version.Build.ToString(),
                     assembly.GetName().Version.Revision.ToString())));
-
-                    Logger.TalkyLog("registering ", assembly.GetName().Name, CodeUtils.ToBlob(assembly.GetName().GetPublicKeyToken()), string.Format(".ver {0}:{1}:{2}:{3}",
+                    if(assembly.GetName().Name != "Halcyon") 
+                    {
+                        Logger.TalkyLog("registering ", assembly.GetName().Name, CodeUtils.ToBlob(assembly.GetName().GetPublicKeyToken()), string.Format(".ver {0}:{1}:{2}:{3}",
                         assembly.GetName().Version.Major.ToString(),
                         assembly.GetName().Version.Minor.ToString(),
                         assembly.GetName().Version.Build.ToString(),
                         assembly.GetName().Version.Revision.ToString()));
+                    }
                 }
             }
+            //Better loop through CurrentDomain as well so we can get all the good stuff like mscorlib
             foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
                 if (!AssemblyInfos.ContainsKey(assembly.GetName().Name))
@@ -141,14 +161,29 @@ namespace Halcyon
                     assembly.GetName().Version.Minor.ToString(),
                     assembly.GetName().Version.Build.ToString(),
                     assembly.GetName().Version.Revision.ToString())));
-
-                    Logger.TalkyLog("registering ", assembly.GetName().Name, CodeUtils.ToBlob(assembly.GetName().GetPublicKeyToken()), string.Format(".ver {0}:{1}:{2}:{3}",
+                    if(assembly.GetName().Name != "Halcyon") 
+                    {
+                        Logger.TalkyLog("registering ", assembly.GetName().Name, CodeUtils.ToBlob(assembly.GetName().GetPublicKeyToken()), string.Format(".ver {0}:{1}:{2}:{3}",
                         assembly.GetName().Version.Major.ToString(),
                         assembly.GetName().Version.Minor.ToString(),
                         assembly.GetName().Version.Build.ToString(),
                         assembly.GetName().Version.Revision.ToString()));
+                    }
                 }
             }
+
+            //Halcyon's publickeytoken does not load properly in the way above. Therefore we need to get it manually.
+            AssemblyInfos.Remove("Halcyon");
+            AssemblyInfos.Add("Halcyon", new ValuePair<string, string>(CodeUtils.ToBlob(Assembly.GetAssembly(typeof(Halcyon.Referencer)).GetName().GetPublicKeyToken()), string.Format(".ver {0}:{1}:{2}:{3}",
+                        Assembly.GetAssembly(typeof(Halcyon.Referencer)).GetName().Version.Major.ToString(),
+                        Assembly.GetAssembly(typeof(Halcyon.Referencer)).GetName().Version.Minor.ToString(),
+                        Assembly.GetAssembly(typeof(Halcyon.Referencer)).GetName().Version.Build.ToString(),
+                        Assembly.GetAssembly(typeof(Halcyon.Referencer)).GetName().Version.Revision.ToString())));
+            Logger.TalkyLog("registering ", Assembly.GetAssembly(typeof(Halcyon.Referencer)).GetName().Name, CodeUtils.ToBlob(Assembly.GetAssembly(typeof(Halcyon.Referencer)).GetName().GetPublicKeyToken()), string.Format(".ver {0}:{1}:{2}:{3}",
+                        Assembly.GetAssembly(typeof(Halcyon.Referencer)).GetName().Version.Major.ToString(),
+                        Assembly.GetAssembly(typeof(Halcyon.Referencer)).GetName().Version.Minor.ToString(),
+                        Assembly.GetAssembly(typeof(Halcyon.Referencer)).GetName().Version.Build.ToString(),
+                        Assembly.GetAssembly(typeof(Halcyon.Referencer)).GetName().Version.Revision.ToString()));
         }
         /// <summary>
         /// Generates whole .assembly extern block for referencing another assembly. 
