@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Halcyon.Utils
 {
-    public class CodeUtils
+    public static class CodeUtils
     {
         public static List<string> GetCodeBlocks(string source)
         {
@@ -21,7 +21,7 @@ namespace Halcyon.Utils
             NEXTBLOCK:
             foreach (char ch in Temp) 
             {
-                if (ch == '\"' || ch == '\'')
+                if (BooleanUtils.And(ch == '\"' || ch == '\'', source[charIndex - 1] != '\\'))
                 {
                     if (isInString) isInString = false;
                     else isInString = true;
@@ -85,8 +85,7 @@ namespace Halcyon.Utils
                 temp.Append(' ');
                 temp.Append(blob[i].ToString("x2"));
             }
-            temp.AppendLine();
-            temp.Append(")");
+            temp.Append(" )");
             return temp.ToString();
         }
         public static string Escape(string identifier)
@@ -179,6 +178,36 @@ namespace Halcyon.Utils
                 return arg_AB_0 + num.ToString("x4");
             }
             return ch.ToString();
+        }
+        /// <summary>
+        /// Removes every occurence of the character if it is not in a string or char literal.
+        /// </summary>
+        /// <param name="?"></param>
+        /// <returns></returns>
+        public static string RemoveIfNotString(this string source, char ch)
+        {
+            StringBuilder temp = new StringBuilder();
+            bool isString = false;
+            int index = 0;
+            foreach (char c in source)
+            {
+                if (BooleanUtils.And(c == '\"' || c == '\'', source[index - 1] != '\\'))
+                {
+                    temp.Append(c);
+                    isString.Toggle();
+                }
+                if (c == ch && !isString)
+                {
+                    index++;
+                    continue;
+                }
+                else
+                {
+                    temp.Append(c);
+                }
+                index++;
+            }
+            return temp.ToString();
         }
     }
 }

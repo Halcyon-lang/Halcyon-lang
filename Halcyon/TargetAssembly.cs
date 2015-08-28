@@ -13,5 +13,6 @@ namespace Halcyon
     {
         public static string Name;
         public static List<string> References;
+        public static string Version;
     }
 }

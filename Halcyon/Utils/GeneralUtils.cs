@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Halcyon.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -7,48 +8,35 @@ using System.Threading.Tasks;
 
 namespace Halcyon.Utils
 {
-    class GeneralUtils
+    public static class GeneralUtils
     {
         /// <summary>
         /// Prints help
         /// </summary>
         public static void printHelp()
         {
-            Console.WriteLine("Halcyon compiler help:");
-            Console.WriteLine("   -compile [File] - Compiles file to executable");
-            Console.WriteLine("   -convert [File] - Converts file to IL. File will be written down here");
-            Console.WriteLine("   -result [Text] - how does given line look in IL");
-            Console.WriteLine("   -preprocess [File] - preprocesses .halcyon file");
-            Console.WriteLine("   -talkative - turns more commandline info viewed mode ON/OFF");
-            Console.WriteLine("   -info <classes|elements|version> - prints a certain piece of info or -info help");
-            Console.WriteLine("   -ilasm - provides direct access to ILasm. Just type your args behind and let ILasm do its stuff. Still encased in Halcyon");
-            Console.WriteLine("   -ilasmhelp - provides you with that nifty help string it gives you everytime you forget to type");
-            Console.WriteLine("   -exit exits the program safely");
+            Logger.Log("Halcyon compiler help:");
+            Logger.Log("   -compile [File] - Compiles file to executable");
+            Logger.Log("   -convert [File] - Converts file to IL. File will be written down here");
+            Logger.Log("   -result [Text] - how does given line look in IL");
+            Logger.Log("   -preprocess [File] - preprocesses .halcyon file");
+            Logger.Log("   -talkative - turns more commandline info viewed mode ON/OFF");
+            Logger.Log("   -info <classes|elements|version> - prints a certain piece of info or -info help");
+            Logger.Log("   -ilasm - provides direct access to ILasm. Just type your args behind and let ILasm do its stuff. Still encased in Halcyon");
+            Logger.Log("   -ilasmhelp - provides you with that nifty help string it gives you everytime you forget to type");
+            Logger.Log("   -exit exits the program safely");
         }
         /// <summary>
         /// Prints help for giveInfo when user does not provide -info with any arguments
         /// </summary>
         public static void printInfoHelp()
         {
-            printf("-info\n");
-            printf("   classes - Prints all classes\n");
-            printf("   elements - Prints currently loaded elements\n");
-            printf("   version - Prints current version of Halcyon\n");
+            Logger.LogNoNl("-info\n");
+            Logger.LogNoNl("   classes - Prints all classes\n");
+            Logger.LogNoNl("   elements - Prints currently loaded elements\n");
+            Logger.LogNoNl("   version - Prints current version of Halcyon\n");
             return;
         }
-        //I am ashamed for this thing of complete laziness, but I need it to start at least once
-        /// <summary>
-        /// Just like in C... I am so lazy
-        /// </summary>
-        /// <param name="str">Any string</param>
-        public static void printf(string str)
-        {
-            Console.Write(str);
-        }
-        /// <summary>
-        /// Provides user with useful info & stats about Halcyon
-        /// </summary>
-        /// <param name="arg">Any known command</param>
         public static void giveInfo(string arg)
         {
             switch (arg)
@@ -179,11 +167,11 @@ namespace Halcyon.Utils
             return Line;
         }
         /// <summary>
-        /// Removes whitespace at the START of the string, not anywhere else. Note: THe only whitespace I know is, in fact, space.
+        /// Removes whitespace at the START of the string, not anywhere else. Note: The only whitespace I know is, in fact, space.
         /// </summary>
         /// <param name="item">string to be ridden of extra whitespace at start</param>
         /// <returns></returns>
-        public static string removeWhiteSpace(ref string item)
+        public static string RemoveWhiteSpace(this string item)
         {
             bool found = false;
             foreach (char ch in item)

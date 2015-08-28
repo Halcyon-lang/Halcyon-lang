@@ -186,7 +186,7 @@ namespace Halcyon
             string temp = line.Replace("#define ", "");
             if (Program.Talkative)
             {
-                GeneralUtils.removeWhiteSpace(ref temp);
+                temp = temp.RemoveWhiteSpace();
                 foreach (string str in temp.Split(' '))
                 {
                     Console.WriteLine(str);
@@ -296,7 +296,8 @@ namespace Halcyon
                 else
                 {
                     Logger.TalkyLog("Preprocessing completed. Procceeding to Assembly information parsing");
-
+                    Referencer.Initialize();
+                    //ParserSwitch.Start(Preprocessor.PreprocessedFile.ToString());
                 }
             }
         }
@@ -359,13 +360,25 @@ namespace Halcyon
                     }
                     catch (Exception ex)
                     {
-                        Logger.TalkyLog("Assigning apparently failed");
-                        Console.WriteLine(ex.Message);
-                        Console.WriteLine(ex.Source);
-                        Console.WriteLine(ex.InnerException);
-                        Console.WriteLine(ex.StackTrace);
+                        Logger.TalkyLog("Well, there is an error");
+                        if (ex.GetType() != typeof(System.ArgumentException))
+                        {
+                            Logger.Log(ex.ToString());
+                            Logger.Log(ex.Message);
+                            Logger.Log(ex.Source);
+                            Logger.Log(ex.InnerException);
+                            Logger.Log(ex.StackTrace);
+                        }
+                        else
+                        {
+                            Exceptions.Exception(22);
+                            Logger.LogNoTrace(ex.ToString());
+                            Logger.LogNoTrace(ex.Message);
+                            Logger.LogNoTrace(ex.Source);
+                            Logger.LogNoTrace(ex.InnerException);
+                            Logger.LogNoTrace(ex.StackTrace);
+                        }
                         Exceptions.Exception(6);
-                        Preprocessor.ReadFileFailed(null, new HandledEventArgs());
                     }
                 }
             }

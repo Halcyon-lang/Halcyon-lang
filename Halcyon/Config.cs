@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace Halcyon
 {
     /// <summary>
-    /// Halcyon's config. If you want to have own config, simply create a child class of this class and override what you need to override. 
+    /// Halcyon's config. If you want to have own config, you can simply rip off this class. 
     /// Alternatively you can add own values to this config by subscribing to OnSave and adding own keys. Then you can just do for example
     /// public static string MyProperty = valueStash.ContainsKey("MyProperty") ? (string)valueStash["MyProperty"] : "default value";
     /// 

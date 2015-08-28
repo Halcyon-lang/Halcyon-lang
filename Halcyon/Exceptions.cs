@@ -63,6 +63,7 @@ namespace Halcyon.Errors
                 Add(19, "Extension for resource file has to be .res");
                 Add(20, "Expected string convertible to integer");
                 Add(21, "Failed to fetch publickeytoken of a referenced assembly:");
+                Add(22, "Path needs to be either absolute or start with -\\");
                 Add(69, "Too many exceptions, are you fucking kidding me??");
                 Initiated = true;
             }

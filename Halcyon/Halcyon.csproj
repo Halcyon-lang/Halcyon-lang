@@ -95,6 +95,9 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -130,6 +133,7 @@
     <Compile Include="HalcyonExtension.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="ILasmInfo.cs" />
+    <Compile Include="Utils\ILInfo.cs" />
     <Compile Include="Utils\Misc.cs" />
     <Compile Include="Preprocessor.cs" />
     <Compile Include="Program.cs" />

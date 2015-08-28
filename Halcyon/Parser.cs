@@ -1,4 +1,5 @@
-﻿using Halcyon.Utils;
+﻿using Halcyon.Logging;
+using Halcyon.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,8 +16,46 @@ namespace Halcyon
             File = file;
             if (CodeUtils.RemoveEmptyLines(File).StartsWith("assembly", StringComparison.CurrentCultureIgnoreCase))
             {
-
+                string assemblyblock = CodeUtils.GetCodeBlocks(CodeUtils.RemoveEmptyLines(File))[0];
+                Logger.TalkyLog("AssemblyBlock: ");
+                Logger.TalkyLog(assemblyblock);
+                AssemblyInfoParser.Parse(assemblyblock);
             }
+        }
+    }
+    public static class AssemblyInfoParser
+    {
+        public static string AssemblyBlock;
+        /// <summary>
+        /// Don't use. It changes and is eventually reduced to empty.
+        /// </summary>
+        public static string DisassembledBlock;
+
+        public static void Parse(string block)
+        {
+            int curlyIndex = block.IndexOf('{');
+            AssemblyBlock = block;
+
+            SetName(block.Substring(0, curlyIndex));
+            DisassembledBlock = block.Substring(curlyIndex + 1);
+            DisassembledBlock = DisassembledBlock.RemoveIfNotString('}');
+            ProcessInfo();
+
+        }
+        public static void ProcessInfo()
+        {
+            string[] rawstatements;
+            rawstatements = DisassembledBlock.Split(';');
+            List<string> statements = new List<string>();
+            foreach (string rawstatement in rawstatements)
+            {
+                statements.Add(rawstatement.RemoveWhiteSpace());
+            }
+        }
+
+        public static void SetName(string assemblypart)
+        {
+            TargetAssembly.Name = assemblypart.Replace("assembly", "").Trim();
         }
     }
 }

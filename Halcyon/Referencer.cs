@@ -16,11 +16,12 @@ namespace Halcyon
     {
         public static string Folder;
         public static string AssemblyBlock;
-        public static Dictionary<string, ValuePair<string, string>> AssemblyInfos;
+        public static Dictionary<string, ValuePair<string, string>> AssemblyInfos = new Dictionary<string,ValuePair<string,string>>();
         public static readonly Dictionary<string, Assembly> LoadedAssemblies = new Dictionary<string, Assembly>();
 
         public static void Initialize()
         {
+            Logger.TalkyLog("Initiating Referencer.");
             Folder = Path.GetDirectoryName(Program.Path);
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
             LoadAssemblies();
@@ -32,6 +33,7 @@ namespace Halcyon
             AssemblyBlock = "";
             AssemblyInfos.Clear();
             LoadedAssemblies.Clear();
+            Logger.TalkyLog("Referencer restarted.");
         }
         public static void LoadAssemblies()
         {
@@ -66,7 +68,7 @@ namespace Halcyon
                 }
                 catch (Exception ex)
                 {
-                    // Broken assemblies / plugins better stop the entire server init.
+                    // Broken assemblies better stop the entire referencer init.
                     Logger.Log(string.Format("Failed to load assembly \"{0}\".", fileInfo.Name) + ex);
                 }
             }
@@ -102,19 +104,27 @@ namespace Halcyon
         {
             foreach (Assembly assembly in LoadedAssemblies.Values)
             {
-                try
+                //try
+                //{
+                if(!AssemblyInfos.ContainsKey(assembly.GetName().Name))
                 {
-                    AssemblyInfos.Add(assembly.GetName().Name, new ValuePair<string, string>(CodeUtils.ToBlob(assembly.GetName().GetPublicKeyToken()), string.Format(".ver {0}:{1}:{2}:{3}", 
-                        assembly.GetName().Version.Major, 
-                        assembly.GetName().Version.Minor, 
-                        assembly.GetName().Version.Build, 
-                        assembly.GetName().Version.Revision)));
+                    AssemblyInfos.Add(assembly.GetName().Name, new ValuePair<string, string>(CodeUtils.ToBlob(assembly.GetName().GetPublicKeyToken()), string.Format(".ver {0}:{1}:{2}:{3}",
+                    assembly.GetName().Version.Major.ToString(),
+                    assembly.GetName().Version.Minor.ToString(),
+                    assembly.GetName().Version.Build.ToString(),
+                    assembly.GetName().Version.Revision.ToString())));
                 }
-                catch
-                {
-                    Exceptions.Exception(21);
-                    Logger.Log(" " + assembly.GetName().Name);
-                }
+                    Logger.TalkyLog("registering ", assembly.GetName().Name, CodeUtils.ToBlob(assembly.GetName().GetPublicKeyToken()), string.Format(".ver {0}:{1}:{2}:{3}",
+                        assembly.GetName().Version.Major.ToString(),
+                        assembly.GetName().Version.Minor.ToString(),
+                        assembly.GetName().Version.Build.ToString(),
+                        assembly.GetName().Version.Revision.ToString()));
+                //}
+                //catch
+                //{
+                //    Exceptions.Exception(21);
+                //    Logger.Log(" " + assembly.GetName().Name);
+                //}
             }
         }
     }

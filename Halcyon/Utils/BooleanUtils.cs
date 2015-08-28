@@ -57,5 +57,16 @@ namespace Halcyon.Utils
                 return false;
             }
         }
+        public static bool Toggle(this bool me)
+        {
+            if (me)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

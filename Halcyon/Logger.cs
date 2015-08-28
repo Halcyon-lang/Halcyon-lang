@@ -19,7 +19,7 @@ namespace Halcyon.Logging
             private set { _Initiated = value; }
         }
         public static StringBuilder LogContent = new StringBuilder();
-        public static string LogName = "Halcyon.log";
+        public static string LogName = Config.logName;
 
         /// <summary>
         /// Logs input values into log file, which is saved upon end of the program. 
@@ -101,7 +101,7 @@ namespace Halcyon.Logging
         /// </summary>
         public static void SaveLog()
         {
-            string path = Path.Combine(Environment.CurrentDirectory, "Halcyon.log");
+            string path = Path.Combine(Environment.CurrentDirectory, LogName);
             string existingContents = "";
             if(File.Exists(path)) 
             {

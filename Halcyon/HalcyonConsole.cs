@@ -2,6 +2,7 @@
 using Halcyon.Utils;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +19,7 @@ namespace Halcyon
         {
             string[] args = str.Split(Convert.ToChar(" "));
             Config.Save();
+            Referencer.DeInitialize();
             switch (args.Count())
             {
                 case 0:
@@ -50,7 +52,7 @@ namespace Halcyon
                     }
                     else if (args[0] == "-test")
                     {
-                        Config.logName = "aowfdloabfspagfvjn";
+                        Config.logName = Path.GetRandomFileName();
                         Config.Save();
                     }
                     else if (args[0] == "-exit") return;
