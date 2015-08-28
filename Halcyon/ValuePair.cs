@@ -8,8 +8,19 @@ namespace Halcyon
 {
     public class ValuePair<Left, Right>
     {
-        Left LeftValue;
-        Right RightValue;
+        Left leftValue;
+        Right rightValue;
+
+        public Left LeftValue
+        {
+            get { return leftValue; }
+            set { leftValue = value; }
+        }
+        public Right RightValue
+        {
+            get { return rightValue; }
+            set { rightValue = value; }
+        }
         public ValuePair(Left l, Right r)
         {
             SetLeft(l);
@@ -20,7 +31,7 @@ namespace Halcyon
         {
             if (r != null)
             {
-                RightValue = r;
+                rightValue = r;
             }
             else
             {
@@ -32,7 +43,7 @@ namespace Halcyon
         {
             if (l != null)
             {
-                LeftValue = l;
+                leftValue = l;
             }
             else
             {

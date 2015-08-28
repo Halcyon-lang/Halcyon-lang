@@ -104,8 +104,6 @@ namespace Halcyon
         {
             foreach (Assembly assembly in LoadedAssemblies.Values)
             {
-                //try
-                //{
                 if(!AssemblyInfos.ContainsKey(assembly.GetName().Name))
                 {
                     AssemblyInfos.Add(assembly.GetName().Name, new ValuePair<string, string>(CodeUtils.ToBlob(assembly.GetName().GetPublicKeyToken()), string.Format(".ver {0}:{1}:{2}:{3}",
@@ -119,13 +117,18 @@ namespace Halcyon
                         assembly.GetName().Version.Minor.ToString(),
                         assembly.GetName().Version.Build.ToString(),
                         assembly.GetName().Version.Revision.ToString()));
-                //}
-                //catch
-                //{
-                //    Exceptions.Exception(21);
-                //    Logger.Log(" " + assembly.GetName().Name);
-                //}
             }
+        }
+
+        public static string ReferenceString(string name)
+        {
+            StringBuilder temp = new StringBuilder();
+            temp.AppendLine(".assembly extern " + name);
+            temp.AppendLine("{");
+            temp.AppendLine(".publickeytoken = " + AssemblyInfos[name].LeftValue);
+            temp.AppendLine(AssemblyInfos[name].RightValue);
+            temp.AppendLine("}");
+            return temp.ToString();
         }
     }
 }

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Halcyon.Utils
 {
+    /// <summary>
+    /// Basically string manipulation utilities which are intended to work with formatting and/or modifying code
+    /// </summary>
     public static class CodeUtils
     {
         public static List<string> GetCodeBlocks(string source)
