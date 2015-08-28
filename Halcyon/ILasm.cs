@@ -20,7 +20,6 @@ namespace Halcyon
         
         public static StreamReader output;
         public static string Path = System.IO.Path.Combine(Environment.CurrentDirectory, "halc.tmp");
-        public static Dictionary<string, ValuePair<string, string>> References = new Dictionary<string, ValuePair<string, string>>();
 
         /// <summary>
         /// This, in fact, is what executes ILasm.
@@ -42,8 +41,10 @@ namespace Halcyon
             ILasmProc.StartInfo.RedirectStandardOutput = true;
             ILasmProc.StartInfo.CreateNoWindow = true;
             ILasmProc.Start();
-            Logger.Log("\nIlasm job bone.");
+            output = ILasmProc.StandardOutput;
+            Logger.Log(output.ReadToEnd());
             DeleteTemporary();
+            Logger.Log("\nIlasm job done.");
             Logger.SaveLog();
         }
         public static void ILasmCommand(string CommandLine)
