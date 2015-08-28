@@ -17,7 +17,8 @@ namespace Halcyon
         /// <param name="str"></param>
         public static void Command(string str) 
         {
-            string[] args = str.Split(Convert.ToChar(" "));
+            ArrayManipulators<string> arrman = new ArrayManipulators<string>();
+            string[] args = arrman.RemoveEmptyEntries(str.RemoveWhiteSpace().Split(Convert.ToChar(" ")));
             Config.Save();
             Referencer.DeInitialize();
             switch (args.Count())

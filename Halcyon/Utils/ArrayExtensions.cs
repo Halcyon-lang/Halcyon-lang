@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Halcyon.Utils
 {
+    /// <summary>
+    /// For array utils that don't require an exact type.
+    /// </summary>
     public static class ArrayExtensions
     {
         public static string JoinToString(this Array arr, string delimiter)
