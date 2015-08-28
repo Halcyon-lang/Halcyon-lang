@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 
 namespace Halcyon.Utils
 {
+    /// <summary>
+    /// Provides various utilities, usually very old (oldest things of Halcyon, to be exact), which doesn't really fit anywhere
+    /// or I am too lazy to move them.
+    /// </summary>
     public static class GeneralUtils
     {
         /// <summary>
@@ -22,8 +26,7 @@ namespace Halcyon.Utils
             Logger.Log("   -preprocess [File] - preprocesses .halcyon file");
             Logger.Log("   -talkative - turns more commandline info viewed mode ON/OFF");
             Logger.Log("   -info <classes|elements|version> - prints a certain piece of info or -info help");
-            Logger.Log("   -ilasm - provides direct access to ILasm. Just type your args behind and let ILasm do its stuff. Still encased in Halcyon");
-            Logger.Log("   -ilasmhelp - provides you with that nifty help string it gives you everytime you forget to type");
+            Logger.Log("   -exec <ilasm|al|ildasm> - allows you to run these through managed code (Halcyon)");
             Logger.Log("   -exit exits the program safely");
         }
         /// <summary>
@@ -37,6 +40,10 @@ namespace Halcyon.Utils
             Logger.LogNoNl("   version - Prints current version of Halcyon\n");
             return;
         }
+        /// <summary>
+        /// Provides user with the info piece they requested with -info command;
+        /// </summary>
+        /// <param name="arg"></param>
         public static void giveInfo(string arg)
         {
             switch (arg)
@@ -189,6 +196,20 @@ namespace Halcyon.Utils
                 }
             }
             return item;
+        }
+        /// <summary>
+        /// Prints "help string" of WrapperSelector
+        /// </summary>
+        public static void printExecHelp()
+        {
+            Logger.Log("Halcyon Exec aka WrapperSelector is a Halcyon utility for executing several .NET tools from managed code.");
+            Logger.Log("-exec command is an example of using WrapperSelector at command-line.");
+            Logger.Log("Available Options:");
+            Logger.Log("   ilasm <any options and file name> - runs ILasm with the specified args");
+            Logger.Log("   al <any options and file names> - runs AssemblyLinker with the specified args");
+            Logger.Log("   ildasm <any options and file name> runs ILdasm with the specified args");
+            Logger.Log("Note that everything is in early stages, so there are still some imperfections");
+            Logger.Log("NOTE: using any -exec without <any options and file name> will most likely print it's help string. Only ILdasm doesn't have one so far, so I will have to write it by hand once I have enough docs");
         }
     }
 }

@@ -28,6 +28,7 @@ namespace Halcyon
                     AssemblyLinkerProgram.AssemblyLinkerCommand(args.Skip(1).ToArray().JoinToString(" "));
                     break;
                 case "help":
+                    GeneralUtils.printExecHelp();
                     break;
             }
         }

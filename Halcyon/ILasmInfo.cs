@@ -19,6 +19,7 @@ namespace Halcyon
         public static event EventHandler OnLoad = delegate { };
         public static event EventHandler OnBuild = delegate { };
         private static string _CommandLine;
+        public static char equationChar = '=';
         public static bool BenevolentOptions = false;
         public static string CommandLine
         {
@@ -140,7 +141,6 @@ namespace Halcyon
         /// <param name="pos"></param>
         public static void SelectOption(ILasm option, string extraInfo, Position pos)
         {
-            string temp = "";
             if (Enum.IsDefined(typeof(ILasmExtra), option) && String.IsNullOrEmpty(extraInfo))
             {
                 Exceptions.Exception(14);
@@ -178,16 +178,16 @@ namespace Halcyon
                 switch (pos)
                 {
                     case Position.PRESTART:
-                        PreOptions.Insert(0, Options[option] + "=" + extraInfo);
+                        PreOptions.Insert(0, Options[option] + equationChar + extraInfo);
                         break;
                     case Position.PRE:
-                        PreOptions.Add(Options[option] + "=" + extraInfo);
+                        PreOptions.Add(Options[option] + equationChar + extraInfo);
                         break;
                     case Position.POSTSTART:
-                        PostOptions.Insert(0, Options[option] + "=" + extraInfo);
+                        PostOptions.Insert(0, Options[option] + equationChar + extraInfo);
                         break;
                     case Position.POST:
-                        PostOptions.Add(Options[option] + "=" + extraInfo);
+                        PostOptions.Add(Options[option] + equationChar + extraInfo);
                         break;
                 }
             }
