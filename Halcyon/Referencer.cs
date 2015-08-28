@@ -26,7 +26,10 @@ namespace Halcyon
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
             LoadAssemblies();
         }
-
+        /// <summary>
+        /// After finishing the compilation/conversion job, always DeInitialize referencer. 
+        /// It basically resets it to a state in which all them assemblies can be
+        /// </summary>
         public static void DeInitialize()
         {
             Folder = "";
@@ -35,6 +38,9 @@ namespace Halcyon
             LoadedAssemblies.Clear();
             Logger.TalkyLog("Referencer restarted.");
         }
+        /// <summary>
+        /// Loads all assemblies from folder where target .halcyon file is
+        /// </summary>
         public static void LoadAssemblies()
         {
             string ignoredFilesPath = Path.Combine(Folder, "ignore");
@@ -74,7 +80,12 @@ namespace Halcyon
             }
             RegisterAssemblies();
         }
-
+        /// <summary>
+        /// Hooking up onto AssemblyResolveEvent to be able to register even already resolved assemblies.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public static System.Reflection.Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
             string fileName = args.Name.Split(',')[0];
@@ -100,23 +111,45 @@ namespace Halcyon
             }
             return null;
         }
+        /// <summary>
+        /// Registers the names, publickeytokens in the form of blobs and versions of all resolved assemblies to AssemblyInfos so they can be later retrieved in ReferenceString
+        /// or whatever needs them.
+        /// </summary>
         public static void RegisterAssemblies()
         {
             foreach (Assembly assembly in LoadedAssemblies.Values)
             {
-                if(!AssemblyInfos.ContainsKey(assembly.GetName().Name))
+                if (!AssemblyInfos.ContainsKey(assembly.GetName().Name))
                 {
                     AssemblyInfos.Add(assembly.GetName().Name, new ValuePair<string, string>(CodeUtils.ToBlob(assembly.GetName().GetPublicKeyToken()), string.Format(".ver {0}:{1}:{2}:{3}",
                     assembly.GetName().Version.Major.ToString(),
                     assembly.GetName().Version.Minor.ToString(),
                     assembly.GetName().Version.Build.ToString(),
                     assembly.GetName().Version.Revision.ToString())));
-                }
+
                     Logger.TalkyLog("registering ", assembly.GetName().Name, CodeUtils.ToBlob(assembly.GetName().GetPublicKeyToken()), string.Format(".ver {0}:{1}:{2}:{3}",
                         assembly.GetName().Version.Major.ToString(),
                         assembly.GetName().Version.Minor.ToString(),
                         assembly.GetName().Version.Build.ToString(),
                         assembly.GetName().Version.Revision.ToString()));
+                }
+            }
+            foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                if (!AssemblyInfos.ContainsKey(assembly.GetName().Name))
+                {
+                    AssemblyInfos.Add(assembly.GetName().Name, new ValuePair<string, string>(CodeUtils.ToBlob(assembly.GetName().GetPublicKeyToken()), string.Format(".ver {0}:{1}:{2}:{3}",
+                    assembly.GetName().Version.Major.ToString(),
+                    assembly.GetName().Version.Minor.ToString(),
+                    assembly.GetName().Version.Build.ToString(),
+                    assembly.GetName().Version.Revision.ToString())));
+
+                    Logger.TalkyLog("registering ", assembly.GetName().Name, CodeUtils.ToBlob(assembly.GetName().GetPublicKeyToken()), string.Format(".ver {0}:{1}:{2}:{3}",
+                        assembly.GetName().Version.Major.ToString(),
+                        assembly.GetName().Version.Minor.ToString(),
+                        assembly.GetName().Version.Build.ToString(),
+                        assembly.GetName().Version.Revision.ToString()));
+                }
             }
         }
         /// <summary>
