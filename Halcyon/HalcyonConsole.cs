@@ -20,6 +20,7 @@ namespace Halcyon
             ArrayManipulators<string> arrman = new ArrayManipulators<string>();
             string[] args = arrman.RemoveEmptyEntries(str.RemoveWhiteSpace().Split(Convert.ToChar(" ")));
             Config.Save();
+            Logger.SaveLog();
             Referencer.DeInitialize();
             switch (args.Count())
             {

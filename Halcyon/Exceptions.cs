@@ -64,6 +64,8 @@ namespace Halcyon.Errors
                 Add(20, "Expected string convertible to integer");
                 Add(21, "Failed to fetch publickeytoken of a referenced assembly:");
                 Add(22, "Path needs to be either absolute or start with -\\");
+                Add(23, "AL executable not found. Please pay attention to INSTALL.md. Also if you changed filenames in config, make sure they at least match.");
+                Add(24, "ILasm executable not found. Please pay attention to INSTALL.md. Also if you changed filenames in config, make sure they at least match.");
                 Add(69, "Too many exceptions, are you fucking kidding me??");
                 Initiated = true;
             }

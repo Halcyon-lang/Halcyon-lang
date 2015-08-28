@@ -1,4 +1,5 @@
-﻿using Halcyon.Logging;
+﻿using Halcyon.Errors;
+using Halcyon.Logging;
 using Halcyon.Utils;
 using System;
 using System.Collections.Generic;
@@ -28,39 +29,53 @@ namespace Halcyon
         /// <param name="FinalFile"></param>
         public static void ILasm(string FinalFile)
         {
-            CreateTemporary(FinalFile);
-            if (!ILasmInfo.Built)
+            if (File.Exists(System.IO.Path.Combine(Environment.CurrentDirectory, Config.ILasmExecutableName)))
             {
-                ILasmInfo.name = "halc.tmp";
-                ILasmInfo.BuildOptions();
+                CreateTemporary(FinalFile);
+                if (!ILasmInfo.Built)
+                {
+                    ILasmInfo.name = "halc.tmp";
+                    ILasmInfo.BuildOptions();
+                }
+                Process ILasmProc = new Process();
+                ILasmProc.StartInfo.Arguments = ILasmInfo.CommandLine;
+                ILasmProc.StartInfo.FileName = Config.ILasmExecutableName;
+                ILasmProc.StartInfo.UseShellExecute = false;
+                ILasmProc.StartInfo.RedirectStandardOutput = true;
+                ILasmProc.StartInfo.CreateNoWindow = true;
+                ILasmProc.Start();
+                output = ILasmProc.StandardOutput;
+                Logger.Log(output.ReadToEnd());
+                DeleteTemporary();
+                Logger.Log("\nIlasm job done.");
+                Logger.SaveLog();
             }
-            Process ILasmProc = new Process();
-            ILasmProc.StartInfo.Arguments = ILasmInfo.CommandLine;
-            ILasmProc.StartInfo.FileName = Config.ILasmExecutableName;
-            ILasmProc.StartInfo.UseShellExecute = false;
-            ILasmProc.StartInfo.RedirectStandardOutput = true;
-            ILasmProc.StartInfo.CreateNoWindow = true;
-            ILasmProc.Start();
-            output = ILasmProc.StandardOutput;
-            Logger.Log(output.ReadToEnd());
-            DeleteTemporary();
-            Logger.Log("\nIlasm job done.");
-            Logger.SaveLog();
+            else
+            {
+                Exceptions.Exception(24);
+            }
         }
         public static void ILasmCommand(string CommandLine)
         {
-            Logger.Log("Ilasm started");
-            Process ILasmProc = new Process();
-            ILasmProc.StartInfo.Arguments = CommandLine;
-            ILasmProc.StartInfo.FileName = Config.ILasmExecutableName;
-            ILasmProc.StartInfo.UseShellExecute = false;
-            ILasmProc.StartInfo.RedirectStandardOutput = true;
-            ILasmProc.StartInfo.CreateNoWindow = true;
-            ILasmProc.Start();
-            output = ILasmProc.StandardOutput;
-            Logger.Log(output.ReadToEnd());
-            Logger.Log("\nIlasm job done.");
-            Logger.SaveLog();
+            if (File.Exists(System.IO.Path.Combine(Environment.CurrentDirectory, Config.ILasmExecutableName)))
+            {
+                Logger.Log("Ilasm started");
+                Process ILasmProc = new Process();
+                ILasmProc.StartInfo.Arguments = CommandLine;
+                ILasmProc.StartInfo.FileName = Config.ILasmExecutableName;
+                ILasmProc.StartInfo.UseShellExecute = false;
+                ILasmProc.StartInfo.RedirectStandardOutput = true;
+                ILasmProc.StartInfo.CreateNoWindow = true;
+                ILasmProc.Start();
+                output = ILasmProc.StandardOutput;
+                Logger.Log(output.ReadToEnd());
+                Logger.Log("\nIlasm job done.");
+                Logger.SaveLog();
+            }
+            else
+            {
+                Exceptions.Exception(24);
+            }
         }
         /// <summary>
         /// Creates temporary file requiered for execution of ILasm.

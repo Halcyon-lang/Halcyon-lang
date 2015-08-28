@@ -1,4 +1,5 @@
-﻿using Halcyon.Logging;
+﻿using Halcyon.Errors;
+using Halcyon.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -22,35 +23,49 @@ namespace Halcyon
         /// <param name="FinalFile"></param>
         public static void AssemblyLinker()
         {
-            if (!AssemblyLinkerInfo.Built)
+            if (File.Exists(Path.Combine(Environment.CurrentDirectory, Config.ALExecutableName)))
             {
-                AssemblyLinkerInfo.BuildOptions();
+                if (!AssemblyLinkerInfo.Built)
+                {
+                    AssemblyLinkerInfo.BuildOptions();
+                }
+                Process ALProc = new Process();
+                ALProc.StartInfo.Arguments = AssemblyLinkerInfo.CommandLine;
+                ALProc.StartInfo.FileName = Config.ALExecutableName;
+                ALProc.StartInfo.UseShellExecute = false;
+                ALProc.StartInfo.RedirectStandardOutput = true;
+                ALProc.StartInfo.CreateNoWindow = true;
+                ALProc.Start();
+                output = ALProc.StandardOutput;
+                Logger.Log(output.ReadToEnd());
+                Logger.Log("\nAssemblyLinker job done.");
+                Logger.SaveLog();
             }
-            Process ALProc = new Process();
-            ALProc.StartInfo.Arguments = AssemblyLinkerInfo.CommandLine;
-            ALProc.StartInfo.FileName = Config.ALExecutableName;
-            ALProc.StartInfo.UseShellExecute = false;
-            ALProc.StartInfo.RedirectStandardOutput = true;
-            ALProc.StartInfo.CreateNoWindow = true;
-            ALProc.Start();
-            output = ALProc.StandardOutput;
-            Logger.Log(output.ReadToEnd());
-            Logger.Log("\nAssemblyLinker job done.");
-            Logger.SaveLog();
+            else
+            {
+                Exceptions.Exception(23);
+            }
         }
-        public static void Assembly(string CommandLine)
+        public static void AssemblyLinkerCommand(string CommandLine)
         {
-            Process ALProc = new Process();
-            ALProc.StartInfo.Arguments = CommandLine;
-            ALProc.StartInfo.FileName = Config.ILasmExecutableName;
-            ALProc.StartInfo.UseShellExecute = false;
-            ALProc.StartInfo.RedirectStandardOutput = true;
-            ALProc.StartInfo.CreateNoWindow = true;
-            ALProc.Start();
-            output = ALProc.StandardOutput;
-            Logger.Log(output.ReadToEnd());
-            Logger.Log("\nAssemblyLinker job done.");
-            Logger.SaveLog();
+            if (File.Exists(Path.Combine(Environment.CurrentDirectory, Config.ALExecutableName)))
+            {
+                Process ALProc = new Process();
+                ALProc.StartInfo.Arguments = CommandLine;
+                ALProc.StartInfo.FileName = Config.ALExecutableName;
+                ALProc.StartInfo.UseShellExecute = false;
+                ALProc.StartInfo.RedirectStandardOutput = true;
+                ALProc.StartInfo.CreateNoWindow = true;
+                ALProc.Start();
+                output = ALProc.StandardOutput;
+                Logger.Log(output.ReadToEnd());
+                Logger.Log("\nAssemblyLinker job done.");
+                Logger.SaveLog();
+            }
+            else
+            {
+                Exceptions.Exception(23);
+            }
         }
     }
 }
