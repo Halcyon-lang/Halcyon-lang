@@ -15,7 +15,6 @@ namespace Halcyon
     public static class Referencer
     {
         public static string Folder;
-        public static string AssemblyBlock;
         public static Dictionary<string, ValuePair<string, string>> AssemblyInfos = new Dictionary<string,ValuePair<string,string>>();
         public static readonly Dictionary<string, Assembly> LoadedAssemblies = new Dictionary<string, Assembly>();
 
@@ -33,7 +32,6 @@ namespace Halcyon
         public static void DeInitialize()
         {
             Folder = "";
-            AssemblyBlock = "";
             AssemblyInfos.Clear();
             LoadedAssemblies.Clear();
             Logger.TalkyLog("Referencer restarted.");
