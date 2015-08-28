@@ -285,13 +285,18 @@ namespace Halcyon
             if (!e.Handled)
             {
                 Logger.TalkyLog("Post-preprocessor actions started");
-                if (Preprocessor.onlySaveAfterPreprocess)
+                if (Program.Mode == HalcyonMode.Preprocess)
                 {
                     Logger.TalkyLog("Writing file " + Path.GetFileNameWithoutExtension(Preprocessor.FilePath) + ".halp");
                     System.IO.StreamWriter output = new System.IO.StreamWriter(Path.Combine(Environment.CurrentDirectory, Path.GetFileNameWithoutExtension(Preprocessor.FilePath) + ".halp"));
                     output.Write(Preprocessor.PreprocessedFile + "\n");
                     output.Close();
                     Logger.SaveLog();
+                }
+                else
+                {
+                    Logger.TalkyLog("Preprocessing completed. Procceeding to Assembly information parsing");
+
                 }
             }
         }
@@ -319,6 +324,7 @@ namespace Halcyon
                     if (System.IO.File.Exists(realPath))
                     {
                         Logger.TalkyLog("Readfile started");
+                        Program.Path = realPath;
                         Preprocessor.ReadFile(realPath);
                     }
                     else

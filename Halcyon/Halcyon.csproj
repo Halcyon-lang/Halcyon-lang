@@ -113,9 +113,12 @@
     <Compile Include="ContentManager.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="ILasm.cs" />
+    <Compile Include="Parser.cs" />
+    <Compile Include="Referencer.cs" />
     <Compile Include="TargetAssembly.cs" />
     <Compile Include="Utils\ArrayExtensions.cs" />
     <Compile Include="Utils\BooleanUtils.cs" />
+    <Compile Include="Utils\CodeUtils.cs" />
     <Compile Include="Utils\DateTimeParser.cs" />
     <Compile Include="Utils\DateTimeUtils.cs" />
     <Compile Include="Element.cs" />

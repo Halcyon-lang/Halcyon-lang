@@ -16,6 +16,7 @@ namespace Halcyon
     {
         public static string[] consoleArgs;
         public static bool Talkative = false;
+        public static string Path;
         public static HalcyonMode Mode;
         /// <summary>
         /// Events

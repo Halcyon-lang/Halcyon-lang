@@ -18,6 +18,7 @@ namespace Halcyon
                 case "-compile":
                     Logger.TalkyLog("And here would I place normal compiler, IF I HAD ONE");
                     Logger.TalkyLog("Wait, I atleast do have Preprocessor!");
+                    Program.Mode = HalcyonMode.Compile;
                     Preprocessor.LoadFile(args[1]);
                     Console.Write("Halcyon:");
                     Console.Title = "Halcyon Compiler";
@@ -30,7 +31,7 @@ namespace Halcyon
                     break;
                 case "-preprocess":
                     Logger.TalkyLog("I only preprocess");
-                    Preprocessor.onlySaveAfterPreprocess = true;
+                    Program.Mode = HalcyonMode.Preprocess;
                     Preprocessor.LoadFile(args[1]);
                     Console.Write("Halcyon:");
                     Console.Title = "Halcyon Compiler";
@@ -45,6 +46,7 @@ namespace Halcyon
                 case "-convert":
                     Logger.TalkyLog("And here would I place conversion-only compiler, IF I HAD ONE");
                     Logger.TalkyLog("Wait, I atleast do have Preprocessor!");
+                    Program.Mode = HalcyonMode.Convert;
                     Preprocessor.LoadFile(args[1]);
                     Console.Write("Halcyon:");
                     Console.Title = "Halcyon Compiler";
@@ -52,6 +54,7 @@ namespace Halcyon
                     break;
                 case "-result":
                     Logger.TalkyLog("And here would I place line result, IF I HAD ONE");
+                    Program.Mode = HalcyonMode.Result;
                     Console.Write("Halcyon:");
                     Console.Title = "Halcyon Compiler";
                     HalcyonConsole.Command(Console.ReadLine());

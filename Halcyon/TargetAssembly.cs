@@ -9,7 +9,9 @@ namespace Halcyon
     /// <summary>
     /// Contains information about the assembly which is to be built.
     /// </summary>
-    public class TargetAssembly
+    public static class TargetAssembly
     {
+        public static string Name;
+        public static List<string> References;
     }
 }

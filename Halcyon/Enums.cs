@@ -103,7 +103,7 @@ namespace Halcyon
         Convert,
         Compile,
         Result,
-        //Don't use, it is for testing and its functions changes quickly. Usually does some odd stuff.
+        //Don't use, it is for testing and its function changes quickly. Usually does some odd stuff.
         Special
     }
 }
