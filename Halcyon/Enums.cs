@@ -106,4 +106,84 @@ namespace Halcyon
         //Don't use, it is for testing and its function changes quickly. Usually does some odd stuff.
         Special
     }
+    public enum AssemblyLinker
+    {
+        HELP = 0,
+        ALGID = 1,
+        BASE = 2,
+        BUGREPORT = 3,
+        COMP = 4,
+        CONFIG = 5,
+        COPY = 6,
+        C = 7,
+        DELAY = 8,
+        DESCR = 9,
+        E = 10,
+        FILEVERSION = 11,
+        FLAGS = 12,
+        FULLPATHS = 13,
+        KEYF = 14,
+        KEYN = 15,
+        MAIN = 16,
+        NOLOGO = 17,
+        OUT = 18,
+        PLATFORM = 19,
+        PROD = 20,
+        PRODUCTV = 21,
+        SUBSYSTEMVERSION = 22,
+        T = 23,
+        TEMPLATE = 24,
+        TITLE = 25,
+        TRADE = 26,
+        V = 27,
+        WIN32ICON = 28,
+        WIN32RES = 29,
+        EMBED = 30,
+        LINK = 31
+    }
+    public enum AssemblyLinkerRegular
+    {
+        HELP = 0,
+        FULLPATHS = 13,
+        NOLOGO = 17
+    }
+    public enum AssemblyLinkerExtra
+    {
+        ALGID = 1,
+        BASE = 2,
+        BUGREPORT = 3,
+        COMP = 4,
+        CONFIG = 5,
+        COPY = 6,
+        C = 7,
+        DELAY = 8,
+        DESCR = 9,
+        E = 10,
+        FILEVERSION = 11,
+        FLAGS = 12,
+        KEYF = 14,
+        KEYN = 15,
+        MAIN = 16,
+        OUT = 18,
+        PLATFORM = 19,
+        PROD = 20,
+        PRODUCTV = 21,
+        SUBSYSTEMVERSION = 22,
+        T = 23,
+        TEMPLATE = 24,
+        TITLE = 25,
+        TRADE = 26,
+        V = 27,
+        WIN32ICON = 28,
+        WIN32RES = 29,
+        EMBED = 30,
+        LINK = 31
+    }
+    public enum AssemblyLinkerAddResult
+    {
+        SUCCESS,
+        FAIL,
+        EXISTS,
+        OVERWRITE
+    }
 }

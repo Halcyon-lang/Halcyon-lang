@@ -39,6 +39,7 @@ namespace Halcyon
         public static string logName { get { return (string)GetValue("logName", (object)"Halcyon.log"); } set { TryUpdateKey("logName", value); } }
         public static bool benevolentOptions { get { return BooleanUtils.ParseBool((string)GetValue("benevolentOptions", (object)false)); } set { TryUpdateKey("benevolentOptions", (object)value); } }
         public static string ILasmExecutableName { get { return (string)GetValue("ILasmExecutableName", (object)"ilasm.exe"); } set { TryUpdateKey("ILasmExecutableName", (object)value); } }
+        public static string ALExecutableName { get { return (string)GetValue("ALExecutableName", (object)"al.exe"); } set { TryUpdateKey("ALExecutableName", (object)value); } }
         private static string SavePath { get { return Path.Combine(Environment.CurrentDirectory, @"Halcyon.cfg"); } }
         private static bool Initialized = false;
        
