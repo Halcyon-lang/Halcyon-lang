@@ -119,15 +119,23 @@ namespace Halcyon
                         assembly.GetName().Version.Revision.ToString()));
             }
         }
-
+        /// <summary>
+        /// Generates whole .assembly extern block for referencing another assembly. 
+        /// The referenced assembly must be in the same folder as .halcyon file which is being converted/compiled
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public static string ReferenceString(string name)
         {
-            StringBuilder temp = new StringBuilder();
-            temp.AppendLine(".assembly extern " + name);
-            temp.AppendLine("{");
-            temp.AppendLine(".publickeytoken = " + AssemblyInfos[name].LeftValue);
-            temp.AppendLine(AssemblyInfos[name].RightValue);
-            temp.AppendLine("}");
+            StringBuilder temp = new StringBuilder("");
+            if (AssemblyInfos.ContainsKey(name))
+            {
+                temp.AppendLine(".assembly extern " + name);
+                temp.AppendLine("{");
+                temp.AppendLine(".publickeytoken = " + AssemblyInfos[name].LeftValue);
+                temp.AppendLine(AssemblyInfos[name].RightValue);
+                temp.AppendLine("}");
+            }
             return temp.ToString();
         }
     }
