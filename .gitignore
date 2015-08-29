@@ -83,3 +83,9 @@
 /Halcyon/bin/x86/Halcyon/ildasm.exe
 /MinimalBuild/Halcyon.il
 /MinimalBuild/Halcyon.res
+/Halcyon/bin/x86/Halcyon/ILSupport.vsix
+/Halcyon/bin/x86/Halcyon/js.exe
+/Halcyon/bin/x86/Halcyon/js.log
+/Halcyon/bin/x86/Halcyon/mozglue.dll
+/Halcyon/bin/x86/Halcyon/nss3.dll
+/IL reference/ILReference.sln
