@@ -186,4 +186,29 @@ namespace Halcyon
         EXISTS,
         OVERWRITE
     }
+    public enum ILdasm
+    {
+        OUT = 0
+    }
+    public enum ILdasmRegular
+    {
+
+    }
+    public enum ILdasmExtra
+    {
+        OUT = 0
+    }
+
+    public enum ILdasmAddResult
+    {
+        SUCCESS,
+        FAIL,
+        EXISTS,
+        OVERWRITE
+    }
+    public enum SpeechMode
+    {
+        Silent,
+        Normal
+    }
 }

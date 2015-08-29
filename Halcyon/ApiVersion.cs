@@ -17,7 +17,7 @@ namespace Halcyon
         /// <summary>
         /// Halcyon's minor version
         /// </summary>
-        public static int Minor = 3;
+        public static int Minor = 5;
         /// <summary>
         /// IL Assembler (ILasm) wrapper major version
         /// </summary>
@@ -25,7 +25,7 @@ namespace Halcyon
         /// <summary>
         /// IL Assembler (ILasm) wrapper minor version
         /// </summary>
-        public static int ILasmMinor = 2;
+        public static int ILasmMinor = 4;
         /// <summary>
         /// AssemblyLinker (AL) wrapper major version
         /// </summary>
@@ -33,7 +33,15 @@ namespace Halcyon
         /// <summary>
         /// AssemblyLinker (AL) wrapper minor version
         /// </summary>
-        public static int ALMinor = 1;
+        public static int ALMinor = 2;
+        /// <summary>
+        /// IL Disassembler (ILdasm) wrapper major version
+        /// </summary>
+        public static int ILdasmMajor = 0;
+        /// <summary>
+        /// IL Disassembler (ILdasm) wrapper major version
+        /// </summary>
+        public static int ILdasmMinor = 1;
         /// <summary>
         /// WrapperSelector's major version.
         /// </summary>
@@ -41,6 +49,6 @@ namespace Halcyon
         /// <summary>
         /// WrapperSelector's minor version
         /// </summary>
-        public static int WrapperMinor = 1;
+        public static int WrapperMinor = 2;
     }
 }

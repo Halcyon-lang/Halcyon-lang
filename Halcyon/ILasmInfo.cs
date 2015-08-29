@@ -8,6 +8,10 @@ using Halcyon.Errors;
 
 namespace Halcyon
 {
+    /// <summary>
+    /// Contains information used by ILasm
+    /// Allows to programatically select commandline options from an enum
+    /// </summary>
     public static class ILasmInfo
     {
         /// <summary>
@@ -46,7 +50,7 @@ namespace Halcyon
         /// <summary>
         /// Char used by wrapped executable for equations between option name and value
         /// </summary>
-        public static char equationChar = '=';
+        public static char EquationChar = '=';
         /// <summary>
         /// Whether ignore type of options or not
         /// </summary>
@@ -223,16 +227,16 @@ namespace Halcyon
                 switch (pos)
                 {
                     case Position.PRESTART:
-                        PreOptions.Insert(0, Options[option] + equationChar + extraInfo);
+                        PreOptions.Insert(0, Options[option] + EquationChar + extraInfo);
                         break;
                     case Position.PRE:
-                        PreOptions.Add(Options[option] + equationChar + extraInfo);
+                        PreOptions.Add(Options[option] + EquationChar + extraInfo);
                         break;
                     case Position.POSTSTART:
-                        PostOptions.Insert(0, Options[option] + equationChar + extraInfo);
+                        PostOptions.Insert(0, Options[option] + EquationChar + extraInfo);
                         break;
                     case Position.POST:
-                        PostOptions.Add(Options[option] + equationChar + extraInfo);
+                        PostOptions.Add(Options[option] + EquationChar + extraInfo);
                         break;
                 }
             }

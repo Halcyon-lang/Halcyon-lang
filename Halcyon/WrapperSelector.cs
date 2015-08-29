@@ -27,6 +27,11 @@ namespace Halcyon
                     Logger.TalkyLog(args.Skip(1).ToArray().JoinToString(" "));
                     AssemblyLinkerProgram.AssemblyLinkerCommand(args.Skip(1).ToArray().JoinToString(" "));
                     break;
+                case "ildasm":
+                    Logger.Log(string.Format("ILdasm wrapper v{0}.{1}", ApiVersion.ILdasmMajor, ApiVersion.ILdasmMinor));
+                    Logger.TalkyLog(args.Skip(1).ToArray().JoinToString(" "));
+                    ILdasmProgram.ILdasmCommand(args.Skip(1).ToArray().JoinToString(" "));
+                    break;
                 case "help":
                     GeneralUtils.printExecHelp();
                     break;

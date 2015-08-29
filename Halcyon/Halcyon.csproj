@@ -118,6 +118,8 @@
     <Compile Include="ContentManager.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="ILasm.cs" />
+    <Compile Include="ILdasm.cs" />
+    <Compile Include="ILdasmInfo.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="Referencer.cs" />
     <Compile Include="TargetAssembly.cs" />

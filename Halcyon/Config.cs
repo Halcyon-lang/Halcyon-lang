@@ -40,6 +40,7 @@ namespace Halcyon
         public static bool benevolentOptions { get { return BooleanUtils.ParseBool((string)GetValue("benevolentOptions", (object)false)); } set { TryUpdateKey("benevolentOptions", (object)value); } }
         public static string ILasmExecutableName { get { return (string)GetValue("ILasmExecutableName", (object)"ilasm.exe"); } set { TryUpdateKey("ILasmExecutableName", (object)value); } }
         public static string ALExecutableName { get { return (string)GetValue("ALExecutableName", (object)"al.exe"); } set { TryUpdateKey("ALExecutableName", (object)value); } }
+        public static string ILdasmExecutableName { get { return (string)GetValue("ILdasmExecutableName", (object)"ildasm.exe"); } set { TryUpdateKey("ILdasmExecutableName", (object)value); } }
         private static string SavePath { get { return Path.Combine(Environment.CurrentDirectory, @"Halcyon.cfg"); } }
         private static bool Initialized = false;
        
@@ -202,6 +203,7 @@ namespace Halcyon
             sw.WriteLine("benevolentOptions = " + GetValue("benevolentOptions", (object)"false").ToString()); 
             sw.WriteLine("ILasmExecutableName = " + GetValue("ILasmExecutableName", (object)"ilasm.exe").ToString());
             sw.WriteLine("ALExecutableName = " + GetValue("ALExecutableName", (object)"al.exe").ToString());
+            sw.WriteLine("ILdasmExecutableName = " + GetValue("ILdasmExecutableName", (object)"ildasm.exe").ToString());
             sw.Close();
             OnSave(null, EventArgs.Empty);
         }
