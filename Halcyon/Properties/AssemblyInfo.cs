@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Halcyon")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Programming language with similar workings like C and C# compiling to managed assemblies and a wrapper for several .NET utilities to allow their use in managed code without a hassle.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Halcyon")]
 [assembly: AssemblyProduct("Halcyon")]
