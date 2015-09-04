@@ -37,10 +37,8 @@ namespace Halcyon.Errors
                 if (ExceptionsSoFar == 49) Exception(69);
             }
         }
-        public static void initExceptions()
+        static Exceptions()
         {
-            if (!Initiated)
-            {
                 Add(0, "Invalid number of command-line arguments");
                 Add(1, "Exception does not exist");
                 Add(2, "Target file not found");
@@ -66,9 +64,9 @@ namespace Halcyon.Errors
                 Add(22, "Path needs to be either absolute or start with -\\");
                 Add(23, "AL executable not found. Please pay attention to INSTALL.md. Also if you changed filenames in config, make sure they at least match.");
                 Add(24, "ILasm executable not found. Please pay attention to INSTALL.md. Also if you changed filenames in config, make sure they at least match.");
+                Add(25, "File does not start with assembly-block, if you intend to preprocess something else then code, use -preprocess compiler command.");
+                Add(26, "Could not parse bool in config. Presuming false");
                 Add(69, "Too many exceptions, are you fucking kidding me??");
-                Initiated = true;
-            }
         }
     }
 }

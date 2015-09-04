@@ -1,4 +1,5 @@
-﻿using Halcyon.Logging;
+﻿using Halcyon.Errors;
+using Halcyon.Logging;
 using Halcyon.Utils;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace Halcyon
         public static string File = "";
         public static void Start(string file)
         {
+            Logger.TalkyLog("Parsing started");
             File = file;
             if (CodeUtils.RemoveEmptyLines(File).StartsWith("assembly", StringComparison.CurrentCultureIgnoreCase))
             {
@@ -20,6 +22,10 @@ namespace Halcyon
                 Logger.TalkyLog("AssemblyBlock: ");
                 Logger.TalkyLog(assemblyblock);
                 AssemblyInfoParser.Parse(assemblyblock);
+            }
+            else if (!CodeUtils.RemoveEmptyLines(File).StartsWith("assembly", StringComparison.CurrentCultureIgnoreCase) && Program.Mode != HalcyonMode.Preprocess)
+            {
+                Exceptions.Exception(25);
             }
         }
     }
@@ -50,12 +56,14 @@ namespace Halcyon
             foreach (string rawstatement in rawstatements)
             {
                 statements.Add(rawstatement.RemoveWhiteSpace());
+                Logger.TalkyLog("statement: " + rawstatement);
             }
         }
 
         public static void SetName(string assemblypart)
         {
             TargetAssembly.Name = assemblypart.Replace("assembly", "").Trim();
+            Logger.TalkyLog(TargetAssembly.Name);
         }
     }
 }

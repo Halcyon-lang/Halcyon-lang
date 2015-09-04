@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Halcyon.Errors;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,18 +9,32 @@ namespace Halcyon.Utils
 {
     public static class BooleanUtils
     {
-        public static bool ParseBool(string source)
+        public static bool ParseBool(object source)
         {
-            if (source.ToLower().Trim() == "false")
+            if (source is string)
             {
-                return false;
+                string src = (string)source;
+                if (src.ToLower().Trim() == "false")
+                {
+                    return false;
+                }
+                else if (src.ToLower().Trim() == "true")
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
-            else if (source.ToLower().Trim() == "true")
+            else if (source is bool)
             {
-                return true;
+                bool src = (bool)source;
+                return src;
             }
             else
             {
+                Exceptions.Exception(26);
                 return false;
             }
         }
