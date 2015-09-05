@@ -32,6 +32,16 @@ namespace Halcyon
                     Logger.TalkyLog(args.Skip(1).ToArray().JoinToString(" "));
                     ILdasmProgram.ILdasmCommand(args.Skip(1).ToArray().JoinToString(" "));
                     break;
+                case "ngen":
+                    Logger.Log(string.Format("Native Image Generator (ngen) wrapper v{0}.{1}", ApiVersion.NGENMajor, ApiVersion.NGENMinor));
+                    Logger.TalkyLog(args.Skip(1).ToArray().JoinToString(" "));
+                    NGENProgram.NGENCommand(args.Skip(1).ToArray().JoinToString(" "));
+                    break;
+                case "lc":
+                    Logger.Log(string.Format("LicenseCompiler wrapper v{0}.{1}", ApiVersion.LCMajor, ApiVersion.LCMinor));
+                    Logger.TalkyLog(args.Skip(1).ToArray().JoinToString(" "));
+                    LicenseCompilerProgram.LicenseCompilerCommand(args.Skip(1).ToArray().JoinToString(" "));
+                    break;
                 case "help":
                     GeneralUtils.printExecHelp();
                     break;
