@@ -84,6 +84,8 @@ namespace Halcyon.Errors
                 Add(24, "ILasm executable not found. Please pay attention to INSTALL.md. Also if you changed filenames in config, make sure they at least match.");
                 Add(25, "File does not start with assembly-block, if you intend to preprocess something else then code, use -preprocess compiler command.");
                 Add(26, "Could not parse bool in config. Presuming false");
+                Add(27, "LC executable not found. Make sure it is in the same folder as Halcyon");
+                Add(28, "NGEN executable not found. Make sure it is in the same folder as Halcyon");
                 Add(69, "Too many exceptions, are you fucking kidding me??");
         }
     }

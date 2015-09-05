@@ -34,7 +34,7 @@ namespace Halcyon
                 }
                 Process NGENProc = new Process();
                 NGENProc.StartInfo.Arguments = NGENInfo.CommandLine;
-                NGENProc.StartInfo.FileName = Config.ALExecutableName;
+                NGENProc.StartInfo.FileName = Config.NGENExecutableName;
                 NGENProc.StartInfo.UseShellExecute = false;
                 NGENProc.StartInfo.RedirectStandardOutput = true;
                 NGENProc.StartInfo.CreateNoWindow = true;
@@ -65,7 +65,7 @@ namespace Halcyon
                 }
                 Process NGENProc = new Process();
                 NGENProc.StartInfo.Arguments = NGENInfo.CommandLine;
-                NGENProc.StartInfo.FileName = Config.ALExecutableName;
+                NGENProc.StartInfo.FileName = Config.NGENExecutableName;
                 NGENProc.StartInfo.UseShellExecute = false;
                 NGENProc.StartInfo.RedirectStandardOutput = true;
                 NGENProc.StartInfo.CreateNoWindow = true;
@@ -93,7 +93,7 @@ namespace Halcyon
             {
                 Process NGENProc = new Process();
                 NGENProc.StartInfo.Arguments = CommandLine;
-                NGENProc.StartInfo.FileName = Config.ALExecutableName;
+                NGENProc.StartInfo.FileName = Config.NGENExecutableName;
                 NGENProc.StartInfo.UseShellExecute = false;
                 NGENProc.StartInfo.RedirectStandardOutput = true;
                 NGENProc.StartInfo.CreateNoWindow = true;
@@ -121,7 +121,7 @@ namespace Halcyon
             {
                 Process NGENProc = new Process();
                 NGENProc.StartInfo.Arguments = CommandLine;
-                NGENProc.StartInfo.FileName = Config.ALExecutableName;
+                NGENProc.StartInfo.FileName = Config.NGENExecutableName;
                 NGENProc.StartInfo.UseShellExecute = false;
                 NGENProc.StartInfo.RedirectStandardOutput = true;
                 NGENProc.StartInfo.CreateNoWindow = true;

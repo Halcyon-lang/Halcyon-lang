@@ -42,6 +42,8 @@ namespace Halcyon
         public static string ILasmExecutableName { get { return (string)GetValue("ILasmExecutableName", (object)"ilasm.exe"); } set { TryUpdateKey("ILasmExecutableName", (object)value); } }
         public static string ALExecutableName { get { return (string)GetValue("ALExecutableName", (object)"al.exe"); } set { TryUpdateKey("ALExecutableName", (object)value); } }
         public static string ILdasmExecutableName { get { return (string)GetValue("ILdasmExecutableName", (object)"ildasm.exe"); } set { TryUpdateKey("ILdasmExecutableName", (object)value); } }
+        public static string LCExecutableName { get { return (string)GetValue("LCExecutableName", (object)"lc.exe"); } set { TryUpdateKey("LCExecutableName", (object)value); } }
+        public static string NGENExecutableName { get { return (string)GetValue("NGENExecutableName", (object)"ngen.exe"); } set { TryUpdateKey("NGENExecutableName", (object)value); } }
         private static string SavePath { get { return Path.Combine(Environment.CurrentDirectory, @"Halcyon.cfg"); } }
         public static bool ConsoleEnabled { get { return (bool)BooleanUtils.ParseBool(GetValue("ConsoleEnabled", (object)true)); } }
         private static bool Initialized = false;
@@ -131,7 +133,7 @@ namespace Halcyon
         /// </summary>
         public static void Load()
         {
-            StreamReader sr = new StreamReader(File.Open(Path.Combine(Environment.CurrentDirectory, @"Halcyon.cfg"), FileMode.Open));
+            StreamReader sr = new StreamReader(File.Open(SavePath, FileMode.Open));
             string content = sr.ReadToEnd();
             foreach (string line in content.Split('\n'))
             {
@@ -199,7 +201,7 @@ namespace Halcyon
         /// 
         public static void Save()
         {
-            StreamWriter sw = new StreamWriter(Path.Combine(Environment.CurrentDirectory, @"Halcyon.cfg"));
+            StreamWriter sw = new StreamWriter(SavePath);
             sw.WriteLine("defaultTalkative = " + GetValue("defaultTalkative", (object)false).ToString());
             sw.WriteLine("logName = " + GetValue("logName", (object)"Halcyon.log").ToString());
             sw.WriteLine("benevolentOptions = " + GetValue("benevolentOptions", (object)false).ToString()); 
@@ -219,7 +221,7 @@ namespace Halcyon
         {
             if (!Initialized)
             {
-                if (File.Exists(Path.Combine(Environment.CurrentDirectory, @"Halcyon.cfg")))
+                if (File.Exists(SavePath))
                 {
                     Load();
                 }

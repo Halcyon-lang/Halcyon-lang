@@ -33,7 +33,7 @@ namespace Halcyon
                 }
                 Process LCProc = new Process();
                 LCProc.StartInfo.Arguments = LicenseCompilerInfo.CommandLine;
-                LCProc.StartInfo.FileName = Config.ALExecutableName;
+                LCProc.StartInfo.FileName = Config.LCExecutableName;
                 LCProc.StartInfo.UseShellExecute = false;
                 LCProc.StartInfo.RedirectStandardOutput = true;
                 LCProc.StartInfo.CreateNoWindow = true;
@@ -64,7 +64,7 @@ namespace Halcyon
                 }
                 Process LCProc = new Process();
                 LCProc.StartInfo.Arguments = LicenseCompilerInfo.CommandLine;
-                LCProc.StartInfo.FileName = Config.ALExecutableName;
+                LCProc.StartInfo.FileName = Config.LCExecutableName;
                 LCProc.StartInfo.UseShellExecute = false;
                 LCProc.StartInfo.RedirectStandardOutput = true;
                 LCProc.StartInfo.CreateNoWindow = true;
@@ -92,7 +92,7 @@ namespace Halcyon
             {
                 Process LCProc = new Process();
                 LCProc.StartInfo.Arguments = CommandLine;
-                LCProc.StartInfo.FileName = Config.ALExecutableName;
+                LCProc.StartInfo.FileName = Config.LCExecutableName;
                 LCProc.StartInfo.UseShellExecute = false;
                 LCProc.StartInfo.RedirectStandardOutput = true;
                 LCProc.StartInfo.CreateNoWindow = true;
@@ -120,7 +120,7 @@ namespace Halcyon
             {
                 Process LCProc = new Process();
                 LCProc.StartInfo.Arguments = CommandLine;
-                LCProc.StartInfo.FileName = Config.ALExecutableName;
+                LCProc.StartInfo.FileName = Config.LCExecutableName;
                 LCProc.StartInfo.UseShellExecute = false;
                 LCProc.StartInfo.RedirectStandardOutput = true;
                 LCProc.StartInfo.CreateNoWindow = true;
