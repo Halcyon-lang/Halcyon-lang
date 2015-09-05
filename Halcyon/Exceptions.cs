@@ -15,20 +15,38 @@ namespace Halcyon.Errors
             get { return _Exceptions; }
             private set { _Exceptions = value; }
         }
-        private static bool Initiated = false;
-        public static Dictionary<int, string> list = new Dictionary<int, string>();
+        public static Dictionary<int, string> List = new Dictionary<int, string>();
         public static void Add(int id, string text)
         {
-            list.Add(id, text);
+            List.Add(id, text);
         }
         public static void Exception(int id)
         {
             ExceptionsSoFar++;
             if (ExceptionsSoFar <= 50)
             {
-                if (list.ContainsKey(id))
+                if (List.ContainsKey(id))
                 {
-                    Logger.Log(string.Format("Exception {0}: {1}", id.ToString(), list[id]));
+                    Logger.Log(string.Format("Exception {0}: {1}", id.ToString(), List[id]));
+                }
+                else
+                {
+                    Exception(1);
+                }
+                if (ExceptionsSoFar == 49) Exception(69);
+            }
+        }
+        public static void Exception(int id, Exception e)
+        {
+            ExceptionsSoFar++;
+            if (ExceptionsSoFar <= 50)
+            {
+                if (List.ContainsKey(id))
+                {
+                    Logger.Log(string.Format("Exception {0}: {1}", id.ToString(), List[id]));
+                    Logger.Log("in " + e.Source);
+                    Logger.Log(e.Message);
+                    Logger.Log(e.StackTrace);
                 }
                 else
                 {
