@@ -204,6 +204,8 @@ namespace Halcyon.Utils
             Logger.Log("   ilasm <any options and file name> - runs ILasm with the specified args");
             Logger.Log("   al <any options and file names> - runs AssemblyLinker with the specified args");
             Logger.Log("   ildasm <any options and file name> runs ILdasm with the specified args");
+            Logger.Log("   ngen <any options and file name> runs Native Image Generator (ngen) with the specified args");
+            Logger.Log("   lc <any options and file name> runs LicenseCompiler with the specified args");
             Logger.Log("Note that everything is in early stages, so there are still some imperfections");
             Logger.Log("NOTE: using any -exec without <any options and file name> will most likely print it's help string. Only ILdasm doesn't have one so far, so I will have to write it by hand once I have enough docs");
         }

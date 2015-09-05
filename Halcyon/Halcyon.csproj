@@ -122,6 +122,10 @@
     <Compile Include="ILasm.cs" />
     <Compile Include="ILdasm.cs" />
     <Compile Include="ILdasmInfo.cs" />
+    <Compile Include="LicenseCompiler.cs" />
+    <Compile Include="LicenseCompilerInfo.cs" />
+    <Compile Include="NGEN.cs" />
+    <Compile Include="NGENInfo.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="Referencer.cs" />
     <Compile Include="TargetAssembly.cs" />
