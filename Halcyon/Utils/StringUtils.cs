@@ -165,18 +165,5 @@ namespace Halcyon.Utils
         {
             return source.Length > 0 && source[source.Length - 1] == value;
         }
-        [Obsolete("This shit is imperfect. Use CodeUtils.RemoveEmptyLines instead")]
-        public static string RemoveEmptyLines(this string source)
-        {
-            StringBuilder temp = new StringBuilder();
-            foreach (string line in source.Split('\n'))
-            {
-                if (!String.IsNullOrEmpty(line))
-                {
-                    temp.AppendLine(line);
-                }
-            }
-            return temp.ToString();
-        }
     }
 }

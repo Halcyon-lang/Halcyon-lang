@@ -11,6 +11,11 @@ namespace Halcyon.Utils
     /// </summary>
     public static class CodeUtils
     {
+        /// <summary>
+        /// Divides the code into top-level code blocks
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
         public static List<string> GetCodeBlocks(string source)
         {
             List<string> Blocks = new List<string>();
@@ -49,10 +54,10 @@ namespace Halcyon.Utils
                 }
                 charIndex++;
             }
-            Temp.Replace(CurrentBlock, "");
+            Temp = Temp.Replace(CurrentBlock, "");
             Blocks.Add(CurrentBlock);
             CurrentBlock = "";
-            if (!String.IsNullOrEmpty(Temp))
+            if (!String.IsNullOrWhiteSpace(Temp))
             {
                 goto NEXTBLOCK;
             }
@@ -70,6 +75,12 @@ namespace Halcyon.Utils
             }
             return temp.ToString();
         }
+        /// <summary>
+        /// Determines whether the line in which this is included is a statement based on the following line. Make sure the next line is not whitespace
+        /// </summary>
+        /// <param name="line"></param>
+        /// <param name="nextline"></param>
+        /// <returns></returns>
         public static bool IsStatement(string line, string nextline)
         {
             if (BooleanUtils.Or(line.Contains('{') || nextline.Trim().StartsWith('{'), line.Contains('}') || nextline.Trim().StartsWith('}')))
@@ -78,6 +89,11 @@ namespace Halcyon.Utils
             }
             return true;
         }
+        /// <summary>
+        /// Converts the text into IL-readable hex blob
+        /// </summary>
+        /// <param name="blob"></param>
+        /// <returns></returns>
         public static string ToBlob(byte[] blob)
         {
             StringBuilder temp = new StringBuilder();
@@ -91,6 +107,11 @@ namespace Halcyon.Utils
             temp.Append(" )");
             return temp.ToString();
         }
+        /// <summary>
+        /// If the identifier selected by the user is not valid in IL, this function escapes it so it is still usable
+        /// </summary>
+        /// <param name="identifier"></param>
+        /// <returns></returns>
         public static string Escape(string identifier)
         {
             if (IsValidIdentifier(identifier) && ILInfo.ilKeywords.Contains(identifier))
@@ -99,6 +120,11 @@ namespace Halcyon.Utils
             }
             return "'" + ConvertString(identifier).Replace("'", "\\'") + "'";
         }
+        /// <summary>
+        /// Determines whether the string is valid as an identifier in IL
+        /// </summary>
+        /// <param name="identifier"></param>
+        /// <returns></returns>
         public static bool IsValidIdentifier(string identifier)
         {
             if (string.IsNullOrEmpty(identifier))
@@ -118,10 +144,20 @@ namespace Halcyon.Utils
             }
             return true;
         }
+        /// <summary>
+        /// Determines whether this special-character can be included in an idenfifier in IL.
+        /// </summary>
+        /// <param name="c"></param>
+        /// <returns></returns>
         public static bool IsValidIdentifierCharacter(char c)
         {
             return c == '_' || c == '$' || c == '@' || c == '?' || c == '`';
         }
+        /// <summary>
+        /// Converts string to prevent unescaped actions
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
         public static string ConvertString(string str)
         {
             StringBuilder stringBuilder = new StringBuilder();
@@ -139,6 +175,11 @@ namespace Halcyon.Utils
             }
             return stringBuilder.ToString();
         }
+        /// <summary>
+        /// Converts escaped sequences to escaped escaped sequences
+        /// </summary>
+        /// <param name="ch"></param>
+        /// <returns></returns>
         public static string ConvertChar(char ch)
         {
             char c = ch;
@@ -183,7 +224,7 @@ namespace Halcyon.Utils
             return ch.ToString();
         }
         /// <summary>
-        /// Removes every occurence of the character if it is not in a string or char literal.
+        /// Removes every occurence of the character if it does not occur in a string or char literal.
         /// </summary>
         /// <param name="?"></param>
         /// <returns></returns>

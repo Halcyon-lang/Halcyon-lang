@@ -180,20 +180,16 @@ namespace Halcyon.Utils
         /// <returns></returns>
         public static string RemoveWhiteSpace(this string item)
         {
-            bool found = false;
             foreach (char ch in item)
             {
-                if (!found)
-                {
-                    if (ch == ' ')
+                    if (ch == ' ' || ch == '\t' || ch == ' ')
                     {
                         item = item.Substring(1);
                     }
                     else
                     {
-                        found = true;
+                        break;
                     }
-                }
             }
             return item;
         }
