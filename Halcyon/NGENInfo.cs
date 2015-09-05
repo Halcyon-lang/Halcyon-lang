@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Halcyon
 {
-    public class LicenseCompilerInfo
+    public class NGENInfo
     {
         public static bool Initialized = false;
         public static bool Built = false;
-        public static Dictionary<Halcyon.LicenseCompiler, string> Options = new Dictionary<LicenseCompiler, string>();
+        public static Dictionary<Halcyon.NGEN, string> Options = new Dictionary<NGEN, string>();
         public static List<string> PreOptions = new List<string>();
         public static List<string> PostOptions = new List<string>();
         public static event EventHandler OnLoad = delegate { };
@@ -24,57 +24,60 @@ namespace Halcyon
             get { return _CommandLine; }
             private set { _CommandLine = value; }
         }
-        public static LicenseCompilerAddResult Add(LicenseCompiler option, string optionText)
+        public static NGENAddResult Add(NGEN option, string optionText)
         {
             try
             {
                 if (!Options.ContainsKey(option))
                 {
                     Options.Add(option, optionText);
-                    return LicenseCompilerAddResult.SUCCESS;
+                    return NGENAddResult.SUCCESS;
                 }
                 else
                 {
-                    return LicenseCompilerAddResult.EXISTS;
+                    return NGENAddResult.EXISTS;
                 }
             }
             catch
             {
-                return LicenseCompilerAddResult.FAIL;
+                return NGENAddResult.FAIL;
             }
         }
-        public static LicenseCompilerAddResult Add(LicenseCompiler option, string optionText, bool overwriteExisting)
+        public static NGENAddResult Add(NGEN option, string optionText, bool overwriteExisting)
         {
             try
             {
                 if (!Options.ContainsKey(option))
                 {
                     Options.Add(option, optionText);
-                    return LicenseCompilerAddResult.SUCCESS;
+                    return NGENAddResult.SUCCESS;
                 }
                 else
                 {
                     if (overwriteExisting)
                     {
-                        return LicenseCompilerAddResult.OVERWRITE;
+                        return NGENAddResult.OVERWRITE;
                     }
-                    return LicenseCompilerAddResult.EXISTS;
+                    return NGENAddResult.EXISTS;
                 }
             }
             catch
             {
-                return LicenseCompilerAddResult.FAIL;
+                return NGENAddResult.FAIL;
             }
         }
         public static void Initialize()
         {
             if (!Initialized)
             {
-                Add(LicenseCompiler.NOLOGO, "/nologo");
-                Add(LicenseCompiler.TARGET, "/target");
-                Add(LicenseCompiler.V, "/v");
-                Add(LicenseCompiler.OUTDIR, "/outdir");
-                Add(LicenseCompiler.COMPLIST, "/complist");
+                Add(NGEN.NOLOGO, "/nologo");
+                Add(NGEN.SILENT, "/silent");
+                Add(NGEN.VERBOSE, "/verbose");
+                Add(NGEN.DEBUG, "/Debug");
+                Add(NGEN.PROFILE, "/Profile");
+                Add(NGEN.NODEPENDENCIES, "/NoDependencies");
+                Add(NGEN.EXECONFIG, "/ExeConfig");
+                Add(NGEN.APPBASE, "/AppBase");
             }
             OnLoad(null, EventArgs.Empty);
         }
@@ -82,7 +85,7 @@ namespace Halcyon
         /// Laziest SelectOption
         /// </summary>
         /// <param name="option"> Option you want to add </param>
-        public static void SelectOption(LicenseCompiler option)
+        public static void SelectOption(NGEN option)
         {
             SelectOption(option, null);
         }
@@ -91,13 +94,13 @@ namespace Halcyon
         /// </summary>
         /// <param name="option"> Option you want to add </param>
         /// <param name="extraInfo"> Extra information needed to be provided too ILasmExtra Options </param>
-        public static void SelectOption(LicenseCompiler option, string extraInfo)
+        public static void SelectOption(NGEN option, string extraInfo)
         {
             SelectOption(option, extraInfo, Position.PRE);
         }
         /// <summary>
         /// Least lazy SelectOption
-        /// Provides the very best way to add options you want to use for LicenseCompiler. If option needs to have extra info provided, put it into extraInfo. 
+        /// Provides the very best way to add options you want to use for NGEN. If option needs to have extra info provided, put it into extraInfo. 
         /// SelectOptions allows you to place options at four places:
         ///     Start of options before name of the compiled file (Position.PRESTART)
         ///     End of options before name of the compiled file (Position.PRE)
@@ -108,15 +111,15 @@ namespace Halcyon
         /// <param name="option"></param>
         /// <param name="extraInfo"></param>
         /// <param name="pos"></param>
-        public static void SelectOption(LicenseCompiler option, string extraInfo, Position pos)
+        public static void SelectOption(NGEN option, string extraInfo, Position pos)
         {
-            if (Enum.IsDefined(typeof(LicenseCompilerExtra), option) && String.IsNullOrEmpty(extraInfo))
+            if (Enum.IsDefined(typeof(NGENExtra), option) && String.IsNullOrEmpty(extraInfo))
             {
                 Exceptions.Exception(14);
                 return;
             }
 
-            if (Enum.IsDefined(typeof(LicenseCompilerExtra), option))
+            if (Enum.IsDefined(typeof(NGENExtra), option))
             {
                 switch (pos)
                 {

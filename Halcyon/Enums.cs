@@ -239,4 +239,36 @@ namespace Halcyon
         OUTDIR = 2,
         I = 3
     }
+    public enum NGENAddResult
+    {
+        SUCCESS,
+        FAIL,
+        EXISTS,
+        OVERWRITE
+    }
+    public enum NGEN
+    {
+        NOLOGO = 0,
+        SILENT = 1,
+        VERBOSE = 2,
+        DEBUG = 3,
+        PROFILE = 4,
+        NODEPENDENCIES = 5,
+        EXECONFIG = 6,
+        APPBASE = 7
+    }
+    public enum NGENRegular
+    {
+        NOLOGO = 0,
+        SILENT = 1,
+        VERBOSE = 2,
+        DEBUG = 3,
+        PROFILE = 4,
+        NODEPENDENCIES = 5
+    }
+    public enum NGENExtra
+    {
+        EXECONFIG = 6,
+        APPBASE = 7
+    }
 }
