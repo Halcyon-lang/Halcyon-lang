@@ -29,7 +29,7 @@ namespace Halcyon
         /// <summary>
         /// Compilation mode
         /// </summary>
-        public static HalcyonMode Mode;
+        public static HalcyonMode Mode = HalcyonMode.None;
         /// <summary>
         /// Triggered when Halcyon exits through -exit command
         /// </summary>
@@ -46,7 +46,6 @@ namespace Halcyon
         static void Main(string[] args)
         {
             Console.Title = "Halcyon Compiler";
-            //Errors.Exceptions.initExceptions();
             Config.Initialize();
             Preprocessor.initCommonPreprocessorEvents();
             Preprocessor.initDirectives();
@@ -57,34 +56,9 @@ namespace Halcyon
             if (args != null)
             {
                 consoleArgs = args;
+                HalcyonConsole.Command(consoleArgs.JoinToString(" "));
             }
-            if (args.Count() >= 2 && args[0] == "-ilasm")
-            {
-                Logger.Log(string.Format("ILasm wrapper v{0}.{1}", ApiVersion.ILasmMinor, ApiVersion.ILasmMajor));
-                ILasmCompiler.ILasmCommand(args.Skip(1).ToArray().JoinToString(" "));
-                HalcyonConsole.Command(Console.ReadLine());
-            }
-            switch (args.Count())
-            {
-                case 0:
-                    GeneralUtils.printHelp();
-                    Console.Write("Halcyon:");
-                    HalcyonConsole.Command(Console.ReadLine());
-                    break;
-                case 1:
-                    GeneralUtils.printHelp();
-                    Console.Write("Halcyon:");
-                    HalcyonConsole.Command(Console.ReadLine());
-                    break;
-                case 2:
-                    Compiler.checkArgs(args);
-                    break;
-                default:
-                    GeneralUtils.printHelp();
-                    Console.Write("Halcyon:");
-                    HalcyonConsole.Command(Console.ReadLine());
-                    break;
-            }
+            HalcyonConsole.Command(Console.ReadLine());
             OnExit(null, new HandledEventArgs());
         }
         /// <summary>
@@ -93,6 +67,11 @@ namespace Halcyon
         public static void Halt()
         {
             Environment.Exit(1);
+        }
+
+        public static void End()
+        {
+            Environment.Exit(0);
         }
     }
 }

@@ -20,6 +20,9 @@ using System.Text;
 
 namespace Halcyon
 {
+    /// <summary>
+    /// This is the ApiVersion Attribute
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
     public class ApiVersionAttribute : Attribute
     {

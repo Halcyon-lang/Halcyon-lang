@@ -11,6 +11,7 @@ namespace Halcyon
 {
     public class HalcyonConsole
     {
+        public static bool LoopConsole = true;
         /// <summary>
         /// Handles user input.
         /// </summary>
@@ -21,62 +22,50 @@ namespace Halcyon
             string[] args = arrman.RemoveEmptyEntries(str.RemoveWhiteSpace().Split(Convert.ToChar(" ")));
             Config.Save();
             Logger.SaveLog();
-            Referencer.DeInitialize();
-            switch (args.Count())
+            
+            if (Config.ConsoleEnabled)
             {
-                case 0:
-                    //Utils.printHelp();
-                    Console.Write("Halcyon:");
-                    HalcyonConsole.Command(Console.ReadLine());
-                    break;
-                case 1:
-                    if (args[0] != "-compile" && args[0] != "-result" && args[0] != "-convert" && args[0] != "-info" && args[0] != "-help" && args[0] != "-talkative" && args[0] != "-test" && args[0] != "-exit" && args[0] != "-ilasm" && args[0] != "-ilasmhelp" && !string.IsNullOrEmpty(args[0])) Errors.Exceptions.Exception(4);
-                    else if (string.IsNullOrEmpty(args[0]))
+                bool flag = false;
+                if (args.Count() >= 1)
+                {
+                    foreach (Command cmd in Commands.HalcyonCommands)
                     {
-                        Console.Write("Halcyon:");
-                        HalcyonConsole.Command(Console.ReadLine());
+                        if (cmd.Name.ToLower() == (args[0].Length == 1 || args[0].Length == 0 ? "" : args[0].Substring(1).ToLower()))
+                        {
+                            cmd.Callback(args);
+                            flag = true;
+                            break;
+                        }
                     }
-                    else if (args[0] == "-info") GeneralUtils.printInfoHelp();
-                    else if (args[0] == "-help") GeneralUtils.printHelp();
-                    else if (args[0] == "-talkative") GeneralUtils.switchTalkative();
-                    else if (args[0] == "-ilasm")
+                    if (!flag)
                     {
-                        Logger.Log(string.Format("ILasm wrapper v{0}.{1}", ApiVersion.ILasmMinor, ApiVersion.ILasmMajor));
-                        ILasmCompiler.ILasmCommand(" ");
-                        Console.Write("Halcyon:");
-                        HalcyonConsole.Command(Console.ReadLine());
+                        foreach (Command cmd in Commands.ExtensionCommands)
+                        {
+                            if (cmd.Name.ToLower() == (args[0].Length == 1 || args[0].Length == 0 ? "" : args[0].Substring(1).ToLower()))
+                            {
+                                cmd.Callback(args);
+                                flag = true;
+                                break;
+                            }
+                        }
                     }
-                    else if (args[0] == "-ilasmhelp")
+                    if (!flag)
                     {
-                        ILasmCompiler.ILasmCommand(" ");
-                        Console.Write("Halcyon:");
-                        HalcyonConsole.Command(Console.ReadLine());
-                    }
-                    else if (args[0] == "-test")
-                    {
-                        Config.logName = Path.GetRandomFileName();
-                        Config.Save();
-                    }
-                    else if (args[0] == "-exit") return;
-                    else
-                    {
-                        Errors.Exceptions.Exception(0);
-                        Console.WriteLine();
                         GeneralUtils.printHelp();
                     }
-                    Console.Write("Halcyon:");
-                    HalcyonConsole.Command(Console.ReadLine());
-                    break;
-                case 2:
-                    Compiler.checkArgs(args);
-                    break;
-                default:
-                    Compiler.checkArgs(args);
-                    Console.Write("Halcyon:");
-                    HalcyonConsole.Command(Console.ReadLine());
-                    break;
+                }
             }
-            Console.ReadLine();
+            if (LoopConsole)
+            {
+                if (Program.Mode != HalcyonMode.None)
+                {
+                    Referencer.DeInitialize();
+                    Program.Mode = HalcyonMode.None;
+                }
+                Console.Write("Halcyon:");
+                Console.Title = "Halcyon Compiler";
+                HalcyonConsole.Command(Console.ReadLine());
+            }
         }
     }
 }

@@ -104,7 +104,8 @@ namespace Halcyon
         Compile,
         Result,
         //Don't use, it is for testing and its function changes quickly. Usually does some odd stuff.
-        Special
+        Special,
+        None
     }
     public enum AssemblyLinker
     {

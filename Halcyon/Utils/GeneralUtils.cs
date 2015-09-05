@@ -20,14 +20,14 @@ namespace Halcyon.Utils
         public static void printHelp()
         {
             Logger.Log("Halcyon compiler help:");
-            Logger.Log("   -compile [File] - Compiles file to executable");
-            Logger.Log("   -convert [File] - Converts file to IL. File will be written down here");
-            Logger.Log("   -result [Text] - how does given line look in IL");
-            Logger.Log("   -preprocess [File] - preprocesses .halcyon file");
-            Logger.Log("   -talkative - turns more commandline info viewed mode ON/OFF");
-            Logger.Log("   -info <classes|elements|version> - prints a certain piece of info or -info help");
-            Logger.Log("   -exec <ilasm|al|ildasm> - allows you to run these through managed code (Halcyon)");
-            Logger.Log("   -exit exits the program safely");
+            foreach (Command cmd in Commands.HalcyonCommands)
+            {
+                Logger.Log("   -", cmd.Name, " ", cmd.Description);
+            }
+            foreach (Command cmd in Commands.ExtensionCommands)
+            {
+                Logger.Log("   -", cmd.Name, " ", cmd.Description);
+            }
         }
         /// <summary>
         /// Prints help for giveInfo when user does not provide -info with any arguments

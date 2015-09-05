@@ -113,6 +113,8 @@
     <Compile Include="ApiVersionAttribute.cs" />
     <Compile Include="AssemblyLinker.cs" />
     <Compile Include="AssemblyLinkerInfo.cs" />
+    <Compile Include="Command.cs" />
+    <Compile Include="Commands.cs" />
     <Compile Include="Compiler.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="ContentManager.cs" />

@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace Halcyon
 {
+    /// <summary>
+    /// This is the Assembly Linker wrapper
+    /// </summary>
     public class AssemblyLinkerProgram
     {
         /// <summary>

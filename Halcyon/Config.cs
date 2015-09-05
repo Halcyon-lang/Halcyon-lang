@@ -1,4 +1,5 @@
 ﻿using Halcyon;
+using Halcyon.CustomEventArgs;
 using Halcyon.Errors;
 using Halcyon.Logging;
 using Halcyon.Utils;
@@ -32,16 +33,17 @@ namespace Halcyon
         /// </summary>
         public static event EventHandler OnLoad = delegate { };
         /// <summary>
-        /// Fired at the end of Save()
+        /// Fired at the end of Save(). Subscribe to this event if you want to have own entries in the config. Don't fucking close the stream once you are done
         /// </summary>
-        public static event EventHandler OnSave = delegate { };
-        public static bool defaultTalkative { get { return (bool)BooleanUtils.ParseBool((string)GetValue("defaultTalkative", (object)false)); } set { TryUpdateKey("defaultTalkative", (object)value); } }
+        public static event EventHandler<SaveEventArgs> OnSave = delegate { };
+        public static bool defaultTalkative { get { return (bool)BooleanUtils.ParseBool(GetValue("defaultTalkative", (object)false)); } set { TryUpdateKey("defaultTalkative", (object)value); } }
         public static string logName { get { return (string)GetValue("logName", (object)"Halcyon.log"); } set { TryUpdateKey("logName", value); } }
-        public static bool benevolentOptions { get { return (bool)BooleanUtils.ParseBool((string)GetValue("benevolentOptions", (object)false)); } set { TryUpdateKey("benevolentOptions", (object)value); } }
+        public static bool benevolentOptions { get { return (bool)BooleanUtils.ParseBool(GetValue("benevolentOptions", (object)false)); } set { TryUpdateKey("benevolentOptions", (object)value); } }
         public static string ILasmExecutableName { get { return (string)GetValue("ILasmExecutableName", (object)"ilasm.exe"); } set { TryUpdateKey("ILasmExecutableName", (object)value); } }
         public static string ALExecutableName { get { return (string)GetValue("ALExecutableName", (object)"al.exe"); } set { TryUpdateKey("ALExecutableName", (object)value); } }
         public static string ILdasmExecutableName { get { return (string)GetValue("ILdasmExecutableName", (object)"ildasm.exe"); } set { TryUpdateKey("ILdasmExecutableName", (object)value); } }
         private static string SavePath { get { return Path.Combine(Environment.CurrentDirectory, @"Halcyon.cfg"); } }
+        public static bool ConsoleEnabled { get { return (bool)BooleanUtils.ParseBool(GetValue("ConsoleEnabled", (object)true)); } }
         private static bool Initialized = false;
        
         /// <summary>
@@ -199,13 +201,16 @@ namespace Halcyon
         {
             StreamWriter sw = new StreamWriter(Path.Combine(Environment.CurrentDirectory, @"Halcyon.cfg"));
             sw.WriteLine("defaultTalkative = " + GetValue("defaultTalkative", (object)false).ToString());
-            sw.WriteLine("logName = " + (string)GetValue("logName", (object)"Halcyon.log"));
+            sw.WriteLine("logName = " + GetValue("logName", (object)"Halcyon.log").ToString());
             sw.WriteLine("benevolentOptions = " + GetValue("benevolentOptions", (object)false).ToString()); 
             sw.WriteLine("ILasmExecutableName = " + GetValue("ILasmExecutableName", (object)"ilasm.exe").ToString());
             sw.WriteLine("ALExecutableName = " + GetValue("ALExecutableName", (object)"al.exe").ToString());
             sw.WriteLine("ILdasmExecutableName = " + GetValue("ILdasmExecutableName", (object)"ildasm.exe").ToString());
+            sw.WriteLine("ConsoleEnabled = " + GetValue("ConsoleEnabled", (object)true).ToString());
+            OnSave(null, new SaveEventArgs(sw));
             sw.Close();
-            OnSave(null, EventArgs.Empty);
+            
+
         }
         /// <summary>
         /// Initializes the main config.

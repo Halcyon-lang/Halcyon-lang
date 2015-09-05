@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -56,6 +57,21 @@ namespace Halcyon.CustomEventArgs
         public string[] file
         {
             get { return fl; }
+        }
+    }
+
+    public class SaveEventArgs : EventArgs
+    {
+        private StreamWriter sw;
+
+        public SaveEventArgs(StreamWriter writer)
+        {
+            sw = writer;
+        }
+
+        public StreamWriter Writer
+        {
+            get { return sw; }
         }
     }
 }
