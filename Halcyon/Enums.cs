@@ -193,7 +193,6 @@ namespace Halcyon
     }
     public enum ILdasmRegular
     {
-
     }
     public enum ILdasmExtra
     {
@@ -211,5 +210,33 @@ namespace Halcyon
     {
         Silent,
         Normal
+    }
+    public enum LicenseCompilerAddResult
+    {
+        SUCCESS,
+        FAIL,
+        EXISTS,
+        OVERWRITE
+    }
+    public enum LicenseCompiler
+    {
+        TARGET = 0,
+        COMPLIST = 1,
+        OUTDIR = 2,
+        I = 3,
+        V = 4,
+        NOLOGO = 5
+    }
+    public enum LicenseCompilerRegular
+    {
+        V = 4,
+        NOLOGO = 5
+    }
+    public enum LicenseCompilerExtra
+    {
+        TARGET = 0,
+        COMPLIST = 1,
+        OUTDIR = 2,
+        I = 3
     }
 }
