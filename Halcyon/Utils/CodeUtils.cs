@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Halcyon.Errors;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,7 +30,7 @@ namespace Halcyon.Utils
             NEXTBLOCK:
             foreach (char ch in Temp) 
             {
-                if (BooleanUtils.And(ch == '\"' || ch == '\'', source[charIndex - 1] != '\\'))
+                if (BooleanUtils.And(ch == '\"' || ch == '\'', (charIndex != 0 ? source[charIndex - 1] != '\\' : true)))
                 {
                     if (isInString) isInString = false;
                     else isInString = true;
@@ -235,7 +236,7 @@ namespace Halcyon.Utils
             int index = 0;
             foreach (char c in source)
             {
-                if (BooleanUtils.And(c == '\"' || c == '\'', source[index - 1] != '\\'))
+                if (BooleanUtils.And(c == '\"' || c == '\'', (index != 0 ? source[index - 1] != '\\' : true)))
                 {
                     temp.Append(c);
                     isString.Toggle();
@@ -252,6 +253,20 @@ namespace Halcyon.Utils
                 index++;
             }
             return temp.ToString();
+        }
+        public static string GetCodeBlockInsides(string CodeBlock)
+        {
+            int CurlyIndex = CodeBlock.IndexOf('{');
+            int CloseCurlyIndex = CodeBlock.LastIndexOf('}');
+            if (CurlyIndex != -1 && CloseCurlyIndex != -1)
+            {
+                return CodeBlock.Substring(CurlyIndex, CloseCurlyIndex - CurlyIndex + 1);
+            }
+            else
+            {
+                Exceptions.Exception(29);
+                return CodeBlock;
+            }
         }
     }
 }

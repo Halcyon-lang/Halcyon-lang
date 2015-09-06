@@ -126,6 +126,7 @@
     <Compile Include="LicenseCompilerInfo.cs" />
     <Compile Include="NGEN.cs" />
     <Compile Include="NGENInfo.cs" />
+    <Compile Include="Output.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="Referencer.cs" />
     <Compile Include="TargetAssembly.cs" />

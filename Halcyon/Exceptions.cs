@@ -86,6 +86,7 @@ namespace Halcyon.Errors
                 Add(26, "Could not parse bool in config. Presuming false");
                 Add(27, "LC executable not found. Make sure it is in the same folder as Halcyon");
                 Add(28, "NGEN executable not found. Make sure it is in the same folder as Halcyon");
+                Add(29, "String is not a codeblock");
                 Add(69, "Too many exceptions, are you fucking kidding me??");
         }
     }

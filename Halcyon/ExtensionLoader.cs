@@ -63,12 +63,12 @@ namespace Halcyon
                 if (Directory.Exists(lcDirectoryPath))
                 {
                     Directory.Move(lcDirectoryPath, ServerPluginsDirectoryPath);
-                    Console.WriteLine("Case sensitive filesystem detected, extensions directory has been renamed.", TraceLevel.Warning);
+                    Logger.Log("Case sensitive filesystem detected, extensions directory has been renamed.", TraceLevel.Warning);
                 }
                 else
                 {
                     Directory.CreateDirectory(ServerPluginsDirectoryPath);
-                    Console.WriteLine(string.Format(
+                    Logger.Log(string.Format(
                     "Folder extensions does not exist. Creating now."),
                     TraceLevel.Info);
                 }

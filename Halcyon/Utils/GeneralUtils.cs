@@ -182,7 +182,7 @@ namespace Halcyon.Utils
         {
             foreach (char ch in item)
             {
-                    if (ch == ' ' || ch == '\t' || ch == ' ')
+                    if (ch == ' ' || ch == '\t' || ch == ' ' || ch == '\n' || ch == '\r')
                     {
                         item = item.Substring(1);
                     }

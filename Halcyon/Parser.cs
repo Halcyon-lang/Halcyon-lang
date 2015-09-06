@@ -33,7 +33,7 @@ namespace Halcyon
     {
         public static string AssemblyBlock;
         /// <summary>
-        /// Don't use. It changes and is eventually reduced to empty.
+        /// Don't use. It changes and is eventually reduced to nothing.
         /// </summary>
         public static string DisassembledBlock;
 
@@ -44,26 +44,54 @@ namespace Halcyon
 
             SetName(block.Substring(0, curlyIndex));
             DisassembledBlock = block.Substring(curlyIndex + 1);
-            DisassembledBlock = DisassembledBlock.RemoveIfNotString('}');
+            DisassembledBlock = DisassembledBlock.Substring(0, DisassembledBlock.Length - 1);
             ProcessInfo();
 
         }
         public static void ProcessInfo()
         {
+            Logger.TalkyLog("Processing statements");
             string[] rawstatements;
-            rawstatements = DisassembledBlock.Split(';');
+            rawstatements = CodeUtils.GetCodeBlocks(DisassembledBlock).ToArray();
             List<string> statements = new List<string>();
             foreach (string rawstatement in rawstatements)
             {
                 statements.Add(rawstatement.RemoveWhiteSpace());
-                Logger.TalkyLog("statement: " + rawstatement);
+            }
+            ProccessStatements(statements);
+        }
+
+        public static void ProccessStatements(List<string> statements)
+        {
+            foreach (string statement in statements)
+            {
+                switch (statement.Split(' ')[0])
+                {
+                    case "reference":
+                        
+                        break;
+                    case "version":
+                        break;
+                    case "hash":
+                        break;
+                    case "imagebase":
+                        break;
+                    case "subsystem":
+                        break;
+                    case "filealignment":
+                        break;
+                    case "corflags":
+                        break;
+                    case "module":
+                        break;
+                }
             }
         }
 
         public static void SetName(string assemblypart)
         {
             TargetAssembly.Name = assemblypart.Replace("assembly", "").Trim();
-            Logger.TalkyLog(TargetAssembly.Name);
+            Logger.TalkyLog("Parsing assembly: " + TargetAssembly.Name);
         }
     }
 }
