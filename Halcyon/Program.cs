@@ -31,7 +31,7 @@ namespace Halcyon
         /// </summary>
         public static HalcyonMode Mode = HalcyonMode.None;
         /// <summary>
-        /// Triggered when Halcyon exits through -exit command
+        /// Triggered when Halcyon exits through -exit command or End() method
         /// </summary>
         public static event EventHandler<HandledEventArgs> OnExit = delegate { };
         /// <summary>
@@ -49,7 +49,6 @@ namespace Halcyon
             Config.Initialize();
             Preprocessor.initCommonPreprocessorEvents();
             Preprocessor.initDirectives();
-            ILasmInfo.Initialize();
             ExtensionLoader.Initialize();
             Config.PerformCheck();
             OnStart(null, EventArgs.Empty);
@@ -69,8 +68,12 @@ namespace Halcyon
             Environment.Exit(1);
         }
 
+        /// <summary>
+        /// Shut down Halcyon
+        /// </summary>
         public static void End()
         {
+            OnExit(null, new HandledEventArgs());
             Environment.Exit(0);
         }
     }

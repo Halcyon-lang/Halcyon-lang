@@ -271,4 +271,12 @@ namespace Halcyon
         EXECONFIG = 6,
         APPBASE = 7
     }
+
+    public enum ChangeResult
+    {
+        Success,
+        Fail,
+        NotFound,
+        SameNameExpected
+    }
 }

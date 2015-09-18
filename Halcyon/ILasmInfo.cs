@@ -117,45 +117,42 @@ namespace Halcyon
                 return ILasmAddResult.FAIL;
             }
         }
-        public static void Initialize()
+        static ILasmInfo()
         {
-            if (!Initialized)
-            {
-                Add(ILasm.NOLOGO, "/NOLOGO");
-                Add(ILasm.QUIET, "/QUIET");
-                Add(ILasm.NOAUTOINHERIT, "/NOAUTOINHERIT");
-                Add(ILasm.DLL, "/DLL");
-                Add(ILasm.EXE, "/EXE");
-                Add(ILasm.PDB, "/PDB");
-                Add(ILasm.APPCONTAINER, "/APPCONTAINER");
-                Add(ILasm.DEBUG, "/DEBUG");
-                Add(ILasm.DEBUGIMPL, "/DEBUG=IMPL");
-                Add(ILasm.DEBUGOPT, "/DEBUG=OPT");
-                Add(ILasm.OPTIMIZE, "/OPTIMIZE");
-                Add(ILasm.FOLD, "/FOLD");
-                Add(ILasm.CLOCK, "/CLOCK");
-                Add(ILasm.RESOURCE, "/RESOURCE");
-                Add(ILasm.OUTPUT, "/OUTPUT");
-                Add(ILasm.KEY, "/KEY");
-                Add(ILasm.INCLUDE, "/INCLUDE");
-                Add(ILasm.SUBSYSTEM, "/SUBSYSTEM");
-                Add(ILasm.SSVER, "/SSVER");
-                Add(ILasm.FLAGS, "/FLAGS");
-                Add(ILasm.ALIGNMENT, "/ALIGNMENT");
-                Add(ILasm.BASE, "/BASE");
-                Add(ILasm.STACK, "/STACK");
-                Add(ILasm.MDV, "/MDV");
-                Add(ILasm.MSV, "/MSV");
-                Add(ILasm.PE64, "/PE64");
-                Add(ILasm.HIGHENTROPYVA, "/HIGHENTROPYVA");
-                Add(ILasm.NOCORSTUB, "/NOCORSTUB");
-                Add(ILasm.STRIPRELOC, "/STRIPRELOC");
-                Add(ILasm.ITANIUM, "/ITANIUM");
-                Add(ILasm.X64, "/X64");
-                Add(ILasm.ARM, "/ARM");
-                Add(ILasm.PREFER32BIT, "/32BITPREFERRED");
-                Add(ILasm.ENC, "/ENC");
-            }
+            Add(ILasm.NOLOGO, "/NOLOGO");
+            Add(ILasm.QUIET, "/QUIET");
+            Add(ILasm.NOAUTOINHERIT, "/NOAUTOINHERIT");
+            Add(ILasm.DLL, "/DLL");
+            Add(ILasm.EXE, "/EXE");
+            Add(ILasm.PDB, "/PDB");
+            Add(ILasm.APPCONTAINER, "/APPCONTAINER");
+            Add(ILasm.DEBUG, "/DEBUG");
+            Add(ILasm.DEBUGIMPL, "/DEBUG=IMPL");
+            Add(ILasm.DEBUGOPT, "/DEBUG=OPT");
+            Add(ILasm.OPTIMIZE, "/OPTIMIZE");
+            Add(ILasm.FOLD, "/FOLD");
+            Add(ILasm.CLOCK, "/CLOCK");
+            Add(ILasm.RESOURCE, "/RESOURCE");
+            Add(ILasm.OUTPUT, "/OUTPUT");
+            Add(ILasm.KEY, "/KEY");
+            Add(ILasm.INCLUDE, "/INCLUDE");
+            Add(ILasm.SUBSYSTEM, "/SUBSYSTEM");
+            Add(ILasm.SSVER, "/SSVER");
+            Add(ILasm.FLAGS, "/FLAGS");
+            Add(ILasm.ALIGNMENT, "/ALIGNMENT");
+            Add(ILasm.BASE, "/BASE");
+            Add(ILasm.STACK, "/STACK");
+            Add(ILasm.MDV, "/MDV");
+            Add(ILasm.MSV, "/MSV");
+            Add(ILasm.PE64, "/PE64");
+            Add(ILasm.HIGHENTROPYVA, "/HIGHENTROPYVA");
+            Add(ILasm.NOCORSTUB, "/NOCORSTUB");
+            Add(ILasm.STRIPRELOC, "/STRIPRELOC");
+            Add(ILasm.ITANIUM, "/ITANIUM");
+            Add(ILasm.X64, "/X64");
+            Add(ILasm.ARM, "/ARM");
+            Add(ILasm.PREFER32BIT, "/32BITPREFERRED");
+            Add(ILasm.ENC, "/ENC");
             OnLoad(null, EventArgs.Empty);
         }
         /// <summary>

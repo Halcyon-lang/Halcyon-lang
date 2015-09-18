@@ -10,7 +10,13 @@ namespace Halcyon
 {
     public class Commands
     {
+        /// <summary>
+        /// Halcyon's base commands
+        /// </summary>
         internal static List<Command> HalcyonCommands = new List<Command>();
+        /// <summary>
+        /// Place all dem commands of yours here. NOTE: naming them exactly the same as any of Halcyon's base commands renders them as unusable
+        /// </summary>
         public static List<Command> ExtensionCommands = new List<Command>();
 
         static Commands()
@@ -26,6 +32,91 @@ namespace Halcyon
             HalcyonCommands.Add(new Command("exit", "- shuts the program down", Exit));
         }
 
+        /// <summary>
+        /// Allows you to change Halcyon's core commands
+        /// </summary>
+        /// <param name="Name">Name of the command you wish to change</param>
+        /// <param name="NewCallback">New callback for the command you wish to change. NewCallback.Name must match Name parameter of this method</param>
+        /// <returns>
+        ///     ChangeResult.Success if successfully changed command
+        ///     ChangeResult.NotFound if there is no such command in Halcyon's core commands
+        ///     ChangeResult.Fail if the replacement failed
+        ///     ChangeResult.SameNameExpected if Name != NewCallback.Name
+        /// </returns>
+        public static ChangeResult Change(string Name, Command NewCallback)
+        {
+            if (NewCallback.Name != Name) return ChangeResult.SameNameExpected;
+            try
+            {
+                int index = -1;
+                foreach (Command cmd in HalcyonCommands)
+                {
+                    if (cmd.Name == Name)
+                    {
+                        index = HalcyonCommands.IndexOf(cmd);
+                        break;
+                    }
+                }
+                if (index != -1)
+                {
+                    HalcyonCommands.Remove(HalcyonCommands[index]);
+                    HalcyonCommands.Add(NewCallback);
+                    return ChangeResult.Success;
+                }
+                else
+                {
+                    return ChangeResult.NotFound;
+                }
+            }
+            catch
+            {
+                return ChangeResult.Fail;
+            }
+        }
+        /// <summary>
+        /// Allows you to run an either Halcyon's core or any extension Command 
+        /// with ease
+        /// </summary>
+        /// <param name="Name">Name of the commands you wish to run</param>
+        /// <returns></returns>
+        public static bool Run(string Name) 
+        {
+            return Run(Name, new string[] {});
+        }
+        /// <summary>
+        /// Allows you to run an either Halcyon's core or any extension Command
+        /// with ease
+        /// </summary>
+        /// <param name="Name">Name of the command</param>
+        /// <param name="Arguments">Arguments you wish to provide to the command</param>
+        /// <returns></returns>
+        public static bool Run(string Name, string[] Arguments)
+        {
+            bool flag = false;
+            foreach (Command cmd in HalcyonCommands)
+            {
+                if (!string.IsNullOrEmpty(Name) 
+                    && !string.IsNullOrWhiteSpace(Name) 
+                    && cmd.Name == Name)
+                {
+                    cmd.Callback(Arguments);
+                    flag = true;
+                    return flag;
+                }
+            }
+            foreach (Command cmd in ExtensionCommands)
+            {
+                if (!string.IsNullOrEmpty(Name)
+                    && !string.IsNullOrWhiteSpace(Name)
+                    && cmd.Name == Name)
+                {
+                    cmd.Callback(Arguments);
+                    flag = true;
+                    return flag;
+                }
+            }
+            return flag;
+        }
         public static void Exit(string[] args)
         {
             Program.End();
