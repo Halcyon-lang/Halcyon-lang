@@ -14,7 +14,7 @@ namespace MyThing
     //ApiVersion Attribute. Indicates for which version of Halcyon is the extension intended. 
     //Halcyon only accepts extensions with the same ApiVersion.  
     //The extension will not be loaded if you forget to add the Attribute.
-    [ApiVersion(0, 7)]
+    [ApiVersion(0, 8)]
     //The class of our extension. Don't forget to make it public
     public class MyExtension : HalcyonExtension
     {

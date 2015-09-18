@@ -50,7 +50,7 @@ namespace Halcyon
         internal static void Initialize()
         {
             Logger.Log(
-                string.Format("Halcyon v{0} started.", ApiVersion.Major.ToString() + "." + ApiVersion.Minor.ToString(), TraceLevel.Verbose));
+                string.Format("Halcyon v{0} started.", ApiVersion.Major.ToString() + "." + ApiVersion.Minor.ToString()));
             ExtensionsDirectoryPath = Path.Combine(Environment.CurrentDirectory, ExtensionsPath);
             if (!Directory.Exists(ExtensionsDirectoryPath))
             {
@@ -60,14 +60,13 @@ namespace Halcyon
                 if (Directory.Exists(lcDirectoryPath))
                 {
                     Directory.Move(lcDirectoryPath, ExtensionsDirectoryPath);
-                    Logger.Log("Case sensitive filesystem detected, extensions directory has been renamed.", TraceLevel.Warning);
+                    Logger.Log("Case sensitive filesystem detected, extensions directory has been renamed.");
                 }
                 else
                 {
                     Directory.CreateDirectory(ExtensionsDirectoryPath);
                     Logger.Log(string.Format(
-                    "Folder extensions does not exist. Creating now."),
-                    TraceLevel.Info);
+                    "Folder extensions does not exist. Creating now."));
                 }
             }
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
@@ -115,7 +114,7 @@ namespace Halcyon
                         {
                             Logger.Log(
                                 string.Format("Extension \"{0}\" is designed for a different Halcyon API version ({1}) and was ignored.",
-                                type.FullName, apiVersion.ToString(2)), TraceLevel.Warning);
+                                type.FullName, apiVersion.ToString(2)));
                             continue;
                         }
                         HalcyonExtension extensionInstance;
@@ -199,8 +198,7 @@ namespace Halcyon
                 catch (Exception ex)
                 {
                     Logger.Log(string.Format(
-                        "Extension \"{0}\" has thrown an exception while being disposed:\n{1}", extensionContainer.Extension.Name, ex),
-                        TraceLevel.Error);
+                        "Extension \"{0}\" has thrown an exception while being disposed:\n{1}", extensionContainer.Extension.Name, ex));
                 }
 
 
@@ -227,8 +225,7 @@ namespace Halcyon
             catch (Exception ex)
             {
                 Logger.Log(
-                    string.Format("Error on resolving assembly \"{0}.dll\":\n{1}", fileName, ex),
-                    TraceLevel.Error);
+                    string.Format("Error on resolving assembly \"{0}.dll\":\n{1}", fileName, ex));
             }
             return null;
         }

@@ -117,3 +117,10 @@
 /Halcyon/bin/Halcyon/Halcyon.vshost.exe.config
 /Halcyon/bin/Halcyon/Halcyon.vshost.exe.manifest
 /Halcyon/obj/Halcyon/Halcyon.csproj.FileListAbsolute.txt
+/Halcyon/bin/Halcyon/Halcyon.cfg
+/Halcyon/bin/Halcyon/Halcyon.exe
+/Halcyon/bin/Halcyon/Halcyon.log
+/Halcyon/bin/Halcyon/Halcyon.pdb
+/Halcyon/obj/Halcyon/Halcyon.exe
+/Halcyon/obj/Halcyon/Halcyon.pdb
+/TestExtension/obj/Release/build.force

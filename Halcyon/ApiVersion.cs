@@ -17,7 +17,7 @@ namespace Halcyon
         /// <summary>
         /// Halcyon's minor version
         /// </summary>
-        public static int Minor = 7;
+        public static int Minor = 8;
         /// <summary>
         /// IL Assembler (ILasm) wrapper major version
         /// </summary>
