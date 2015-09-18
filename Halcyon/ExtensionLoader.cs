@@ -28,22 +28,19 @@ using Halcyon.Logging;
 
 namespace Halcyon
 {
-    // TODO: Maybe re-implement a reload functionality for plugins, but you'll have to load all assemblies into their own
-    // AppDomain in order to unload them again later. Beware that having them in their own AppDomain might cause threading 
-    // problems as usual locks will only work in their own AppDomains.
     public static class ExtensionLoader
     {
-        public const string PluginsPath = "extensions";
+        public const string ExtensionsPath = "extensions";
         private static readonly Dictionary<string, Assembly> loadedAssemblies = new Dictionary<string, Assembly>();
-        private static readonly List<ExtensionContainer> plugins = new List<ExtensionContainer>();
-        public static string ServerPluginsDirectoryPath
+        private static readonly List<ExtensionContainer> extensions = new List<ExtensionContainer>();
+        public static string ExtensionsDirectoryPath
         {
             get;
             private set;
         }
-        public static ReadOnlyCollection<ExtensionContainer> Plugins
+        public static ReadOnlyCollection<ExtensionContainer> Extensions
         {
-            get { return new ReadOnlyCollection<ExtensionContainer>(plugins); }
+            get { return new ReadOnlyCollection<ExtensionContainer>(extensions); }
         }
 
         static ExtensionLoader()
@@ -54,56 +51,45 @@ namespace Halcyon
         {
             Logger.Log(
                 string.Format("Halcyon v{0} started.", ApiVersion.Major.ToString() + "." + ApiVersion.Minor.ToString(), TraceLevel.Verbose));
-            ServerPluginsDirectoryPath = Path.Combine(Environment.CurrentDirectory, PluginsPath);
-            if (!Directory.Exists(ServerPluginsDirectoryPath))
+            ExtensionsDirectoryPath = Path.Combine(Environment.CurrentDirectory, ExtensionsPath);
+            if (!Directory.Exists(ExtensionsDirectoryPath))
             {
                 string lcDirectoryPath =
-                    Path.Combine(Path.GetDirectoryName(ServerPluginsDirectoryPath), PluginsPath.ToLower());
+                    Path.Combine(Path.GetDirectoryName(ExtensionsDirectoryPath), ExtensionsPath.ToLower());
 
                 if (Directory.Exists(lcDirectoryPath))
                 {
-                    Directory.Move(lcDirectoryPath, ServerPluginsDirectoryPath);
+                    Directory.Move(lcDirectoryPath, ExtensionsDirectoryPath);
                     Logger.Log("Case sensitive filesystem detected, extensions directory has been renamed.", TraceLevel.Warning);
                 }
                 else
                 {
-                    Directory.CreateDirectory(ServerPluginsDirectoryPath);
+                    Directory.CreateDirectory(ExtensionsDirectoryPath);
                     Logger.Log(string.Format(
                     "Folder extensions does not exist. Creating now."),
                     TraceLevel.Info);
                 }
             }
-
-            // Add assembly resolver instructing it to use the server plugins directory as a search path.
-            // TODO: Either adding the server plugins directory to PATH or as a privatePath node in the assembly config should do too.
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 
-            LoadPlugins();
+            LoadExtensions();
         }
 
         internal static void DeInitialize()
         {
-            UnloadPlugins();
+            UnloadExtensions();
         }
 
-        internal static void LoadPlugins()
+        internal static void LoadExtensions()
         {
-            string ignoredPluginsFilePath = Path.Combine(ServerPluginsDirectoryPath, "ignoredplugins.txt");
-
-            List<string> ignoredFiles = new List<string>();
-            if (File.Exists(ignoredPluginsFilePath))
-                ignoredFiles.AddRange(File.ReadAllLines(ignoredPluginsFilePath));
-
-            List<FileInfo> fileInfos = new DirectoryInfo(ServerPluginsDirectoryPath).GetFiles("*.dll").ToList();
-            fileInfos.AddRange(new DirectoryInfo(ServerPluginsDirectoryPath).GetFiles("*.dll-plugin"));
+            List<FileInfo> fileInfos = new DirectoryInfo(ExtensionsDirectoryPath).GetFiles("*.dll").ToList();
+            fileInfos.AddRange(new DirectoryInfo(ExtensionsDirectoryPath).GetFiles("*.extension"));
             foreach (FileInfo fileInfo in fileInfos)
             {
                 string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileInfo.Name);
                 try
                 {
                     Assembly assembly;
-                    // The plugin assembly might have been resolved by another plugin assembly already, so no use to
-                    // load it again, but we do still have to verify it and create plugin instances.
                     if (!loadedAssemblies.TryGetValue(fileNameWithoutExtension, out assembly))
                     {
                         try
@@ -132,38 +118,36 @@ namespace Halcyon
                                 type.FullName, apiVersion.ToString(2)), TraceLevel.Warning);
                             continue;
                         }
-                        HalcyonExtension pluginInstance;
-                        pluginInstance = (HalcyonExtension)Activator.CreateInstance(type);
+                        HalcyonExtension extensionInstance;
+                        extensionInstance = (HalcyonExtension)Activator.CreateInstance(type);
                         try
                         {
-                            pluginInstance = (HalcyonExtension)Activator.CreateInstance(type);
+                            extensionInstance = (HalcyonExtension)Activator.CreateInstance(type);
                         }
                         catch (Exception ex)
                         {
-                            // Broken plugins better stop the entire server init.
                             Logger.Log(String.Format("Could not create an instance of extension class \"{0}\""), type.FullName + "\n" + ex);
                         }
-                        plugins.Add(new ExtensionContainer(pluginInstance));
+                        extensions.Add(new ExtensionContainer(extensionInstance));
                     }
                 }
                 catch (Exception ex)
                 {
-                    // Broken assemblies / plugins better stop the entire server init.
                     Logger.Log(string.Format("Failed to load assembly \"{0}\".", fileInfo.Name) + ex);
                 }
             }
-            IOrderedEnumerable<ExtensionContainer> orderedPluginSelector =
-                from x in Plugins
-                orderby x.Plugin.Order, x.Plugin.Name
+            IOrderedEnumerable<ExtensionContainer> orderedExtensionSelector =
+                from x in Extensions
+                orderby x.Extension.Order, x.Extension.Name
                 select x;
             try
             {
                 int count = 0;
-                foreach (ExtensionContainer current in orderedPluginSelector)
+                foreach (ExtensionContainer current in orderedExtensionSelector)
                 {
                     count++;
                 }
-                foreach (ExtensionContainer current in orderedPluginSelector)
+                foreach (ExtensionContainer current in orderedExtensionSelector)
                 {
                     try
                     {
@@ -179,8 +163,7 @@ namespace Halcyon
                         break;
                     }
                     Logger.Log(string.Format(
-                        "Extension {0} v{1} (by {2}) initiated.", current.Plugin.Name, current.Plugin.Version, current.Plugin.Author),
-                        TraceLevel.Info);
+                        "Extension {0} v{1} (by {2}) initiated.", current.Extension.Name, current.Extension.Version, current.Extension.Author));
                 }
             }
             catch
@@ -188,37 +171,35 @@ namespace Halcyon
             }
         }
 
-        internal static void UnloadPlugins()
+        internal static void UnloadExtensions()
         {
-            foreach (ExtensionContainer pluginContainer in plugins)
+            foreach (ExtensionContainer extensionContainer in extensions)
             {
                 try
                 {
-                    pluginContainer.DeInitialize();
+                    extensionContainer.DeInitialize();
                     Logger.Log(string.Format(
-                        "Extension \"{0}\" was deinitialized", pluginContainer.Plugin.Name),
-                        TraceLevel.Error);
+                        "Extension \"{0}\" was deinitialized", extensionContainer.Extension.Name));
                 }
                 catch (Exception ex)
                 {
                     Logger.Log(string.Format(
-                        "Extension \"{0}\" has thrown an exception while being deinitialized:\n{1}", pluginContainer.Plugin.Name, ex),
-                        TraceLevel.Error);
+                        "Extension \"{0}\" has thrown an exception while being deinitialized:\n{1}", extensionContainer.Extension.Name, ex));
                 }
             }
 
-            foreach (ExtensionContainer pluginContainer in plugins)
+            foreach (ExtensionContainer extensionContainer in extensions)
             {
 
 
                 try
                 {
-                    pluginContainer.Dispose();
+                    extensionContainer.Dispose();
                 }
                 catch (Exception ex)
                 {
                     Logger.Log(string.Format(
-                        "Extension \"{0}\" has thrown an exception while being disposed:\n{1}", pluginContainer.Plugin.Name, ex),
+                        "Extension \"{0}\" has thrown an exception while being disposed:\n{1}", extensionContainer.Extension.Name, ex),
                         TraceLevel.Error);
                 }
 
@@ -229,7 +210,7 @@ namespace Halcyon
         private static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
             string fileName = args.Name.Split(',')[0];
-            string path = Path.Combine(ServerPluginsDirectoryPath, fileName + ".dll");
+            string path = Path.Combine(ExtensionsDirectoryPath, fileName + ".dll");
             try
             {
                 if (File.Exists(path))

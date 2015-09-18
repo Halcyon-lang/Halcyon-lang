@@ -19,7 +19,7 @@ namespace Halcyon
 {
     public class ExtensionContainer : IDisposable
     {
-        public HalcyonExtension Plugin
+        public HalcyonExtension Extension
         {
             get;
             protected set;
@@ -36,14 +36,14 @@ namespace Halcyon
             set;
         }
 
-        public ExtensionContainer(HalcyonExtension plugin)
-            : this(plugin, true)
+        public ExtensionContainer(HalcyonExtension extension)
+            : this(extension, true)
         {
         }
 
         public ExtensionContainer(HalcyonExtension plugin, bool dll)
         {
-            this.Plugin = plugin;
+            this.Extension = plugin;
             this.Initialized = false;
             this.Dll = dll;
         }
@@ -51,7 +51,7 @@ namespace Halcyon
         public void Initialize()
         {
             Console.WriteLine("Initialized");
-            this.Plugin.Initialize();
+            this.Extension.Initialize();
             this.Initialized = true;
         }
 
@@ -62,7 +62,7 @@ namespace Halcyon
 
         public void Dispose()
         {
-            this.Plugin.Dispose();
+            this.Extension.Dispose();
         }
     }
 }
