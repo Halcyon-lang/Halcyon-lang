@@ -68,7 +68,6 @@ namespace Halcyon
                 switch (statement.Split(' ')[0])
                 {
                     case "reference":
-                        
                         break;
                     case "version":
                         break;
