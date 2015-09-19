@@ -27,6 +27,7 @@ namespace Halcyon.Logging
         /// <param name="args"> Anything convertible to string </param>
         public static void Log(params object[] args)
         {
+            LogContent.Append("[" + DateTime.Now.ToLongTimeString() + "]");
             foreach(object arg in args) 
             {
                 Console.Write(arg);
@@ -41,6 +42,7 @@ namespace Halcyon.Logging
         /// <param name="args"></param>
         public static void TalkyLog(params object[] args)
         {
+            LogContent.Append("[" + DateTime.Now.ToLongTimeString() + "]");
             foreach (object arg in args)
             {
                 if (Program.Talkative)
@@ -74,6 +76,7 @@ namespace Halcyon.Logging
         /// <param name="args"></param>
         public static void LogNoTrace(params object[] args)
         {
+            LogContent.Append("[" + DateTime.Now.ToLongTimeString() + "]");
             foreach (object arg in args)
             {
                 LogContent.Append(arg);
@@ -83,13 +86,10 @@ namespace Halcyon.Logging
         /// <summary>
         /// Inits the logger
         /// </summary>
-        public static void Init()
+        static Logger()
         {
-            if (!Initiated)
-            {
-                Log("Logger initialized.");
-                Program.OnExit += ProgramExit;
-            }
+            Log("Logger initialized.");
+            Program.OnExit += ProgramExit;
         }
         
         public static void ProgramExit(object sender, System.ComponentModel.HandledEventArgs e)
