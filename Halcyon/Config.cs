@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -202,34 +203,26 @@ namespace Halcyon
         public static void Save()
         {
             StreamWriter sw = new StreamWriter(SavePath);
-            sw.WriteLine("defaultTalkative = " + GetValue("defaultTalkative", (object)false).ToString());
-            sw.WriteLine("logName = " + GetValue("logName", (object)"Halcyon.log").ToString());
-            sw.WriteLine("benevolentOptions = " + GetValue("benevolentOptions", (object)false).ToString()); 
-            sw.WriteLine("ILasmExecutableName = " + GetValue("ILasmExecutableName", (object)"ilasm.exe").ToString());
-            sw.WriteLine("ALExecutableName = " + GetValue("ALExecutableName", (object)"al.exe").ToString());
-            sw.WriteLine("ILdasmExecutableName = " + GetValue("ILdasmExecutableName", (object)"ildasm.exe").ToString());
-            sw.WriteLine("ConsoleEnabled = " + GetValue("ConsoleEnabled", (object)true).ToString());
+            foreach(PropertyInfo prop in typeof(Config).GetProperties()) 
+            {
+                sw.WriteLine(string.Format("{0} = {1}", prop.Name, prop.GetGetMethod().Invoke(null, null)));
+            }
             OnSave(null, new SaveEventArgs(sw));
             sw.Close();
-            
-
         }
         /// <summary>
         /// Initializes the main config.
         /// </summary>
-        public static void Initialize() 
+        static Config() 
         {
-            if (!Initialized)
+            if (File.Exists(SavePath))
             {
-                if (File.Exists(SavePath))
-                {
-                    Load();
-                }
-                else
-                {
-                    Save();
-                    Load();
-                }
+                Load();
+            }
+            else
+            {
+                Save();
+                Load();
             }
         }
 
