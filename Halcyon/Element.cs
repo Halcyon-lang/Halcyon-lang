@@ -16,6 +16,6 @@ namespace Halcyon
         public abstract string[] allowedModifiers { get; }
         public abstract bool endsWithsemicolon { get; }
         public abstract string[] allowedKeywords { get; }
-        public abstract Content Content();
+        public abstract void Parse(string source);
     }
 }

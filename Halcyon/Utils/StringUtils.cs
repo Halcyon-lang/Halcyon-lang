@@ -165,5 +165,14 @@ namespace Halcyon.Utils
         {
             return source.Length > 0 && source[source.Length - 1] == value;
         }
+        public static string Random()
+        {
+            return Random(8);
+        }
+        public static string Random(int Length)
+        {
+
+            return Path.GetRandomFileName().Replace(".", "").Substring(0, Length);
+        }
     }
 }
